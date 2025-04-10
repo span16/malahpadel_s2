@@ -1,0 +1,35 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+app_produit_index:
+    path: /produit
+    controller: App\Controller\ProduitController::index
+
+
+app_home:
+    path: /
+    controller: App\Controller\BackController::home
+admin_produit_new:
+    path: /admin/produit/new
+    controller: App\Controller\ProduitController::newBackOffice
+app_panier_index:
+    path: /panier
+    controller: App\Controller\PanierController::index
+
+app_panier_add:
+    path: /panier/add/{id}
+    controller: App\Controller\PanierController::add
+    requirements:
+        id: '\d+'
+
+app_panier_remove:
+    path: /panier/remove/{id}
+    controller: App\Controller\PanierController::remove
+    requirements:
+        id: '\d+'
+# In your routes.yaml or wherever you define routes
+app_checkout:
+    path: /checkout
+    controller: App\Controller\PanierController::checkout
