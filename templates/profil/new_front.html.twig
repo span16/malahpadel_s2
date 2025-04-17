@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer mon profil{% endblock %}
+
+{% block body %}
+<style>
+    .profil-card {
+        background: linear-gradient(135deg, #ffffff, #f0f0f0);
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        padding: 35px;
+        max-width: 520px;
+        margin: 60px auto;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        font-family: 'Segoe UI', sans-serif;
+        color: #333;
+    }
+
+    .profil-card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #0d6efd;
+    }
+
+    .profil-card .form-label {
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+    .profil-card .form-control {
+        border-radius: 8px;
+    }
+
+    .profil-card .btn {
+        width: 100%;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 500;
+    }
+</style>
+
+<div class="profil-card">
+    <h2>🧾 Créer mon profil</h2>
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.avatar, 'Votre avatar', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.avatar, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.avatar) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.bio, 'Biographie', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.bio, {'attr': {'class': 'form-control', 'placeholder': 'Parlez-nous de vous...'}}) }}
+            {{ form_errors(form.bio) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">🚀 Créer mon profil</button>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

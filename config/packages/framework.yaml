@@ -1,0 +1,17 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+   
+
+    form:
+        csrf_protection:
+            enabled: true
+    session:
+        handler_id: null # This is important for file-based sessions
+        save_path: '%kernel.cache_dir%/sessions'
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

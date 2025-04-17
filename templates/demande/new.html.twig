@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Demande{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Faire une demande pour l'annonce : {{ annonce.titre }}</h1>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.message, 'Votre message', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                        {{ form_errors(form.message) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('app_annonce_match_index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Envoyer la demande
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %} 

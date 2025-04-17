@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+.welcome-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow:
+        inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+        inset -2px -2px 5px rgba(0, 0, 0, 0.2),
+        0 10px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+    max-width: 450px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.welcome-box:hover {
+    transform: scale(1.02);
+}
+</style>
+
+<div class="header-carousel-item">
+    <img src="{{ asset('img/padel1.jpg') }}" class="img-fluid w-100" alt="Padel Image">
+    <div class="carousel-caption">
+        <div class="container">
+            <div class="row g-5 justify-content-center">
+                <div class="col-12 col-md-8 text-center animated fadeInUp">
+
+                    <div class="welcome-box mx-auto">
+                        {% if app.user %}
+                            <h2 class="mb-1">👋 Bienvenue, {{ app.user.prenom }} !</h2>
+                            <p>Content de vous revoir sur <strong>Malah_Padel</strong>.</p>
+                        {% else %}
+                            <h2 class="mb-1">Welcome, Guest!</h2>
+                            <p>Please log in to access your personalized home page.</p>
+                        {% endif %}
+                    </div>
+
+                    {% if not app.user %}
+                    <div class="d-flex justify-content-center mb-4">
+                        <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="{{ path('app_login') }}">
+                            <i class="fas fa-play-circle me-2"></i> Login
+                        </a>
+                        <a class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2" href="{{ path('app_register') }}">
+                            Register
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
