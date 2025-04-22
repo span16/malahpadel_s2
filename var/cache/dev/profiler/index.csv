@@ -990,3 +990,10 @@ fbaf45,127.0.0.1,GET,http://127.0.0.1:8000/assets/lib/easing/easing.min.js,17453
 cf3675,127.0.0.1,GET,http://127.0.0.1:8000/assets/lib/easing/easing.min.js,1745318909,,500,request
 dc6024,127.0.0.1,GET,http://127.0.0.1:8000/assets/lib/waypoints/waypoints.min.js,1745318910,9946b9,500,request
 9946b9,127.0.0.1,GET,http://127.0.0.1:8000/assets/lib/waypoints/waypoints.min.js,1745318910,,500,request
+62cfb5,127.0.0.1,GET,http://127.0.0.1:8000/,1745325826,,200,request
+d6aa88,127.0.0.1,GET,http://127.0.0.1:8000/,1745325827,,200,request
+5a10a2,127.0.0.1,GET,http://127.0.0.1:8000/favicon.ico,1745325837,14bbe5,404,request
+14bbe5,127.0.0.1,GET,http://127.0.0.1:8000/favicon.ico,1745325837,,404,request
+9fa469,127.0.0.1,GET,http://127.0.0.1:8000/annonce/,1745325840,,200,request
+731b11,127.0.0.1,GET,http://127.0.0.1:8000/assets/img/carousel-1.jpg,1745325842,62896f,500,request
+62896f,127.0.0.1,GET,http://127.0.0.1:8000/assets/img/carousel-1.jpg,1745325842,,500,request
