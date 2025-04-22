@@ -44,20 +44,20 @@ class CompagneController extends AbstractController
     }
 
     #[Route('/new', name: 'app_compagne_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, NotifierInterface $notifier): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, \App\SmsBundle\Service\SmsSender $smsSender ): Response
     {
         $compagne = new Compagne();
         $form = $this->createForm(CompagneType::class, $compagne);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion du logo
             $logoFile = $form->get('logoCompagne')->getData();
-            
             if ($logoFile) {
                 $originalFilename = pathinfo($logoFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$logoFile->guessExtension();
-
+    
                 try {
                     $logoFile->move(
                         $this->getParameter('logos_directory'),
@@ -70,26 +70,28 @@ class CompagneController extends AbstractController
             } else {
                 $compagne->setLogoCompagne('default-logo.png');
             }
-
+    
             $entityManager->persist($compagne);
             $entityManager->flush();
-
-            // Envoi SMS
+    
+            // Envoi SMS via le Bundle
             try {
-                $notification = (new Notification('Nouvelle Campagne', ['sms']))
-                    ->content('Nouvelle campagne: ' . $compagne->getNomSponsor());
-                
-                $recipient = new Recipient('', '+21693030489');
-                $notifier->send($notification, $recipient);
+                $smsSender->send(
+                    "🌟 Campagne ajoutée avec succès!\n" .
+                    "Nom: " . $compagne->getNomSponsor() . "\n" .
+                    "ID: " . $compagne->getIdCompagne() . "\n" .
+                    "Veuillez faire une visite!",
+                    '+21693030489'
+                );
                 
                 $this->addFlash('success', 'Campagne créée avec notification SMS');
             } catch (\Exception $e) {
-                $this->addFlash('warning', 'Campagne créée mais SMS non envoyé: ' . $e->getMessage());
+                $this->addFlash('warning', 'Campagne créée mais échec d\'envoi SMS');
             }
-
+    
             return $this->redirectToRoute('app_compagne_index');
         }
-
+    
         return $this->render('compagne/new.html.twig', [
             'compagne' => $compagne,
             'form' => $form->createView(),
@@ -190,23 +192,23 @@ public function delete(Request $request, int $idCompagne, CompagneRepository $co
     }
 
     #[Route('/admin/campagne/new', name: 'admin_compagne_new', methods: ['GET', 'POST'])]
-    public function newBackOffice(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, CompagneRepository $compagneRepository, NotifierInterface $notifier): Response
+    public function newBackOffice(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, CompagneRepository $compagneRepository, \App\SmsBundle\Service\SmsSender $smsSender): Response
     {
         $compagne = new Compagne();
         $form = $this->createForm(CompagneType::class, $compagne);
         $form->handleRequest($request);
-
+    
         $campagnes = $compagneRepository->findAll();
         $totalCompagnes = count($campagnes);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion du logo (identique à la méthode new())
             $logoFile = $form->get('logoCompagne')->getData();
-            
             if ($logoFile) {
                 $originalFilename = pathinfo($logoFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$logoFile->guessExtension();
-
+    
                 try {
                     $logoFile->move(
                         $this->getParameter('logos_directory'),
@@ -219,26 +221,26 @@ public function delete(Request $request, int $idCompagne, CompagneRepository $co
             } else {
                 $compagne->setLogoCompagne('default-logo.png');
             }
-
+    
             $entityManager->persist($compagne);
             $entityManager->flush();
-
-            // Notification admin
+    
+            // Envoi SMS spécifique admin
             try {
-                $notification = (new Notification('Nouvelle Campagne Admin', ['sms']))
-                    ->content('Admin: Nouvelle campagne ' . $compagne->getNomSponsor());
-                
-                $recipient = new Recipient('', '+21693030489');
-                $notifier->send($notification, $recipient);
-                
+                $smsSender->send(
+                    "🚨 [ADMIN] Nouvelle campagne!\n" .
+                    "ID: " . $compagne->getIdCompagne() . "\n" .
+                    "Créée le: " . date('d/m/Y H:i'),
+                    '+21693030489'
+                );
                 $this->addFlash('success', 'Campagne admin créée avec notification');
             } catch (\Exception $e) {
-                $this->addFlash('warning', 'Campagne créée mais SMS non envoyé');
+                $this->addFlash('warning', 'Campagne créée mais SMS admin non envoyé');
             }
-
+    
             return $this->redirectToRoute('admin_compagne_index');
         }
-
+    
         return $this->render('back/compagneback.html.twig', [
             'form' => $form->createView(),
             'campagnes' => $campagnes,
