@@ -721,6 +721,6 @@ class __TwigTemplate_606ea0ab960d276d806fd08aec3bcd36 extends Template
 
     public function getSourceContext(): Source
     {
-        return new Source("", "@WebProfiler/Collector/translation.html.twig", "C:\\Users\\USER\\Desktop\\ya sattar\\malahpadel_s2-integration-master\\malahpadel_s2-integration-master\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\translation.html.twig");
+        return new Source("", "@WebProfiler/Collector/translation.html.twig", "C:\\Users\\USER\\Desktop\\padel_projet_git\\malahpadel_s2-integration-master\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\translation.html.twig");
     }
 }

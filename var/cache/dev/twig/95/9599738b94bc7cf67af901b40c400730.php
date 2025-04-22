@@ -1220,6 +1220,6 @@ $context["event"], "message", [], "any", false, false, false, 293), "headers", [
 
     public function getSourceContext(): Source
     {
-        return new Source("", "@WebProfiler/Collector/mailer.html.twig", "C:\\Users\\USER\\Desktop\\ya sattar\\malahpadel_s2-integration-master\\malahpadel_s2-integration-master\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\mailer.html.twig");
+        return new Source("", "@WebProfiler/Collector/mailer.html.twig", "C:\\Users\\USER\\Desktop\\padel_projet_git\\malahpadel_s2-integration-master\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\mailer.html.twig");
     }
 }

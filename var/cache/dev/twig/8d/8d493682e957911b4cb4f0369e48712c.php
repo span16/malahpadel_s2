@@ -402,6 +402,6 @@ class __TwigTemplate_9b957a92011dbc4289b31041167053fb extends Template
 
     public function getSourceContext(): Source
     {
-        return new Source("", "@WebProfiler/Profiler/layout.html.twig", "C:\\Users\\USER\\Desktop\\ya sattar\\malahpadel_s2-integration-master\\malahpadel_s2-integration-master\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Profiler\\layout.html.twig");
+        return new Source("", "@WebProfiler/Profiler/layout.html.twig", "C:\\Users\\USER\\Desktop\\padel_projet_git\\malahpadel_s2-integration-master\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Profiler\\layout.html.twig");
     }
 }

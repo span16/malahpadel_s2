@@ -79,6 +79,6 @@ class __TwigTemplate_89cd0748ee84ef232884e5c11a1de16b extends Template
 
     public function getSourceContext(): Source
     {
-        return new Source("", "@Doctrine/Collector/database.svg", "C:\\Users\\USER\\Desktop\\ya sattar\\malahpadel_s2-integration-master\\malahpadel_s2-integration-master\\vendor\\doctrine\\doctrine-bundle\\templates\\Collector\\database.svg");
+        return new Source("", "@Doctrine/Collector/database.svg", "C:\\Users\\USER\\Desktop\\padel_projet_git\\malahpadel_s2-integration-master\\vendor\\doctrine\\doctrine-bundle\\templates\\Collector\\database.svg");
     }
 }

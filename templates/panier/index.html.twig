@@ -5,6 +5,12 @@
   {% block body %}
 <div class="container py-5">
     <h1 class="mb-4">Votre Panier 
+     {% if app.user %}
+                            <h2 class="mb-1">👋 votre panier , {{ app.user.prenom }} !</h2>
+                        {% else %}
+                            <h2 class="mb-1">pour consulter votre panier veillez de vous connecter , Guest!</h2>
+                            <p>Please log in to access your personalized home page.</p>
+                        {% endif %}
         {% if items|length > 0 %}
             <span class="badge bg-primary rounded-pill fs-6 align-middle">
                 {{ items|reduce((carry, item) => carry + item.quantite, 0) }} articles

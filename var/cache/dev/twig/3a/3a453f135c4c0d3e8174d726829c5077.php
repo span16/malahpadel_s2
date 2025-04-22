@@ -1237,6 +1237,6 @@ $context["voter_detail"], "vote", [], "array", false, false, false, 483) == Twig
 
     public function getSourceContext(): Source
     {
-        return new Source("", "@Security/Collector/security.html.twig", "C:\\Users\\USER\\Desktop\\ya sattar\\malahpadel_s2-integration-master\\malahpadel_s2-integration-master\\vendor\\symfony\\security-bundle\\Resources\\views\\Collector\\security.html.twig");
+        return new Source("", "@Security/Collector/security.html.twig", "C:\\Users\\USER\\Desktop\\padel_projet_git\\malahpadel_s2-integration-master\\vendor\\symfony\\security-bundle\\Resources\\views\\Collector\\security.html.twig");
     }
 }
