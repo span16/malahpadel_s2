@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Notifier\NotifierInterface;
 
 #[Route('/compagne')]
 class CompagneController extends AbstractController
-{
-    #[Route('/', name: 'app_compagne_index', methods: ['GET', 'POST'])]
+{#[Route('/', name: 'app_compagne_index', methods: ['GET', 'POST'])]
     public function index(Request $request, CompagneRepository $compagneRepository): Response
     {
         $filters = [
@@ -32,8 +32,13 @@ class CompagneController extends AbstractController
         $compagnes = $compagneRepository->findByFilters($filters);
         
         if ($request->isXmlHttpRequest()) {
-            return $this->render('compagne/_campaign_list.html.twig', [
+            $html = $this->renderView('compagne/_campaign_list.html.twig', [
                 'compagnes' => $compagnes
+            ]);
+            
+            return new JsonResponse([
+                'html' => $html,
+                'count' => count($compagnes)
             ]);
         }
         
