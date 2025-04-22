@@ -2,7 +2,45 @@
 
 {% block title %}Mallah Padel - Réservation{% endblock %}
 
-  {% block body %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .reservation-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .reservation-card h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        
+        .reservation-meta {
+            margin: 10px 0;
+            color: #7f8c8d;
+        }
+        
+        .reservation-actions {
+            margin-top: 15px;
+        }
+        
+        .btn-cancel {
+            background-color: #e74c3c !important;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #c0392b !important;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
     <!-- Header Start -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
@@ -24,7 +62,7 @@
                     <div class="section-title text-start">
                         <h4 class="text-primary">Réservez votre court</h4>
                         <h1 class="display-5 mb-4">Faites votre réservation</h1>
-                        <p class="mb-4">Sélectionnez un événement et complétez les détails de votre réservation. Les champs marqués d'un * sont obligatoires.</p>
+                        <p class="mb-4">Sélectionnez un événement et complétez les détails de votre réservation.</p>
                         <div class="d-flex align-items-center pt-2">
                             <div class="bg-primary p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                                 <i class="fas fa-phone-alt text-white fs-4"></i>
@@ -40,7 +78,6 @@
                     <div class="bg-primary rounded p-5">
                         <h2 class="text-white mb-4">Nouvelle réservation</h2>
                         
-                        <!-- Flash Messages -->
                         {% for message in app.flashes('success') %}
                             <div class="alert alert-success alert-dismissible fade show mb-4">
                                 <i class="fas fa-check-circle me-2"></i> {{ message }}
@@ -57,75 +94,26 @@
 
                         {{ form_start(form, {'attr': {'class': 'form-horizontal needs-validation', 'novalidate': 'novalidate'}}) }}
                             <div class="row g-3">
-                                <!-- Nom de l'événement -->
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        {{ form_label(form.nom, "Nom de l'événement *", {'label_attr': {'class': 'text-white mb-2 fw-bold'}}) }}
-                                        {{ form_widget(form.nom, {
-                                            'attr': {
-                                                'class': 'form-select bg-white border-0' ~ (form.nom.vars.errors|length ? ' is-invalid' : ''),
-                                                'placeholder': 'Choisissez un événement'
-                                            }
-                                        }) }}
-                                        <div class="invalid-feedback">
-                                            {{ form_errors(form.nom)|striptags }}
-                                        </div>
-                                    </div>
-                                </div>
+                                {{ form_row(form.nom, {
+                                    'label_attr': {'class': 'text-white mb-2 fw-bold'},
+                                    'attr': {'class': 'form-control bg-white border-0'}
+                                }) }}
 
-                                <!-- Type de réservation -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {{ form_label(form.typeReservation, "Type de réservation *", {'label_attr': {'class': 'text-white mb-2 fw-bold'}}) }}
-                                        {{ form_widget(form.typeReservation, {
-                                            'attr': {
-                                                'class': 'form-select bg-white border-0' ~ (form.typeReservation.vars.errors|length ? ' is-invalid' : ''),
-                                                'placeholder': 'Choisissez un type'
-                                            }
-                                        }) }}
-                                        <div class="invalid-feedback">
-                                            {{ form_errors(form.typeReservation)|striptags }}
-                                        </div>
-                                    </div>
-                                </div>
+                                {{ form_row(form.typeReservation, {
+                                    'label_attr': {'class': 'text-white mb-2 fw-bold'},
+                                    'attr': {'class': 'form-control bg-white border-0'}
+                                }) }}
 
-                                <!-- Nombre de places -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {{ form_label(form.nombrePlaces, "Nombre de places *", {'label_attr': {'class': 'text-white mb-2 fw-bold'}}) }}
-                                        {{ form_widget(form.nombrePlaces, {
-                                            'attr': {
-                                                'class': 'form-control bg-white border-0' ~ (form.nombrePlaces.vars.errors|length ? ' is-invalid' : ''),
-                                                'placeholder': 'Nombre de places',
-                                                'min': 1
-                                            }
-                                        }) }}
-                                        <div class="invalid-feedback">
-                                            {{ form_errors(form.nombrePlaces)|striptags }}
-                                        </div>
-                                    </div>
-                                </div>
+                                {{ form_row(form.nombrePlaces, {
+                                    'label_attr': {'class': 'text-white mb-2 fw-bold'},
+                                    'attr': {'class': 'form-control bg-white border-0'}
+                                }) }}
 
-                                <!-- Remarques (optionnel) -->
-                                <div class="col-12">
-                                    <div class="form-group">
-                                         {{ form_label(form.remarque, "Remarques (optionnel) *", {'label_attr': {'class': 'text-white mb-2 fw-bold'}}) }}
-                                         {{ form_widget(form.remarque, {
-                                              'attr': {
-                                               'class': 'form-control bg-white border-0' ~ (form.remarque.vars.errors|length ? ' is-invalid' : ''),
-                                                'placeholder': 'Informations supplémentaires...',
-                                                'style': 'height: 100px',
-                                                'data-minlength': '5',
-                                                'data-maxlength': '500'
-                                            }
-                                        }) }}
-                                    <div class="invalid-feedback">
-                                         {{ form_errors(form.remarque)|striptags }}
-                                        </div>
-                                     </div>
-                            </div>
+                                {{ form_row(form.remarque, {
+                                    'label_attr': {'class': 'text-white mb-2 fw-bold'},
+                                    'attr': {'class': 'form-control bg-white border-0', 'style': 'height: 100px'}
+                                }) }}
 
-                                <!-- Conditions générales -->
                                 <div class="col-12">
                                     <div class="form-check mb-3">
                                         <input class="form-check-input" type="checkbox" id="conditions" required>
@@ -138,18 +126,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Bouton de confirmation -->
                                 <div class="col-12">
                                     <button class="btn btn-dark w-100 py-3" type="submit">
                                         <i class="fas fa-calendar-check me-2"></i> Confirmer la réservation
                                     </button>
-                                </div>
-                                
-                                <!-- ... dans le bloc de formulaire, après le bouton de confirmation ... -->
-                                <div class="col-12 mt-3">
-                                    <a href="{{ path('app_reclamation_new') }}" class="btn btn-danger w-100 py-3">
-                                    <i class="fas fa-times-circle me-2"></i> Annuler la réservation
-                                    </a>
                                 </div>
                             </div>
                         {{ form_end(form) }}
@@ -161,11 +141,42 @@
     <!-- Reservation Form End -->
 
     <!-- Réservations existantes -->
-    <div class="container-fluid">
-    
-       
-       
-        <!-- Copyright End -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="section-title text-center">
+                <h4 class="text-primary">Vos réservations</h4>
+                <h1 class="display-5 mb-5">Historique des réservations</h1>
+            </div>
+            
+            {% if reservations|length > 0 %}
+                <div class="reservation-list wow fadeInUp" data-wow-delay="0.3s">
+                    {% for reservation in reservations %}
+                        <div class="reservation-card">
+                            <h3>{{ reservation.nom }}</h3>
+                            
+                            <div class="reservation-meta">
+                                <p><strong>Type:</strong> {{ reservation.typeReservation }}</p>
+                                <p><strong>Places:</strong> {{ reservation.nombrePlaces }}</p>
+                                <p><strong>Code:</strong> {{ reservation.codeConfirmation }}</p>
+                            </div>
+                            
+                            <div class="reservation-actions">
+                               
+                                <a href="{{ path('app_reclamation_new', {'reservation_id': reservation.id}) }}" 
+                                   class="btn btn-sm btn-cancel btn-danger">
+                                    <i class="fas fa-times"></i> Annuler
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info wow fadeInUp" data-wow-delay="0.5s">
+                    <i class="fas fa-info-circle me-2"></i> Aucune réservation trouvée.
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -178,19 +189,16 @@
             });
         }, 5000);
 
-        // Gestion de la validation du formulaire
+        // Form validation
         (() => {
             'use strict';
-            
             const forms = document.querySelectorAll('.needs-validation');
-            
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', event => {
                     if (!form.checkValidity()) {
                         event.preventDefault();
                         event.stopPropagation();
                     }
-
                     form.classList.add('was-validated');
                 }, false);
             });

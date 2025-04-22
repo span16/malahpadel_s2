@@ -97,16 +97,27 @@ class CompagneController extends AbstractController
     }
 
     #[Route('/{idCompagne}', name: 'app_compagne_show', methods: ['GET'])]
-    public function show(Compagne $compagne): Response
+    public function show(int $idCompagne, CompagneRepository $compagneRepository): Response
     {
+        $compagne = $compagneRepository->find($idCompagne);
+    
+        if (!$compagne) {
+            throw $this->createNotFoundException('Campagne non trouvée');
+        }
+    
         return $this->render('compagne/show.html.twig', [
             'compagne' => $compagne,
         ]);
     }
-
     #[Route('/{idCompagne}/edit', name: 'app_compagne_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Compagne $compagne, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function edit(Request $request, int $idCompagne, EntityManagerInterface $entityManager, SluggerInterface $slugger, CompagneRepository $compagneRepository): Response
     {
+        $compagne = $compagneRepository->find($idCompagne);
+        
+        if (!$compagne) {
+            throw $this->createNotFoundException('Campagne non trouvée');
+        }
+        
         $oldLogo = $compagne->getLogoCompagne();
         $form = $this->createForm(CompagneType::class, $compagne);
         $form->handleRequest($request);
@@ -146,16 +157,22 @@ class CompagneController extends AbstractController
     }
 
     #[Route('/{idCompagne}', name: 'app_compagne_delete', methods: ['POST'])]
-    public function delete(Request $request, Compagne $compagne, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$compagne->getIdCompagne(), $request->request->get('_token'))) {
-            $entityManager->remove($compagne);
-            $entityManager->flush();
-            $this->addFlash('success', 'Campagne supprimée avec succès');
-        }
+public function delete(Request $request, int $idCompagne, CompagneRepository $compagneRepository, EntityManagerInterface $entityManager): Response
+{
+    $compagne = $compagneRepository->find($idCompagne);
 
-        return $this->redirectToRoute('app_compagne_index');
+    if (!$compagne) {
+        throw $this->createNotFoundException('Campagne non trouvée');
     }
+
+    if ($this->isCsrfTokenValid('delete'.$compagne->getIdCompagne(), $request->request->get('_token'))) {
+        $entityManager->remove($compagne);
+        $entityManager->flush();
+        $this->addFlash('success', 'Campagne supprimée avec succès');
+    }
+
+    return $this->redirectToRoute('app_compagne_index');
+}
 
     #[Route('/admin/campagnes', name: 'admin_compagne_index', methods: ['GET'])]
     public function indexBackOffice(CompagneRepository $compagneRepository): Response

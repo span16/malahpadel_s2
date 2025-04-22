@@ -82,9 +82,10 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer text-end">
-                {{ include('compagne/_delete_form.html.twig') }}
-            </div>
+            <form method="post" action="{{ path('app_compagne_delete', {'idCompagne': compagne.idCompagne}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette campagne ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ compagne.idCompagne) }}">
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+</form>
         </div>
     </div>
 {% endblock %}
