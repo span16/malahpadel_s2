@@ -1,0 +1,5 @@
+services:
+    App\SmsBundle\Service\SmsSender:
+        public: true  # <-- Ajoutez cette ligne
+        arguments:
+            $notifier: '@notifier'
