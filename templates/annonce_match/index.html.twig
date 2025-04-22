@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces | Malah Padel{% endblock %}
+
+{% block body %}
+    <!-- Hero Section -->
+    <div class="container-fluid bg-breadcrumb">
+        <div class="container text-center py-5" style="max-width: 900px;">
+            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Annonces de Match</h4>
+            <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Accueil</a></li>
+                <li class="breadcrumb-item active text-primary">Annonces</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="container-fluid py-5 bg-light wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="card border-0 shadow rounded-3 overflow-hidden">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 class="fw-bold mb-0">Liste des Annonces</h2>
+                                {% if is_logged_in %}
+                                    <a href="{{ path('app_annonce_match_new') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i> Nouvelle annonce
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('app_login') }}" class="btn btn-outline-dark">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Connectez-vous
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Titre</th>
+                                            <th>Date</th>
+                                            <th>Lieu</th>
+                                            <th>Joueurs</th>
+                                            <th>Niveau</th>
+                                            <th>Description</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for annonce_match in annonce_matches %}
+                                        <tr>
+                                            <td>{{ annonce_match.titre }}</td>
+                                            <td>{{ annonce_match.dateHeure ? annonce_match.dateHeure|date('Y-m-d') : '' }}</td>
+                                            <td>{{ annonce_match.lieu }}</td>
+                                            <td>{{ annonce_match.joueursRecherches }}</td>
+                                            <td>{{ annonce_match.niveau }}</td>
+                                            <td>{{ annonce_match.description }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ path('app_annonce_match_show', {'annonceId': annonce_match.annonceId}) }}" class="btn btn-info btn-sm me-1">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                {% if is_logged_in %}
+                                                    {% if app.user and app.user.id != annonce_match.user.id %}
+                                                        <a href="{{ path('app_demande_new', {'annonceId': annonce_match.annonceId}) }}" class="btn btn-success btn-sm me-1">
+                                                            <i class="fas fa-handshake"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if app.user and app.user.id == annonce_match.user.id %}
+                                                        <a href="{{ path('app_annonce_match_edit', {'annonceId': annonce_match.annonceId}) }}" class="btn btn-warning btn-sm me-1">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <form method="post" action="{{ path('app_annonce_match_delete', {'annonceId': annonce_match.annonceId}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce?');" class="d-inline">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ annonce_match.annonceId) }}">
+                                                            <button class="btn btn-danger btn-sm">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">Aucune annonce trouvée</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div> <!-- card-body -->
+                    </div> <!-- card -->
+                </div> <!-- col -->
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </div> <!-- container-fluid -->
+{% endblock %}

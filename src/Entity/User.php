@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'integer', nullable: false)]
     #[Assert\NotBlank(message: "L'âge est requis.")]
-    #[Assert\Range(min: 18, max: 120, notInRangeMessage: 'L\'âge doit être compris entre {{ min }} et {{ max }} ans.')]
+    
     private ?int $age = null;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -262,6 +262,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEquipesJoueur1(): Collection { return $this->equipesJoueur1; }
     public function getEquipesJoueur2(): Collection { return $this->equipesJoueur2; }
 
-
+    
 
 }

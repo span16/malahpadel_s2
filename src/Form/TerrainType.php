@@ -12,7 +12,7 @@ class TerrainType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('id')
+          
             ->add('nom')
             ->add('adresse')
             ->add('prix_par_personne')

@@ -97,20 +97,20 @@
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="{{ path('app_register') }}"><small class="me-3 text-dark"> <i class="fa fa-user text-primary me-2"></i>Register</small></a>
+                       
 
-                        <a href="{{ path('app_login') }}"><small class="me-3 text-dark"><i class="fa fa-sign-in-alt text-primary me-2"></i>Login</small></a>
+
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle text-dark" data-bs-toggle="dropdown"><small><i class="fa fa-home text-primary me-2"></i> My Dashboard</small></a>
                             <div class="dropdown-menu rounded">
                             {% if app.user %}
     {% if app.user.profil %}
-        <a href="{{ path('app_profil_show', {'id': app.user.profil.id}) }}" class="dropdown-item">
+        <a href="{{ path('app_profil_show_front', {'id': app.user.profil.id}) }}" class="dropdown-item">
             <i class="fas fa-user-alt me-2"></i> My Profile
         </a>
     {% else %}
-        <a href="{{ path('app_profil_new') }}" class="dropdown-item">
-            <i class="fas fa-user-alt me-2"></i> Create Profile
+        <a href="{{ path('app_profil_new_front') }}" class="dropdown-item">
+            <i class="fas fa-user-alt me-2"></i> creer Profile
         </a>
     {% endif %}
 {% else %}
@@ -120,9 +120,7 @@
 {% endif %}
 
 
-                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
+                               
                                 <a href="{{ path('app_logout') }}" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
                             </div>
                         </div>
@@ -155,9 +153,9 @@
                     </div>
                 </div>
                         
-                        <a href="blog.html" class="nav-item nav-link">Invitation</a>
-                        <a href="blog.html" class="nav-item nav-link">Annonce</a>
-                        <a href="blog.html" class="nav-item nav-link">Partner</a>
+                        <a href="{{ path('app_invitation_index') }}" class="nav-item nav-link">Invitation</a>
+                        <a href="{{ path('app_annonce_match_index') }}" class="nav-item nav-link">Annonce</a>
+                        <a href="{{ path('app_demande_repertoire') }}" class="nav-item nav-link">Repertoir</a>
                                         <a href="{{ path('app_reservation') }}" class="nav-item nav-link">Réservations</a>
                                         <a href="{{ path('app_compagne_index') }}" class="nav-item nav-link">Compagne</a>
                                         <div class="nav-item dropdown">
@@ -210,7 +208,7 @@
                         <a href="{{ path('app_produit_index') }}" class="p-0">
                             <h4 class="text-white"><i class="fas fa-store me-3"></i>MALAH PADEL</h4>
                         </a>
-                        <p class="mb-4">Votre destination premium pour l'équipement de padel au Maroc.</p>
+                        <p class="mb-4">Votre destination premium pour l'équipement de padel au tunisie.</p>
                         <div class="d-flex">
                             <a href="#" class="btn btn-primary btn-sm-square rounded-circle me-2"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" class="btn btn-primary btn-sm-square rounded-circle me-2"><i class="fab fa-instagram"></i></a>
@@ -248,7 +246,7 @@
                     <span class="text-light">&copy; <span id="current-year"></span> <a href="#">MALAH PADEL</a>, Tous droits réservés.</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <span class="text-light">Développé par <a href="#">Votre équipe</a></span>
+                    <span class="text-light">Développé par <a href="#">Tokyo</a></span>
                 </div>
             </div>
         </div>

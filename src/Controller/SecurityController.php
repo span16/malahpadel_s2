@@ -79,31 +79,38 @@ class SecurityController extends AbstractController
         if ($request->isMethod('POST')) {
             $email = $request->request->get('email');
             $user = $userRepository->findOneBy(['email' => $email]);
-
+    
             if ($user) {
                 $token = bin2hex(random_bytes(32));
                 $user->setReset_token($token);
                 $user->setToken_expiration(new \DateTime('+1 hour'));
                 $entityManager->flush();
-
+    
                 $emailMessage = (new Email())
-                    ->from('noreply@votresite.com')
+                    ->from('yassminemegbli44@gmail.com')  // correspond bien à MAILER_DSN
                     ->to($email)
                     ->subject('Réinitialisation de votre mot de passe')
-                    ->html("<p>Pour réinitialiser votre mot de passe, cliquez sur ce lien : <a href='" . $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL) . "'>Réinitialiser mon mot de passe</a></p>");
-
-                $mailer->send($emailMessage);
-
-                $this->addFlash('success', 'Un email de réinitialisation a été envoyé à votre adresse email.');
+                    ->html("<p>Pour réinitialiser votre mot de passe, cliquez sur ce lien : <a href='" .
+                        $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL) .
+                        "'>Réinitialiser mon mot de passe</a></p>");
+    
+                        try {
+                            $mailer->send($emailMessage);
+                            dd('✅ Email envoyé avec succès à ' . $email);
+                        } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                            dd('❌ Erreur d’envoi de l’e-mail : ' . $e->getMessage());
+                        }
+                        
+    
                 return $this->redirectToRoute('app_login');
             } else {
                 $this->addFlash('error', 'Aucun compte trouvé avec cet email.');
             }
         }
-
+    
         return $this->render('security/forgot_password.html.twig');
     }
-
+    
     #[Route('/reset-password/{token}', name: 'app_reset_password')]
     public function resetPassword(
         Request $request, 

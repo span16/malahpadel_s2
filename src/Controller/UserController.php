@@ -14,51 +14,44 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/user')]
 final class UserController extends AbstractController
-{
-    #[Route('/dashboard', name: 'app_user_dashboard', methods: ['GET'])]
+{#[Route('/dashboard', name: 'app_user_dashboard', methods: ['GET'])]
     public function dashboard(Request $request, UserRepository $userRepository): Response
     {
-        // Récupération des critères de recherche depuis la query string
         $nom = $request->query->get('nom');
         $email = $request->query->get('email');
         $fonction = $request->query->get('fonction');
         $etat = $request->query->get('etat');
-        
-        // Préparation d'un QueryBuilder pour construire la requête selon les critères renseignés
+    
         $qb = $userRepository->createQueryBuilder('u');
-        
+    
         if ($nom) {
-            $qb->andWhere('u.nom LIKE :nom')
-               ->setParameter('nom', '%' . $nom . '%');
+            $qb->andWhere('u.nom LIKE :nom')->setParameter('nom', '%' . $nom . '%');
         }
-        
         if ($email) {
-            $qb->andWhere('u.email LIKE :email')
-               ->setParameter('email', '%' . $email . '%');
+            $qb->andWhere('u.email LIKE :email')->setParameter('email', '%' . $email . '%');
         }
-        
         if ($fonction) {
-            // Ici on suppose que la valeur dans "fonction" correspond à celle dans la base (ex. "admin" ou "utilisateur")
-            $qb->andWhere('u.fonction = :fonction')
-               ->setParameter('fonction', $fonction);
+            $qb->andWhere('u.fonction = :fonction')->setParameter('fonction', $fonction);
         }
-        
         if ($etat) {
-            $qb->andWhere('u.etat = :etat')
-               ->setParameter('etat', $etat);
+            $qb->andWhere('u.etat = :etat')->setParameter('etat', $etat);
         }
-        
-        // Exécute la requête et récupère le résultat
+    
         $users = $qb->getQuery()->getResult();
-        
-        // Calcul de quelques statistiques
+    
+        // 🔴 Lecture des signalements depuis le fichier
+        $signalements = [];
+        $filePath = $this->getParameter('kernel.project_dir') . '/var/log/signalements.txt';
+        if (file_exists($filePath)) {
+            $signalements = file($filePath, FILE_IGNORE_NEW_LINES);
+        }
+    
         $totalUsers = count($users);
         $adminCount = count(array_filter($users, fn($u) => in_array('ROLE_ADMIN', $u->getRoles())));
         $userCount = count(array_filter($users, fn($u) => in_array('ROLE_USER', $u->getRoles())));
-        
+    
         return $this->render('user/dashboard.html.twig', [
             'users' => $users,
-            // On transmet aussi les critères pour les réafficher dans le formulaire (optionnel)
             'nom' => $nom,
             'email' => $email,
             'fonction' => $fonction,
@@ -66,9 +59,10 @@ final class UserController extends AbstractController
             'totalUsers' => $totalUsers,
             'adminCount' => $adminCount,
             'userCount' => $userCount,
+            'signalements' => $signalements, // 👈 on le transmet à Twig
         ]);
     }
-
+    
    
     #[Route(name: 'app_user_index', methods: ['GET'])]
 public function index(): Response
@@ -79,10 +73,9 @@ public function index(): Response
 public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hasher): Response
 {
     $user = new User();
-    // Optionnel : définir un groupe de validation si besoin pour l'inscription
-    $form = $this->createForm(UserType::class, $user, [
-        'validation_groups' => ['Registration'],
-    ]);
+
+    $form = $this->createForm(UserType::class, $user);
+
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -91,17 +84,24 @@ public function new(Request $request, EntityManagerInterface $entityManager, Use
             $user->setMdp($hashedPassword);
         }
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_dashboard');
+            return $this->redirectToRoute('app_user_dashboard');
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+            // Message pour le champ email
+            $form->get('email')->addError(new \Symfony\Component\Form\FormError("Cet email est déjà utilisé."));
+
+            // Flash message global
+            $this->addFlash('danger', "Un utilisateur avec cet email existe déjà.");
+        }
     }
 
     return $this->render('user/new.html.twig', [
         'form' => $form->createView(),
     ]);
 }
-
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
@@ -145,4 +145,25 @@ public function new(Request $request, EntityManagerInterface $entityManager, Use
 
         return $this->redirectToRoute('app_user_dashboard');
     }
+
+
+    #[Route('/user/{id}/signaler', name: 'app_user_signaler')]
+    public function signaler(User $user): Response
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/var/log/signalements.txt';
+        $id = $user->getId();
+    
+        // éviter les doublons
+        $existing = file_exists($filePath) ? file($filePath, FILE_IGNORE_NEW_LINES) : [];
+        if (!in_array((string)$id, $existing)) {
+            file_put_contents($filePath, $id . "\n", FILE_APPEND);
+            $this->addFlash('success', "Utilisateur signalé !");
+        } else {
+            $this->addFlash('info', "Cet utilisateur a déjà été signalé.");
+        }
+    
+        return $this->redirectToRoute('app_user_dashboard');
+    }
+    
+    
 }

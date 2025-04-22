@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes invitations - Malah_Padel{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Mes invitations</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="mb-3">Invitations envoyées</h2>
+                {% for invitation in invitationsEnvoyees %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">À: {{ invitation.destinataire.email }}</h5>
+                            <p class="card-text">{{ invitation.message }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Envoyé le: {{ invitation.createdAt|date('d/m/Y H:i') }}</small>
+                            </p>
+                            <p class="card-text">
+                                Statut: 
+                                <span class="badge {% if invitation.statut == 'en_attente' %}bg-warning{% elseif invitation.statut == 'acceptee' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ invitation.statut }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        Vous n'avez envoyé aucune invitation.
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-6">
+                <h2 class="mb-3">Invitations reçues</h2>
+                {% for invitation in invitationsRecues %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">De: {{ invitation.expediteur.email }}</h5>
+                            <p class="card-text">{{ invitation.message }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Reçu le: {{ invitation.createdAt|date('d/m/Y H:i') }}</small>
+                            </p>
+                            <p class="card-text">
+                                Statut: 
+                                <span class="badge {% if invitation.statut == 'en_attente' %}bg-warning{% elseif invitation.statut == 'acceptee' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ invitation.statut }}
+                                </span>
+                            </p>
+                            {% if invitation.statut == 'en_attente' %}
+                                <div class="btn-group">
+                                    <a href="{{ path('app_invitation_accepter', {'id': invitation.id}) }}" class="btn btn-success">
+                                        <i class="fas fa-check"></i> Accepter
+                                    </a>
+                                    <a href="{{ path('app_invitation_refuser', {'id': invitation.id}) }}" class="btn btn-danger">
+                                        <i class="fas fa-times"></i> Refuser
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        Vous n'avez reçu aucune invitation.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ path('app_invitation_envoyer') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Envoyer une nouvelle invitation
+            </a>
+        </div>
+    </div>
+{% endblock %} 

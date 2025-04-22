@@ -145,7 +145,7 @@ class ProfilController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_profil_index');
+        return $this->redirectToRoute('app_profil_new_front');
     }
     #[Route('/{id}', name: 'app_profil_delete_back', methods: ['POST'])]
     public function deleteB(Request $request, Profil $profil, EntityManagerInterface $em): Response
@@ -190,5 +190,117 @@ public function editBack(Request $request, Profil $profil, EntityManagerInterfac
         'profil' => $profil,
     ]);
 }
+
+#[Route('/front/new', name: 'app_profil_new_front', methods: ['GET', 'POST'])]
+public function newFront(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+{
+    if (!$this->getUser()) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    $profil = new Profil();
+    $form = $this->createForm(ProfilType::class, $profil);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $avatarFile = $form->get('avatar')->getData();
+        if ($avatarFile) {
+            $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarFile->guessExtension();
+
+            try {
+                $avatarFile->move($this->getParameter('avatars_directory'), $newFilename);
+                $profil->setAvatar($newFilename);
+            } catch (FileException $e) {
+                $this->addFlash('error', 'Erreur lors de l\'upload de l\'avatar');
+            }
+        }
+
+        $profil->setUser($this->getUser());
+        $em->persist($profil);
+        $em->flush();
+
+        return $this->redirectToRoute('app_profil_my_front');
+    }
+
+    return $this->render('profil/new_front.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+#[Route('/front', name: 'app_profil_my_front', methods: ['GET'])]
+public function showMyProfil(EntityManagerInterface $em): Response
+{
+    $user = $this->getUser();
+
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    $profil = $em->getRepository(Profil::class)->findOneBy(['user' => $user]);
+
+    if (!$profil) {
+        return $this->redirectToRoute('app_profil_new_front');
+    }
+
+    return $this->render('profil/show_front.html.twig', [
+        'profil' => $profil,
+    ]);
+}
+
+#[Route('/front/{id}', name: 'app_profil_show_front', methods: ['GET'])]
+public function showFront(?Profil $profil): Response
+{
+    if (!$profil || $profil->getUser() !== $this->getUser()) {
+        $this->addFlash('error', 'Profil introuvable ou accès non autorisé.');
+        return $this->redirectToRoute('app_home');
+    }
+
+    return $this->render('profil/show_front.html.twig', [
+        'profil' => $profil,
+    ]);
+}
+
+#[Route('/front/{id}/edit', name: 'app_profil_edit_front', methods: ['GET', 'POST'])]
+public function editFront(Request $request, Profil $profil, EntityManagerInterface $em, SluggerInterface $slugger): Response
+{
+    // Vérifie que le profil appartient bien à l'utilisateur connecté
+    if (!$this->getUser() || $profil->getUser() !== $this->getUser()) {
+        $this->addFlash('error', 'Accès non autorisé.');
+        return $this->redirectToRoute('app_home');
+    }
+
+    $form = $this->createForm(ProfilType::class, $profil);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $avatarFile = $form->get('avatar')->getData();
+
+        if ($avatarFile) {
+            $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarFile->guessExtension();
+
+            try {
+                $avatarFile->move($this->getParameter('avatars_directory'), $newFilename);
+                $profil->setAvatar($newFilename);
+            } catch (FileException $e) {
+                $this->addFlash('error', 'Échec de l\'upload de l\'avatar.');
+            }
+        }
+
+        $em->flush();
+        $this->addFlash('success', 'Profil mis à jour avec succès.');
+
+        return $this->redirectToRoute('app_profil_show_front', ['id' => $profil->getId()]);
+    }
+
+    return $this->render('profil/edit_front.html.twig', [
+        'form' => $form->createView(),
+        'profil' => $profil,
+    ]);
+}
+
 
 }

@@ -37,8 +37,9 @@ class Evenement
     #[ORM\OneToMany(mappedBy: "evenement", targetEntity: Emploidutemps::class, cascade: ['persist', 'remove'])]
     private Collection $emploidutempss;
 
-    #[ORM\OneToMany(mappedBy: "evenement", targetEntity: LikeDislike::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: "evenement", targetEntity: LikeDislike::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $likesDislikes;
+    
 
     public function __construct()
     {

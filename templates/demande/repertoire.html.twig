@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes et Invitations - Malah_Padel{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Demandes et Invitations reçues</h1>
+
+        {% if demandes|length > 0 or invitations|length > 0 %}
+            {% if demandes|length > 0 %}
+                <h2 class="h4 mb-3">Demandes pour vos annonces</h2>
+                {% for demande in demandes %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Demande pour l'annonce: 
+                                <a href="{{ path('app_annonce_match_show', {'annonceId': demande.annonce.annonceId}) }}">
+                                    {{ demande.annonce.titre }}
+                                </a>
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">De: {{ demande.demandeur.email }}</h6>
+                            <p class="card-text">{{ demande.message }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Envoyé le: {{ demande.createdAt|date('d/m/Y H:i') }}</small>
+                            </p>
+                            <p class="card-text">
+                                Statut: 
+                                <span class="badge {% if demande.statut == 'en_attente' %}bg-warning{% elseif demande.statut == 'acceptee' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ demande.statut }}
+                                </span>
+                            </p>
+                            
+                            {% if demande.statut == 'en_attente' %}
+                                <div class="btn-group">
+                                    <form action="{{ path('app_demande_accepter', {'id': demande.id}) }}" method="post" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('accepter' ~ demande.id) }}">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-check"></i> Accepter
+                                        </button>
+                                    </form>
+                                    <form action="{{ path('app_demande_refuser', {'id': demande.id}) }}" method="post" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('refuser' ~ demande.id) }}">
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-times"></i> Refuser
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if invitations|length > 0 %}
+                <h2 class="h4 mb-3 mt-4">Invitations reçues</h2>
+                {% for invitation in invitations %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Invitation de: {{ invitation.senderEmail }}</h5>
+                            <p class="card-text">{{ invitation.message }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Envoyé le: {{ invitation.createdAt|date('d/m/Y H:i') }}</small>
+                            </p>
+                            <p class="card-text">
+                                Statut: 
+                                <span class="badge {% if invitation.statut == 'en_attente' %}bg-warning{% elseif invitation.statut == 'acceptee' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ invitation.statut }}
+                                </span>
+                            </p>
+                            
+                            {% if invitation.statut == 'en_attente' %}
+                                <div class="btn-group">
+                                    <form action="{{ path('app_invitation_accepter', {'id': invitation.id}) }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('accepter' ~ invitation.id) }}">
+                                        <button type="submit" class="btn btn-success btn-sm">Accepter</button>
+                                    </form>
+                                    <form action="{{ path('app_invitation_refuser', {'id': invitation.id}) }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('refuser' ~ invitation.id) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">Refuser</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info">
+                Aucune demande ou invitation reçue pour le moment.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %} 

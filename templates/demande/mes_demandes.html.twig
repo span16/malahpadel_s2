@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Partner Requests{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4">My Partner Requests</h1>
+
+        {% if is_granted('ROLE_USER') %}
+            {% if demandes|length > 0 %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Announcement</th>
+                                        <th>Announcer</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for demande in demandes %}
+                                        <tr>
+                                            <td>{{ demande.annonce.titre }}</td>
+                                            <td>{{ demande.annonce.user.email }}</td>
+                                            <td>
+                                                {% if demande.statut == 'en_attente' %}
+                                                    <span class="badge bg-warning">Pending</span>
+                                                {% elseif demande.statut == 'acceptee' %}
+                                                    <span class="badge bg-success">Accepted</span>
+                                                {% elseif demande.statut == 'refusee' %}
+                                                    <span class="badge bg-danger">Rejected</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ demande.createdAt|date('Y-m-d H:i') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    You haven't made any partner requests yet.
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-warning">
+                Please <a href="{{ path('app_login') }}">log in</a> to view your partner requests.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %} 

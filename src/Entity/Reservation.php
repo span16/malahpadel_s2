@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -57,6 +59,9 @@ class Reservation
             error_log('Generated code: '.$this->codeConfirmation);
         }
     }
+    
+#[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Paiement::class, cascade: ['persist', 'remove'])]
+private Collection $paiements;
 
     public function getId(): ?int
     {
@@ -127,4 +132,33 @@ class Reservation
             $this->typeReservation ?? 'Aucun type'
         );
     }
+    public function getPaiements(): Collection
+{
+    return $this->paiements;
+}
+
+public function addPaiement(Paiement $paiement): self
+{
+    if (!$this->paiements->contains($paiement)) {
+        $this->paiements[] = $paiement;
+        $paiement->setReservation($this);
+    }
+
+    return $this;
+}
+
+public function removePaiement(Paiement $paiement): self
+{
+    if ($this->paiements->removeElement($paiement)) {
+        if ($paiement->getReservation() === $this) {
+            $paiement->setReservation(null);
+        }
+    }
+
+    return $this;
+}
+public function __construct()
+{
+    $this->paiements = new ArrayCollection();
+}
 }

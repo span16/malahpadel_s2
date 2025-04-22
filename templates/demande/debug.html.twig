@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Debug Demandes{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Debug Information</h1>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>User Information</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>User ID:</strong> {{ debug_info.user_id }}</p>
+                <p><strong>User Email:</strong> {{ debug_info.user_email }}</p>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Statistics</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>Total Demands in System:</strong> {{ debug_info.total_demandes }}</p>
+                <p><strong>Your Announcements:</strong> {{ debug_info.user_annonces }}</p>
+                <p><strong>Demands on Your Announcements:</strong> {{ debug_info.user_demandes }}</p>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Your Announcements</h2>
+            </div>
+            <div class="card-body">
+                {% if debug_info.annonces|length > 0 %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Owner ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for annonce in debug_info.annonces %}
+                                <tr>
+                                    <td>{{ annonce.id }}</td>
+                                    <td>{{ annonce.titre }}</td>
+                                    <td>{{ annonce.user_id }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No announcements found for this user.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Demands on Your Announcements</h2>
+            </div>
+            <div class="card-body">
+                {% if debug_info.demandes|length > 0 %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Demand ID</th>
+                                <th>Announcement ID</th>
+                                <th>Requester ID</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for demande in debug_info.demandes %}
+                                <tr>
+                                    <td>{{ demande.id }}</td>
+                                    <td>{{ demande.annonce_id }}</td>
+                                    <td>{{ demande.demandeur_id }}</td>
+                                    <td>{{ demande.statut }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No demands found for your announcements.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %} 

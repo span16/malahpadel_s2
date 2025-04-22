@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Envoyer une invitation - Malah_Padel{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Envoyer une invitation</h1>
+
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_label(form.destinataire) }}
+                    {{ form_widget(form.destinataire) }}
+                    {{ form_errors(form.destinataire) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.message) }}
+                    {{ form_widget(form.message) }}
+                    {{ form_errors(form.message) }}
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Envoyer l'invitation
+                </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: 'Choisir un utilisateur',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+{% endblock %} 

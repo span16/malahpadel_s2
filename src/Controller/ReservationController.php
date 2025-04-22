@@ -170,7 +170,7 @@ class ReservationController extends AbstractController
          
          return $this->render('back/reservationback.html.twig', [
              'reservations' => $reservations,
-             'form' => $form->createView(), // Ne passez pas null ici
+             'form' => $form->createView(),
              'form_title' => 'Gestion des réservations',
              'button_label' => 'Créer',
              'total_reservations' => count($reservations),
@@ -179,54 +179,53 @@ class ReservationController extends AbstractController
      }
 
     #[Route('/admin/reservation/new', name: 'admin_reservation_new', methods: ['GET', 'POST'])]
-public function adminNew(Request $request): Response
-{
-    $reservation = new Reservation();
-    $form = $this->createForm(ReservationType::class, $reservation, [
-        'evenement_names' => $this->getEventNames(),
-        'action' => $this->generateUrl('admin_reservation_new') // Ajout important
-    ]);
+    public function adminNew(Request $request): Response
+    {
+        $reservation = new Reservation();
+        $form = $this->createForm(ReservationType::class, $reservation, [
+            'evenement_names' => $this->getEventNames(),
+            'action' => $this->generateUrl('admin_reservation_new')
+        ]);
 
-    $form->handleRequest($request);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted()) {
-        if ($form->isValid()) {
-            try {
-                if (!$reservation->getCodeConfirmation()) {
-                    $reservation->generateConfirmationCode();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                try {
+                    if (!$reservation->getCodeConfirmation()) {
+                        $reservation->generateConfirmationCode();
+                    }
+
+                    $this->entityManager->persist($reservation);
+                    $this->entityManager->flush();
+
+                    $this->addFlash('success', 'Réservation créée avec succès !');
+                    return $this->redirectToRoute('admin_reservation_index');
+                } catch (\Exception $e) {
+                    $this->logger->error('Erreur création réservation: ' . $e->getMessage());
+                    $this->addFlash('error', 'Erreur lors de la création');
+                    
+                    return $this->render('back/reservationback.html.twig', [
+                        'form' => $form->createView(),
+                        'form_title' => 'Nouvelle réservation',
+                        'button_label' => 'Confirmer',
+                        'reservations' => $this->reservationRepository->findAllOrderedById(),
+                        'total_reservations' => count($this->reservationRepository->findAll()),
+                        'show_list' => false
+                    ]);
                 }
-
-                $this->entityManager->persist($reservation);
-                $this->entityManager->flush();
-
-                $this->addFlash('success', 'Réservation créée avec succès !');
-                return $this->redirectToRoute('admin_reservation_index');
-            } catch (\Exception $e) {
-                $this->logger->error('Erreur création réservation: ' . $e->getMessage());
-                $this->addFlash('error', 'Erreur lors de la création');
-                
-                // Réafficher le formulaire avec erreurs
-                return $this->render('back/reservationback.html.twig', [
-                    'form' => $form->createView(),
-                    'form_title' => 'Nouvelle réservation',
-                    'button_label' => 'Confirmer',
-                    'reservations' => $this->reservationRepository->findAllOrderedById(),
-                    'total_reservations' => count($this->reservationRepository->findAll()),
-                    'show_list' => false
-                ]);
             }
         }
-    }
 
-    return $this->render('back/reservationback.html.twig', [
-        'form' => $form->createView(),
-        'form_title' => 'Nouvelle réservation',
-        'button_label' => 'Confirmer',
-        'reservations' => $this->reservationRepository->findAllOrderedById(),
-        'total_reservations' => count($this->reservationRepository->findAll()),
-        'show_list' => false
-    ]);
-}
+        return $this->render('back/reservationback.html.twig', [
+            'form' => $form->createView(),
+            'form_title' => 'Nouvelle réservation',
+            'button_label' => 'Confirmer',
+            'reservations' => $this->reservationRepository->findAllOrderedById(),
+            'total_reservations' => count($this->reservationRepository->findAll()),
+            'show_list' => false
+        ]);
+    }
 
     #[Route('/admin/reservation/{id}/edit', name: 'admin_reservation_edit', methods: ['GET', 'POST'])]
     public function adminEdit(Request $request, Reservation $reservation): Response

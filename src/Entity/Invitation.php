@@ -2,86 +2,94 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
 use App\Repository\InvitationRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InvitationRepository::class)]
-#[ORM\Table(name: 'invitation')]
 class Invitation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $Id = null;
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $senderEmail = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $receiverEmail = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $message = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $statut = 'en_attente';
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
-        return $this->Id;
+        return $this->id;
     }
 
-    public function setId(int $Id): self
+    public function getSenderEmail(): ?string
     {
-        $this->Id = $Id;
+        return $this->senderEmail;
+    }
+
+    public function setSenderEmail(string $senderEmail): static
+    {
+        $this->senderEmail = $senderEmail;
         return $this;
     }
 
-    #[ORM\Column(type: 'integer', nullable: false)]
-    private ?int $senderId = null;
-
-    public function getSenderId(): ?int
+    public function getReceiverEmail(): ?string
     {
-        return $this->senderId;
+        return $this->receiverEmail;
     }
 
-    public function setSenderId(int $senderId): self
+    public function setReceiverEmail(string $receiverEmail): static
     {
-        $this->senderId = $senderId;
+        $this->receiverEmail = $receiverEmail;
         return $this;
     }
 
-    #[ORM\Column(type: 'integer', nullable: false)]
-    private ?int $receiverId = null;
-
-    public function getReceiverId(): ?int
+    public function getMessage(): ?string
     {
-        return $this->receiverId;
+        return $this->message;
     }
 
-    public function setReceiverId(int $receiverId): self
+    public function setMessage(string $message): static
     {
-        $this->receiverId = $receiverId;
+        $this->message = $message;
         return $this;
     }
-
-    #[ORM\Column(type: 'date', nullable: false)]
-    private ?\DateTimeInterface $dateEnvoi = null;
-
-    public function getDateEnvoi(): ?\DateTimeInterface
-    {
-        return $this->dateEnvoi;
-    }
-
-    public function setDateEnvoi(\DateTimeInterface $dateEnvoi): self
-    {
-        $this->dateEnvoi = $dateEnvoi;
-        return $this;
-    }
-
-    #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $statut = null;
 
     public function getStatut(): ?string
     {
         return $this->statut;
     }
 
-    public function setStatut(string $statut): self
+    public function setStatut(string $statut): static
     {
         $this->statut = $statut;
         return $this;
     }
 
-}
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+} 

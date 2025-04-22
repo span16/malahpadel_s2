@@ -28,44 +28,53 @@ class ReclamationController extends AbstractController
     /**************************
      * PARTIE FRONT
      **************************/
+
     #[Route('/reclamation', name: 'app_reclamation_index', methods: ['GET'])]
-   public function index(): Response
-{
-    $reclamation = new Reclamation();
-    $form = $this->createForm(ReclamationType::class, $reclamation);
+    public function index(): Response
+    {
+        return $this->render('reclamation/index.html.twig', [
+            'reclamations' => $this->reclamationRepository->findAllOrderedByDate(),
+        ]);
+    }
 
-    return $this->render('reclamation/index.html.twig', [
-        'reclamations' => $this->reclamationRepository->findAllOrderedByDate(),
-        'form' => $form->createView()
-    ]);
-}
-
-
-    #[Route('/reclamation', name: 'app_reclamation_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/reclamation/new', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
+    public function new(Request $request): Response
     {
         $reclamation = new Reclamation();
-
+        $isCancellation = $request->query->getBoolean('is_cancellation');
+        
+        $this->initializeReclamation($reclamation, $request);
+    
         $form = $this->createForm(ReclamationType::class, $reclamation);
-
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reclamation);
-            $entityManager->flush();
-
-            $this->addFlash('reclamation_success', [
-                'title' => 'Réclamation envoyée',
-                'message' => 'Votre demande a bien été enregistrée.',
-                'details' => 'Nous vous contacterons dans les plus brefs délais.',
-                'is_cancellation' => false
-            ]);
-
-            return $this->redirectToRoute('app_reclamation_new');
+    
+        if ($form->isSubmitted()) {
+            // Validation manuelle avant de tester isValid()
+            $errors = $this->validator->validate($reclamation);
+            
+            if ($form->isValid() && count($errors) === 0) {
+                $this->processReclamation($reclamation, $isCancellation);
+                
+                $this->addFlash('reclamation_success', [
+                    'title' => 'Réception de votre réclamation',
+                    'message' => 'Votre demande #'.$reclamation->getId().' a bien été enregistrée.',
+                    'details' => 'Notre équipe traitera votre demande dans les plus brefs délais.',
+                    'is_cancellation' => $isCancellation
+                ]);
+                
+                return $this->redirectToRoute('app_reclamation_index');
+            } else {
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
+            }
         }
-
-        return $this->render('reclamation/index.html.twig', [
-            'form' => $form->createView()
+    
+        return $this->render('reclamation/new.html.twig', [
+            'form' => $form->createView(),
+            'is_cancellation' => $isCancellation,
+            'reservation' => $reclamation->getReservation(),
+            'errors' => isset($errors) ? $errors : null
         ]);
     }
 

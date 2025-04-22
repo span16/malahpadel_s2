@@ -14,9 +14,9 @@ class LikeDislike
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'likesDislikes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "evenement_id", referencedColumnName: "id", onDelete: "CASCADE", nullable: false)]
     private ?Evenement $evenement = null;
-
+    
     #[ORM\Column(type: 'boolean')]
     private bool $isLike;
 

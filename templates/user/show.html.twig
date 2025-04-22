@@ -75,9 +75,17 @@
 
     <!-- Boutons d'action en bas de page -->
     <div class="d-flex gap-2 mt-3">
+    <a href="{{ path('app_user_signaler', { id: user.id }) }}"
+   class="btn btn-sm btn-warning"
+   onclick="return confirm('Tu es sûr de vouloir signaler cet utilisateur ?');">
+   🚩 Signaler
+</a>
+
+
         <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Retour à la liste</a>
-        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">Modifier</a>
-        {{ include('user/_delete_form.html.twig', {'user': user}) }}
+
+    
+      
     </div>
 </div>
 {% endblock %}

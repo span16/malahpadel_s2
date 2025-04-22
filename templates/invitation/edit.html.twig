@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Invitation{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Edit Invitation</h5>
+
+            {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                <div class="mb-3">
+                    {{ form_label(form.receiver, 'Select User Email', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.receiver, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.receiver) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+                    {{ form_errors(form.message) }}
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Update Invitation</button>
+                    <a href="{{ path('app_invitation_index') }}" class="btn btn-secondary">Back to List</a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %} 
