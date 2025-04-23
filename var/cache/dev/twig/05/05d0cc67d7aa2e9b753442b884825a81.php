@@ -438,6 +438,35 @@ class __TwigTemplate_7b65706a42246b232cefda4ca230f059 extends Template
                 applyFilters();
             });
         });
+        document.addEventListener('DOMContentLoaded', function() {
+    // Écouteurs pour les filtres/tri
+    document.querySelectorAll('.filter-control, .sort-control').forEach(element => {
+        element.addEventListener('change', function() {
+            loadCampaigns();
+        });
+    });
+
+    // Fonction AJAX
+    function loadCampaigns() {
+        const filters = {
+            status: document.querySelector('#status_filter').value,
+            type: document.querySelector('#type_filter').value,
+            search: document.querySelector('#search_input').value,
+            sort: document.querySelector('input[name=\"sort\"]:checked').value
+        };
+
+        fetch(window.location.pathname + '?' + new URLSearchParams(filters), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('#campaigns-container').innerHTML = data.html;
+            document.querySelector('#campaigns-count').textContent = data.count;
+        });
+    }
+});
     </script>
 ";
         

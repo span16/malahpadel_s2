@@ -1,20 +1,13 @@
-# services.yaml
-
 parameters:
     logos_directory: '%kernel.project_dir%/public/uploads/logos'
     produits_directory: '%kernel.project_dir%/public/uploads/produits'
     huggingface_api_token: '%env(HUGGINGFACE_API_TOKEN)%'
-
     # Définissez ici vos clés reCAPTCHA
     recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
-    
-  
-
     avatars_directory: '%kernel.project_dir%/public/uploads/avatars'
 
 services:
-   
     # Default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -27,31 +20,30 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # Controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
 
     # Recaptcha service configuration
     App\Service\RecaptchaService:
         arguments:
             $client: '@http_client'  # Symfony HttpClient service
-            $secretKey: '%env(RECAPTCHA_SECRET_KEY)%'  # Inject the reCAPTCHA secret key from .env
-
+            $secretKey: '%recaptcha.secret_key%'  # Utilisation du paramètre défini
 
     App\Service\ParameterService:
         arguments:
             $parameterBag: '@parameter_bag'
 
-
-      # Service pour la gestion des utilisateurs via OAuth
-
-     # Dépendance explicite pour le formulaire EquipeType
+    # Service pour la gestion des utilisateurs via OAuth
+    # Dépendance explicite pour le formulaire EquipeType
     App\Form\EquipeType:
         arguments:
             $userRepository: '@App\Repository\UserRepository'
 
     # Enregistrement explicite du contrôleur EmploiDuTempsController
     App\Controller\EmploiDuTempsController:
-        autowire: true
-        autoconfigure: true
-        public: true
-   
-   
-   
+        tags: ['controller.service_arguments']

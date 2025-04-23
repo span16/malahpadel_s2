@@ -2,7 +2,7 @@ controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
-    type: attribute
+    type: annotation
 
 
 
@@ -11,7 +11,11 @@ app_home:
   path: /home
   controller: App\Controller\HomeController::index
 
-
+compagne_show:
+    path: /compagne/{id}
+    controller: App\Controller\CompagneController::show
+    requirements:
+        id: '\d+'
 app_profil_show:
     path: /profil/{id}
     controller: App\Controller\ProfilController::show

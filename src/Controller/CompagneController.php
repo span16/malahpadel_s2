@@ -16,6 +16,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Notifier\NotifierInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 
 #[Route('/compagne')]
 class CompagneController extends AbstractController
@@ -103,10 +107,9 @@ class CompagneController extends AbstractController
         ]);
     }
 
-    #[Route('/{idCompagne}', name: 'app_compagne_show', methods: ['GET'])]
+    #[Route('/{idCompagne}', name: 'app_compagne_show', methods: ['GET'], requirements: ['idCompagne' => '\d+'])]
     public function show(int $idCompagne, CompagneRepository $compagneRepository): Response
-    {
-        $compagne = $compagneRepository->find($idCompagne);
+    {   $compagne = $compagneRepository->find($idCompagne);
     
         if (!$compagne) {
             throw $this->createNotFoundException('Campagne non trouvée');
@@ -334,5 +337,64 @@ public function delete(Request $request, int $idCompagne, CompagneRepository $co
         }
     
         return $this->redirectToRoute('admin_compagne_index');
+    }
+    #[Route('/admin/campagnes/export', name: 'admin_compagne_export', methods: ['GET'])]
+    public function exportToExcel(CompagneRepository $compagneRepository): Response
+    {
+        // Récupérer les campagnes triées par date de début
+        $campagnes = $compagneRepository->findBy([], ['dateDebut' => 'ASC']);
+    
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        // Style pour les en-têtes
+        $sheet->getStyle('A1:G1')->getFont()->setBold(true);
+    
+        // En-têtes (sans ID)
+        $sheet->setCellValue('A1', 'Nom du sponsor');
+        $sheet->setCellValue('B1', 'Tarifs (€)');
+        $sheet->setCellValue('C1', 'Date de début');
+        $sheet->setCellValue('D1', 'Date de fin');
+        $sheet->setCellValue('E1', 'Statut');
+        $sheet->setCellValue('F1', 'Type de marketing');
+    
+        // Largeur des colonnes
+        $sheet->getColumnDimension('A')->setWidth(30);
+        $sheet->getColumnDimension('B')->setWidth(15);
+        $sheet->getColumnDimension('C')->setWidth(15);
+        $sheet->getColumnDimension('D')->setWidth(15);
+        $sheet->getColumnDimension('E')->setWidth(15);
+        $sheet->getColumnDimension('F')->setWidth(20);
+    
+        // Données
+        $row = 2;
+        foreach ($campagnes as $compagne) {
+            // Conversion explicite de toutes les valeurs en string
+            $sheet->setCellValue('A'.$row, (string)$compagne->getNomSponsor());
+            $sheet->setCellValue('B'.$row, (string)number_format($compagne->getTarifs(), 2, ',', ' '));
+            
+            // Gestion des dates
+            $dateDebut = $compagne->getDateDebut() ? $compagne->getDateDebut()->format('d/m/Y') : '';
+            $dateFin = $compagne->getDateFin() ? $compagne->getDateFin()->format('d/m/Y') : '';
+            
+            $sheet->setCellValue('C'.$row, $dateDebut);
+            $sheet->setCellValue('D'.$row, $dateFin);
+            
+            $sheet->setCellValue('E'.$row, (string)$compagne->getStatus());
+            $sheet->setCellValue('F'.$row, (string)$compagne->getTypeMarketing());
+            
+            $row++;
+        }
+    
+        // Créer le fichier Excel
+        $writer = new Xlsx($spreadsheet);
+        
+        // Créer une réponse temporaire
+        $fileName = 'export_campagnes_'.date('Y-m-d').'.xlsx';
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+        $writer->save($tempFile);
+    
+        // Retourner le fichier Excel en réponse
+        return $this->file($tempFile, $fileName, ResponseHeaderBag::DISPOSITION_ATTACHMENT);
     }
 }

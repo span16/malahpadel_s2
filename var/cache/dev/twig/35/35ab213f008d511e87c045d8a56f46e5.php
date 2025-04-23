@@ -283,84 +283,92 @@ class __TwigTemplate_a2241d1a132626f3e192413cb66112ca extends Template
                 <div class=\"card-body\">
                     <div class=\"d-flex justify-content-between align-items-center mb-4\">
                         <h4 class=\"card-title\">Liste des campagnes</h4>
-                        <span class=\"badge bg-primary text-white\">Nombre de campagnes : ";
-            // line 91
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["total_compagnes"]) || array_key_exists("total_compagnes", $context) ? $context["total_compagnes"] : (function () { throw new RuntimeError('Variable "total_compagnes" does not exist.', 91, $this->source); })()), "html", null, true);
+                        <div>
+                          <a href=\"";
+            // line 92
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("admin_compagne_export");
+            yield "\" class=\"btn btn-success btn-sm\">
+    <i class=\"mdi mdi-file-excel\"></i> Exporter en Excel
+</a>
+                            <span class=\"badge bg-primary text-white ms-2\">Nombre de campagnes : ";
+            // line 95
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["total_compagnes"]) || array_key_exists("total_compagnes", $context) ? $context["total_compagnes"] : (function () { throw new RuntimeError('Variable "total_compagnes" does not exist.', 95, $this->source); })()), "html", null, true);
             yield "</span>
+                        </div>
                     </div>
                     <div class=\"d-flex flex-wrap gap-3\">
                         ";
-            // line 94
+            // line 99
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["campagnes"]) || array_key_exists("campagnes", $context) ? $context["campagnes"] : (function () { throw new RuntimeError('Variable "campagnes" does not exist.', 94, $this->source); })()));
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["campagnes"]) || array_key_exists("campagnes", $context) ? $context["campagnes"] : (function () { throw new RuntimeError('Variable "campagnes" does not exist.', 99, $this->source); })()));
             $context['_iterated'] = false;
             foreach ($context['_seq'] as $context["_key"] => $context["compagne"]) {
-                // line 95
+                // line 100
                 yield "                        <div class=\"card\" style=\"width: 18rem;\">
                             <div class=\"card-body d-flex flex-column\">
                                 ";
-                // line 97
-                if ((CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "logoCompagne", [], "any", false, false, false, 97) && (CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "logoCompagne", [], "any", false, false, false, 97) != "default-logo.png"))) {
-                    // line 98
+                // line 102
+                if ((CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "logoCompagne", [], "any", false, false, false, 102) && (CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "logoCompagne", [], "any", false, false, false, 102) != "default-logo.png"))) {
+                    // line 103
                     yield "                                    <img src=\"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/logos/" . CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "logoCompagne", [], "any", false, false, false, 98))), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/logos/" . CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "logoCompagne", [], "any", false, false, false, 103))), "html", null, true);
                     yield "\" 
                                          class=\"card-img-top\" 
                                          style=\"height: 150px; object-fit: cover;\" 
                                          alt=\"";
-                    // line 101
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "nomSponsor", [], "any", false, false, false, 101), "html", null, true);
+                    // line 106
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "nomSponsor", [], "any", false, false, false, 106), "html", null, true);
                     yield "\">
                                 ";
                 } else {
-                    // line 103
+                    // line 108
                     yield "                                    <div class=\"d-flex align-items-center justify-content-center\" 
                                          style=\"height: 150px; background-color: #f5f5f5;\">
                                         <i class=\"mdi mdi-image-off text-muted\" style=\"font-size: 2rem;\"></i>
                                     </div>
                                 ";
                 }
-                // line 108
+                // line 113
                 yield "                                <h5 class=\"card-title mt-2\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "nomSponsor", [], "any", false, false, false, 108), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "nomSponsor", [], "any", false, false, false, 113), "html", null, true);
                 yield "</h5>
                                 <p class=\"card-text\">
                                     <strong>Type:</strong> ";
-                // line 110
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "typeMarketing", [], "any", false, false, false, 110), "html", null, true);
+                // line 115
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "typeMarketing", [], "any", false, false, false, 115), "html", null, true);
                 yield "<br>
                                     <strong>Tarifs:</strong> ";
-                // line 111
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "tarifs", [], "any", false, false, false, 111), 2, ",", " "), "html", null, true);
+                // line 116
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "tarifs", [], "any", false, false, false, 116), 2, ",", " "), "html", null, true);
                 yield " €<br>
                                     <strong>Statut:</strong> 
                                     <span class=\"badge badge-";
-                // line 113
-                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "status", [], "any", false, false, false, 113) == "active")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "status", [], "any", false, false, false, 113) == "inactive")) ? ("danger") : ("warning"))));
+                // line 118
+                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "status", [], "any", false, false, false, 118) == "active")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "status", [], "any", false, false, false, 118) == "inactive")) ? ("danger") : ("warning"))));
                 yield "\">
                                         ";
-                // line 114
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "status", [], "any", false, false, false, 114), "html", null, true);
+                // line 119
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "status", [], "any", false, false, false, 119), "html", null, true);
                 yield "
                                     </span>
                                 </p>
                                 <div class=\"mt-auto d-flex justify-content-between\">
                                     <a href=\"";
-                // line 118
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("admin_compagne_edit", ["idCompagne" => CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "idCompagne", [], "any", false, false, false, 118)]), "html", null, true);
+                // line 123
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("admin_compagne_edit", ["idCompagne" => CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "idCompagne", [], "any", false, false, false, 123)]), "html", null, true);
                 yield "\" 
                                        class=\"btn btn-sm btn-outline-primary\">
                                         <i class=\"mdi mdi-pencil\"></i> Modifier
                                     </a>
                                     <form method=\"post\" 
                                           action=\"";
-                // line 123
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("admin_compagne_delete", ["idCompagne" => CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "idCompagne", [], "any", false, false, false, 123)]), "html", null, true);
+                // line 128
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("admin_compagne_delete", ["idCompagne" => CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "idCompagne", [], "any", false, false, false, 128)]), "html", null, true);
                 yield "\" 
                                           onsubmit=\"return confirm('Êtes-vous sûr de vouloir supprimer cette campagne ?');\">
                                         <input type=\"hidden\" name=\"_token\" value=\"";
-                // line 125
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "idCompagne", [], "any", false, false, false, 125))), "html", null, true);
+                // line 130
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["compagne"], "idCompagne", [], "any", false, false, false, 130))), "html", null, true);
                 yield "\">
                                         <button class=\"btn btn-sm btn-outline-danger\">
                                             <i class=\"mdi mdi-delete\"></i> Supprimer
@@ -372,9 +380,9 @@ class __TwigTemplate_a2241d1a132626f3e192413cb66112ca extends Template
                         ";
                 $context['_iterated'] = true;
             }
-            // line 133
+            // line 138
             if (!$context['_iterated']) {
-                // line 134
+                // line 139
                 yield "                        <div class=\"text-center w-100 py-4 text-muted\">
                             Aucune campagne trouvée
                         </div>
@@ -383,14 +391,14 @@ class __TwigTemplate_a2241d1a132626f3e192413cb66112ca extends Template
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_key'], $context['compagne'], $context['_parent'], $context['_iterated']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 138
+            // line 143
             yield "                    </div>
                 </div>
             </div>
         </div>
         ";
         }
-        // line 143
+        // line 148
         yield "    </div>
 </div>
 ";
@@ -403,7 +411,7 @@ class __TwigTemplate_a2241d1a132626f3e192413cb66112ca extends Template
         yield from [];
     }
 
-    // line 147
+    // line 152
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -416,7 +424,7 @@ class __TwigTemplate_a2241d1a132626f3e192413cb66112ca extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
-        // line 148
+        // line 153
         yield from $this->yieldParentBlock("javascripts", $context, $blocks);
         yield "
 <script>
@@ -458,7 +466,7 @@ class __TwigTemplate_a2241d1a132626f3e192413cb66112ca extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  420 => 148,  407 => 147,  394 => 143,  387 => 138,  378 => 134,  376 => 133,  363 => 125,  358 => 123,  350 => 118,  343 => 114,  339 => 113,  334 => 111,  330 => 110,  324 => 108,  317 => 103,  312 => 101,  305 => 98,  303 => 97,  299 => 95,  294 => 94,  288 => 91,  279 => 86,  277 => 85,  273 => 83,  265 => 78,  259 => 75,  252 => 71,  246 => 68,  242 => 67,  238 => 66,  232 => 63,  228 => 62,  224 => 61,  218 => 58,  214 => 57,  210 => 56,  204 => 53,  199 => 51,  195 => 50,  189 => 47,  185 => 46,  181 => 45,  175 => 42,  171 => 41,  167 => 40,  161 => 37,  156 => 35,  150 => 32,  144 => 29,  140 => 28,  136 => 27,  131 => 25,  126 => 23,  121 => 20,  119 => 19,  108 => 11,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  428 => 153,  415 => 152,  402 => 148,  395 => 143,  386 => 139,  384 => 138,  371 => 130,  366 => 128,  358 => 123,  351 => 119,  347 => 118,  342 => 116,  338 => 115,  332 => 113,  325 => 108,  320 => 106,  313 => 103,  311 => 102,  307 => 100,  302 => 99,  295 => 95,  289 => 92,  279 => 86,  277 => 85,  273 => 83,  265 => 78,  259 => 75,  252 => 71,  246 => 68,  242 => 67,  238 => 66,  232 => 63,  228 => 62,  224 => 61,  218 => 58,  214 => 57,  210 => 56,  204 => 53,  199 => 51,  195 => 50,  189 => 47,  185 => 46,  181 => 45,  175 => 42,  171 => 41,  167 => 40,  161 => 37,  156 => 35,  150 => 32,  144 => 29,  140 => 28,  136 => 27,  131 => 25,  126 => 23,  121 => 20,  119 => 19,  108 => 11,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source

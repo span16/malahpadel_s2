@@ -88,7 +88,12 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="card-title">Liste des campagnes</h4>
-                        <span class="badge bg-primary text-white">Nombre de campagnes : {{ total_compagnes }}</span>
+                        <div>
+  <a href="{{ path('admin_compagne_export') }}" class="btn btn-success btn-sm">
+    <i class="mdi mdi-file-excel"></i> Exporter en Excel
+</a>
+                            <span class="badge bg-primary text-white ms-2">Nombre de campagnes : {{ total_compagnes }}</span>
+                        </div>
                     </div>
                     <div class="d-flex flex-wrap gap-3">
                         {% for compagne in campagnes %}
