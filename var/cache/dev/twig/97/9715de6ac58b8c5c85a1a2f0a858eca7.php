@@ -175,15 +175,75 @@ class __TwigTemplate_36053e67c326c5511cd5b385571b067a extends Template
         yield "</span>
                 </div>
 
+                <!-- Système de notation -->
+                <div class=\"rating-system mb-4\">
+                    <div class=\"d-flex align-items-center mb-3\">
+                        <span class=\"me-2 fw-bold\">Notez ce produit :</span>
+                        <div class=\"stars\">
+                            ";
+        // line 54
+        $context['_parent'] = $context;
+        $context['_seq'] = CoreExtension::ensureTraversable(range(1, 5));
+        foreach ($context['_seq'] as $context["_key"] => $context["i"]) {
+            // line 55
+            yield "                                <a href=\"";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_rate", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 55, $this->source); })()), "idProduit", [], "any", false, false, false, 55), "score" => $context["i"]]), "html", null, true);
+            yield "\"
+                                   class=\"star ";
+            // line 56
+            yield (((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["app"] ?? null), "session", [], "any", false, true, false, 56), "get", ["product_ratings"], "method", false, true, false, 56), CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 56, $this->source); })()), "idProduit", [], "any", false, false, false, 56), [], "array", true, true, false, 56) && ($context["i"] <= CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 56, $this->source); })()), "session", [], "any", false, false, false, 56), "get", ["product_ratings"], "method", false, false, false, 56), CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 56, $this->source); })()), "idProduit", [], "any", false, false, false, 56), [], "array", false, false, false, 56)))) ? ("active") : (""));
+            yield "\"
+                                   title=\"Donner ";
+            // line 57
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
+            yield " étoile";
+            yield ((($context["i"] > 1)) ? ("s") : (""));
+            yield "\"
+                                   style=\"font-size: 1.8rem; color: #ccc; text-decoration: none; margin-right: 3px; cursor: pointer;\">
+                                    ★
+                                </a>
+                            ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_key'], $context['i'], $context['_parent']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        // line 62
+        yield "                        </div>
+                        ";
+        // line 63
+        if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, ($context["app"] ?? null), "session", [], "any", false, true, false, 63), "get", ["product_ratings"], "method", false, true, false, 63), CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 63, $this->source); })()), "idProduit", [], "any", false, false, false, 63), [], "array", true, true, false, 63)) {
+            // line 64
+            yield "                            <span class=\"ms-2 text-muted\">
+                                (Votre note : ";
+            // line 65
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 65, $this->source); })()), "session", [], "any", false, false, false, 65), "get", ["product_ratings"], "method", false, false, false, 65), CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 65, $this->source); })()), "idProduit", [], "any", false, false, false, 65), [], "array", false, false, false, 65), "html", null, true);
+            yield "/5)
+                            </span>
+                        ";
+        }
+        // line 68
+        yield "                    </div>
+                    
+                    <!-- Graphique des notes -->
+                    <div class=\"chart-container bg-white p-3 rounded shadow-sm mt-3\" style=\"height: 250px;\">
+                        <div ";
+        // line 72
+        yield $this->extensions['Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension']->renderStimulusController("symfony/ux-chartjs/chart", ["view" => $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(json_encode(        // line 73
+(isset($context["chart"]) || array_key_exists("chart", $context) ? $context["chart"] : (function () { throw new RuntimeError('Variable "chart" does not exist.', 73, $this->source); })())), "html_attr")]);
+        // line 74
+        yield "></div>
+                    </div>
+                </div>
+
                 <p class=\"mb-4\">";
-        // line 49
-        yield (((CoreExtension::getAttribute($this->env, $this->source, ($context["produit"] ?? null), "description", [], "any", true, true, false, 49) &&  !(null === CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 49, $this->source); })()), "description", [], "any", false, false, false, 49)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 49, $this->source); })()), "description", [], "any", false, false, false, 49), "html", null, true)) : ("Aucune description disponible"));
+        // line 78
+        yield (((CoreExtension::getAttribute($this->env, $this->source, ($context["produit"] ?? null), "description", [], "any", true, true, false, 78) &&  !(null === CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 78, $this->source); })()), "description", [], "any", false, false, false, 78)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 78, $this->source); })()), "description", [], "any", false, false, false, 78), "html", null, true)) : ("Aucune description disponible"));
         yield "</p>
 
                 <div class=\"d-flex gap-2\">
                     <a href=\"";
-        // line 52
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_edit", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 52, $this->source); })()), "idProduit", [], "any", false, false, false, 52)]), "html", null, true);
+        // line 81
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_edit", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 81, $this->source); })()), "idProduit", [], "any", false, false, false, 81)]), "html", null, true);
         yield "\"
                        class=\"btn btn-primary px-4\">
                         <i class=\"fas fa-edit me-2\"></i>Modifier
@@ -191,13 +251,13 @@ class __TwigTemplate_36053e67c326c5511cd5b385571b067a extends Template
 
                     <form method=\"post\"
                           action=\"";
-        // line 58
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_delete", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 58, $this->source); })()), "idProduit", [], "any", false, false, false, 58)]), "html", null, true);
+        // line 87
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_delete", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 87, $this->source); })()), "idProduit", [], "any", false, false, false, 87)]), "html", null, true);
         yield "\"
                           onsubmit=\"return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');\">
                         <input type=\"hidden\" name=\"_token\" value=\"";
-        // line 60
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 60, $this->source); })()), "idProduit", [], "any", false, false, false, 60))), "html", null, true);
+        // line 89
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, (isset($context["produit"]) || array_key_exists("produit", $context) ? $context["produit"] : (function () { throw new RuntimeError('Variable "produit" does not exist.', 89, $this->source); })()), "idProduit", [], "any", false, false, false, 89))), "html", null, true);
         yield "\">
                         <button class=\"btn btn-danger px-4\">
                             <i class=\"fas fa-trash me-2\"></i>Supprimer
@@ -208,6 +268,23 @@ class __TwigTemplate_36053e67c326c5511cd5b385571b067a extends Template
         </div>
     </div>
 </div>
+
+<style>
+    .star {
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+    .star:hover {
+        transform: scale(1.2);
+    }
+    .star.active {
+        color: gold !important;
+        text-shadow: 0 0 5px rgba(255,215,0,0.5);
+    }
+    .chart-container {
+        border: 1px solid #e9ecef;
+    }
+</style>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -239,7 +316,7 @@ class __TwigTemplate_36053e67c326c5511cd5b385571b067a extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  200 => 60,  195 => 58,  186 => 52,  180 => 49,  174 => 46,  169 => 44,  165 => 43,  159 => 40,  155 => 39,  150 => 36,  144 => 32,  138 => 29,  134 => 28,  131 => 27,  129 => 26,  112 => 12,  108 => 11,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
+        return array (  260 => 89,  255 => 87,  246 => 81,  240 => 78,  234 => 74,  232 => 73,  231 => 72,  225 => 68,  219 => 65,  216 => 64,  214 => 63,  211 => 62,  198 => 57,  194 => 56,  189 => 55,  185 => 54,  174 => 46,  169 => 44,  165 => 43,  159 => 40,  155 => 39,  150 => 36,  144 => 32,  138 => 29,  134 => 28,  131 => 27,  129 => 26,  112 => 12,  108 => 11,  101 => 6,  88 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source

@@ -46,6 +46,35 @@
                     <span class="badge bg-info">{{ produit.categorie }}</span>
                 </div>
 
+                <!-- Système de notation -->
+                <div class="rating-system mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="me-2 fw-bold">Notez ce produit :</span>
+                        <div class="stars">
+                            {% for i in 1..5 %}
+                                <a href="{{ path('app_produit_rate', {'id_produit': produit.idProduit, 'score': i}) }}"
+                                   class="star {{ app.session.get('product_ratings')[produit.idProduit] is defined and i <= app.session.get('product_ratings')[produit.idProduit] ? 'active' : '' }}"
+                                   title="Donner {{ i }} étoile{{ i > 1 ? 's' : '' }}"
+                                   style="font-size: 1.8rem; color: #ccc; text-decoration: none; margin-right: 3px; cursor: pointer;">
+                                    ★
+                                </a>
+                            {% endfor %}
+                        </div>
+                        {% if app.session.get('product_ratings')[produit.idProduit] is defined %}
+                            <span class="ms-2 text-muted">
+                                (Votre note : {{ app.session.get('product_ratings')[produit.idProduit] }}/5)
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Graphique des notes -->
+                    <div class="chart-container bg-white p-3 rounded shadow-sm mt-3" style="height: 250px;">
+                        <div {{ stimulus_controller('symfony/ux-chartjs/chart', {
+                            view: chart|json_encode|e('html_attr')
+                        }) }}></div>
+                    </div>
+                </div>
+
                 <p class="mb-4">{{ produit.description ?? 'Aucune description disponible' }}</p>
 
                 <div class="d-flex gap-2">
@@ -67,4 +96,21 @@
         </div>
     </div>
 </div>
+
+<style>
+    .star {
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+    .star:hover {
+        transform: scale(1.2);
+    }
+    .star.active {
+        color: gold !important;
+        text-shadow: 0 0 5px rgba(255,215,0,0.5);
+    }
+    .chart-container {
+        border: 1px solid #e9ecef;
+    }
+</style>
 {% endblock %}

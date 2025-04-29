@@ -256,6 +256,7 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
  {% block js %}
+ 
     <!-- Template Javascript -->
     <script>
         // Current year for copyright
@@ -317,7 +318,10 @@
     </script>
 {% endblock js %}
 
-
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('chartjs') }}
+{% endblock %}
     </body>
 
 </html>

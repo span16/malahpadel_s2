@@ -36,6 +36,7 @@ class __TwigTemplate_19b85db543bf9cedabb509cd8027bc51 extends Template
             'css' => [$this, 'block_css'],
             'body' => [$this, 'block_body'],
             'js' => [$this, 'block_js'],
+            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -377,10 +378,13 @@ class __TwigTemplate_19b85db543bf9cedabb509cd8027bc51 extends Template
  ";
         // line 258
         yield from $this->unwrap()->yieldBlock('js', $context, $blocks);
-        // line 319
+        // line 320
         yield "
-
-    </body>
+";
+        // line 321
+        yield from $this->unwrap()->yieldBlock('javascripts', $context, $blocks);
+        // line 325
+        yield "    </body>
 
 </html>";
         
@@ -489,7 +493,8 @@ class __TwigTemplate_19b85db543bf9cedabb509cd8027bc51 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "js"));
 
         // line 259
-        yield "    <!-- Template Javascript -->
+        yield " 
+    <!-- Template Javascript -->
     <script>
         // Current year for copyright
         document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -558,6 +563,37 @@ class __TwigTemplate_19b85db543bf9cedabb509cd8027bc51 extends Template
         yield from [];
     }
 
+    // line 321
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        // line 322
+        yield "    ";
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('encore_entry_script_tags')->getCallable()("app"), "html", null, true);
+        yield "
+    ";
+        // line 323
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('encore_entry_script_tags')->getCallable()("chartjs"), "html", null, true);
+        yield "
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
     /**
      * @codeCoverageIgnore
      */
@@ -579,7 +615,7 @@ class __TwigTemplate_19b85db543bf9cedabb509cd8027bc51 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  492 => 259,  479 => 258,  468 => 197,  455 => 196,  432 => 62,  419 => 61,  396 => 47,  381 => 319,  379 => 258,  341 => 223,  337 => 222,  320 => 208,  308 => 198,  306 => 196,  287 => 179,  281 => 176,  278 => 175,  276 => 174,  270 => 171,  265 => 169,  259 => 166,  250 => 160,  246 => 159,  242 => 158,  238 => 157,  234 => 156,  227 => 152,  221 => 149,  214 => 145,  210 => 144,  187 => 124,  182 => 121,  174 => 117,  165 => 112,  157 => 108,  154 => 107,  152 => 106,  119 => 75,  117 => 61,  100 => 47,  52 => 1,);
+        return array (  585 => 323,  580 => 322,  567 => 321,  496 => 259,  483 => 258,  472 => 197,  459 => 196,  436 => 62,  423 => 61,  400 => 47,  387 => 325,  385 => 321,  382 => 320,  380 => 258,  342 => 223,  338 => 222,  321 => 208,  309 => 198,  307 => 196,  288 => 179,  282 => 176,  279 => 175,  277 => 174,  271 => 171,  266 => 169,  260 => 166,  251 => 160,  247 => 159,  243 => 158,  239 => 157,  235 => 156,  228 => 152,  222 => 149,  215 => 145,  211 => 144,  188 => 124,  183 => 121,  175 => 117,  166 => 112,  158 => 108,  155 => 107,  153 => 106,  120 => 75,  118 => 61,  101 => 47,  53 => 1,);
     }
 
     public function getSourceContext(): Source

@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
+
 
 #[Route('/produit')]
 class ProduitController extends AbstractController
@@ -73,27 +76,41 @@ class ProduitController extends AbstractController
     #[Route('/{id_produit}', name: 'app_produit_show', methods: ['GET'])]
     public function show(
         int $id_produit,
-        ProduitRepository $produitRepository
+        ProduitRepository $produitRepository,
+        Request $request,
+        ChartBuilderInterface $chartBuilder
     ): Response {
         $produit = $produitRepository->find($id_produit);
-    
+        
         if (!$produit) {
             throw $this->createNotFoundException('Produit introuvable.');
         }
-    
+
+        // Récupération des notes depuis la session
+        $session = $request->getSession();
+        $ratings = $session->get('product_ratings', []);
+
+        // Préparation des données pour le graphique
+        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $chart->setData([
+            'labels' => ['⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'],
+            'datasets' => [
+                [
+                    'label' => 'Notes',
+                    'data' => [10, 15, 30, 25, 20], // Exemple de données
+                    'backgroundColor' => '#4BC0C0',
+                ],
+            ],
+        ]);
+
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
+            'chart' => $chart,
         ]);
     }
-    
 
     #[Route('/{id_produit}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
-public function edit(
-    int $id_produit,
-    Request $request,
-    ProduitRepository $produitRepository,
-    EntityManagerInterface $entityManager,
-    SluggerInterface $slugger
+public function edit(int $id_produit,Request $request, ProduitRepository $produitRepository,EntityManagerInterface $entityManager,SluggerInterface $slugger
 ): Response {
     $produit = $produitRepository->find($id_produit);
 
@@ -321,5 +338,51 @@ public function delete(
     
         return $this->redirectToRoute('admin_produit_index');
     }
-    
+    #[Route('/produit/{id}/rating', name: 'app_produit_rating')]
+public function showRatingChart(ChartBuilderInterface $chartBuilder): Response
+{
+    // Données de notation (exemple)
+    $chart = $chartBuilder->createChart(Chart::TYPE_BAR); // ou TYPE_PIE
+    $chart->setData([
+        'labels' => ['⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'],
+        'datasets' => [
+            [
+                'label' => 'Votes',
+                'data' => [5, 10, 15, 20, 25], // Remplacez par vos données
+                'backgroundColor' => '#4BC0C0',
+            ],
+        ],
+    ]);
+
+    return $this->render('produit/rating.html.twig', [
+        'chart' => $chart,
+    ]);
+}
+#[Route('/{id_produit}/rate/{score}', name: 'app_produit_rate', methods: ['GET'])]
+public function rateProduct(
+    int $id_produit,
+    int $score,
+    Request $request,
+    ProduitRepository $produitRepository
+): Response {
+    $produit = $produitRepository->find($id_produit);
+    if (!$produit) {
+        throw $this->createNotFoundException('Produit introuvable.');
+    }
+
+    $session = $request->getSession();
+    $ratings = $session->get('product_ratings', []);
+
+    // Enregistre la note pour ce produit
+    $ratings[$id_produit] = $score;
+    $session->set('product_ratings', $ratings);
+
+    $this->addFlash('success', 'Merci pour votre note !');
+    return $this->redirectToRoute('app_produit_show', ['id_produit' => $id_produit]);
+}
+
+private function getAverageRating(array $ratings): float
+{
+    return count($ratings) > 0 ? array_sum($ratings) / count($ratings) : 0;
+}
 }
