@@ -67,12 +67,7 @@
                         {% endif %}
                     </div>
                     
-                    <!-- Graphique des notes -->
-                    <div class="chart-container bg-white p-3 rounded shadow-sm mt-3" style="height: 250px;">
-                        <div {{ stimulus_controller('symfony/ux-chartjs/chart', {
-                            view: chart|json_encode|e('html_attr')
-                        }) }}></div>
-                    </div>
+                  
                 </div>
 
                 <p class="mb-4">{{ produit.description ?? 'Aucune description disponible' }}</p>

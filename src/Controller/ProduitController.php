@@ -381,8 +381,5 @@ public function rateProduct(
     return $this->redirectToRoute('app_produit_show', ['id_produit' => $id_produit]);
 }
 
-private function getAverageRating(array $ratings): float
-{
-    return count($ratings) > 0 ? array_sum($ratings) / count($ratings) : 0;
-}
+
 }
