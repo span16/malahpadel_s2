@@ -11,3 +11,4 @@ framework:
             low: ['sms', 'email']
         admin_recipients:
             - { email: 'chaimakhiari25@gmail.com', phone: '+21693030489' }
+            

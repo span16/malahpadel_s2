@@ -53,7 +53,7 @@ class CompagneController extends AbstractController
     }
 
     #[Route('/new', name: 'app_compagne_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, \App\SmsBundle\Service\SmsSender $smsSender ): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, NotifierInterface $notifier ): Response
     {
         $compagne = new Compagne();
         $form = $this->createForm(CompagneType::class, $compagne);
@@ -85,19 +85,18 @@ class CompagneController extends AbstractController
     
             // Envoi SMS via le Bundle
             try {
-                $smsSender->send(
-                    "🌟 Campagne ajoutée avec succès!\n" .
-                    "Nom: " . $compagne->getNomSponsor() . "\n" .
-                    "ID: " . $compagne->getIdCompagne() . "\n" .
-                    "Veuillez faire une visite!",
-                    '+21693030489'
-                );
+                $notification = (new Notification('Nouvelle campagne khiari ', ['sms']))
+                    ->content("🌟 Campagne ajoutée avec succès!\n" .
+                             "ID: ".$compagne->getIdCompagne()."\n" .
+                             "Nom: ".$compagne->getNomSponsor());
+    
+                $recipient = new Recipient('', '+21693030489');
+                $notifier->send($notification, $recipient);
                 
                 $this->addFlash('success', 'Campagne créée avec notification SMS');
             } catch (\Exception $e) {
-                $this->addFlash('warning', 'Campagne créée mais échec d\'envoi SMS');
+                $this->addFlash('warning', 'Campagne créée mais échec d\'envoi SMS: '.$e->getMessage());
             }
-    
             return $this->redirectToRoute('app_compagne_index');
         }
     
