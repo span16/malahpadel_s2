@@ -1,6 +1,3 @@
-b04920,127.0.0.1,GET,http://127.0.0.1:8000/produit,1746051405,,200,request
-bb8d25,127.0.0.1,GET,http://127.0.0.1:8000/produit/new,1746051408,,200,request
-1287fd,127.0.0.1,POST,http://127.0.0.1:8000/produit/new,1746051440,,303,request
-bcb588,127.0.0.1,GET,http://127.0.0.1:8000/produit,1746051440,,200,request
-756d9d,127.0.0.1,GET,http://127.0.0.1:8000/produit/new,1746051470,,200,request
-1f5eb1,127.0.0.1,GET,http://127.0.0.1:8000/produit,1746051474,,200,request
+482660,127.0.0.1,GET,http://127.0.0.1:8000/produit?sort=prix_desc,1746052110,,200,request
+e5e928,127.0.0.1,GET,http://127.0.0.1:8000/produit?sort=prix_desc,1746052151,,200,request
+7b4ff1,127.0.0.1,GET,http://127.0.0.1:8000/produit?sort=prix_asc,1746052357,,200,request
