@@ -32,6 +32,7 @@ class __TwigTemplate_86cbc2a65c83636bb5997bb00e4c1fe5 extends Template
         $this->blocks = [
             'title' => [$this, 'block_title'],
             'body' => [$this, 'block_body'],
+            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -104,54 +105,72 @@ class __TwigTemplate_86cbc2a65c83636bb5997bb00e4c1fe5 extends Template
             <div class=\"col-lg-6\">
                 <h1 class=\"display-4 mb-3 animated slideInDown\">Nos Produits</h1>
                 <p class=\"animated slideInDown\">Découvrez notre sélection exclusive d'équipements de padel</p>
+                ";
+        // line 14
+        yield "                <div class=\"input-group mb-3\">
+                    <input type=\"text\" id=\"searchInput\" class=\"form-control\" placeholder=\"Rechercher un produit...\">
+                    <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"voiceSearchBtn\">
+                        <i class=\"fas fa-microphone\"></i>
+                    </button>
+                    <button class=\"btn btn-primary\" type=\"button\" id=\"searchBtn\">
+                        <i class=\"fas fa-search\"></i> Rechercher
+                    </button>
+                </div>
+                <div id=\"voiceStatus\" class=\"text-muted small\"></div>
             </div>
             <div class=\"col-lg-6 text-end\">
                 <div class=\"btn-group me-3\">
                     <button type=\"button\" class=\"btn btn-outline-primary dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
                         <i class=\"fas fa-sort me-1\"></i>
                         ";
-        // line 18
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 18, $this->source); })()), "request", [], "any", false, false, false, 18), "query", [], "any", false, false, false, 18), "get", ["sort"], "method", false, false, false, 18) == "prix_asc")) {
-            // line 19
+        // line 29
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 29, $this->source); })()), "request", [], "any", false, false, false, 29), "query", [], "any", false, false, false, 29), "get", ["sort"], "method", false, false, false, 29) == "prix_asc")) {
+            // line 30
             yield "                            Prix croissant
                         ";
         } else {
-            // line 21
+            // line 32
             yield "                            Prix décroissant
                         ";
         }
-        // line 23
+        // line 34
         yield "                    </button>
                     <ul class=\"dropdown-menu\">
                         <li><a class=\"dropdown-item ";
-        // line 25
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 25, $this->source); })()), "request", [], "any", false, false, false, 25), "query", [], "any", false, false, false, 25), "get", ["sort"], "method", false, false, false, 25) == "prix_desc")) {
+        // line 36
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 36, $this->source); })()), "request", [], "any", false, false, false, 36), "query", [], "any", false, false, false, 36), "get", ["sort"], "method", false, false, false, 36) == "prix_desc")) {
             yield "active";
         }
         yield "\" 
                               href=\"";
-        // line 26
+        // line 37
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index", ["sort" => "prix_desc"]);
         yield "\">Prix décroissant</a></li>
                         <li><a class=\"dropdown-item ";
-        // line 27
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 27, $this->source); })()), "request", [], "any", false, false, false, 27), "query", [], "any", false, false, false, 27), "get", ["sort"], "method", false, false, false, 27) == "prix_asc")) {
+        // line 38
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 38, $this->source); })()), "request", [], "any", false, false, false, 38), "query", [], "any", false, false, false, 38), "get", ["sort"], "method", false, false, false, 38) == "prix_asc")) {
             yield "active";
         }
         yield "\" 
                               href=\"";
-        // line 28
+        // line 39
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index", ["sort" => "prix_asc"]);
         yield "\">Prix croissant</a></li>
                     </ul>
                 </div>
-                <a href=\"";
-        // line 31
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_new");
-        yield "\" class=\"btn btn-primary px-4 py-2\">
-                    <i class=\"fas fa-plus me-2\"></i>Ajouter un produit
-                </a>
-            </div>
+                ";
+        // line 42
+        if ($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN")) {
+            // line 43
+            yield "                    <a href=\"";
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_new");
+            yield "\" class=\"btn btn-primary px-4 py-2\">
+                        <i class=\"fas fa-plus me-2\"></i>Ajouter un produit
+                    </a>
+                ";
+        }
+        // line 47
+        yield "            </div>
         </div>
     </div>
 </div>
@@ -164,116 +183,123 @@ class __TwigTemplate_86cbc2a65c83636bb5997bb00e4c1fe5 extends Template
             <h2 class=\"display-6 mb-5\">Nos Derniers Produits</h2>
         </div>
         
-        <div class=\"row g-4 justify-content-center\">
+        <div class=\"row g-4 justify-content-center\" id=\"productsContainer\">
             ";
-        // line 48
+        // line 61
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["produits"]) || array_key_exists("produits", $context) ? $context["produits"] : (function () { throw new RuntimeError('Variable "produits" does not exist.', 48, $this->source); })()));
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["produits"]) || array_key_exists("produits", $context) ? $context["produits"] : (function () { throw new RuntimeError('Variable "produits" does not exist.', 61, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["produit"]) {
-            // line 49
+            // line 62
             yield "            <div class=\"col-lg-4 col-md-6 wow fadeInUp\" data-wow-delay=\"0.1s\">
                 <div class=\"product-item bg-light rounded overflow-hidden h-100\">
                     <div class=\"position-relative overflow-hidden\" style=\"height: 250px;\">
                         ";
-            // line 52
-            if (CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "imageProduit", [], "any", false, false, false, 52)) {
-                // line 53
+            // line 65
+            if (CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "imageProduit", [], "any", false, false, false, 65)) {
+                // line 66
                 yield "                        <img class=\"img-fluid w-100 h-100\" src=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/produits/" . CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "imageProduit", [], "any", false, false, false, 53))), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/produits/" . CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "imageProduit", [], "any", false, false, false, 66))), "html", null, true);
                 yield "\" 
                              alt=\"";
-                // line 54
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "nomProduit", [], "any", false, false, false, 54), "html", null, true);
+                // line 67
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "nomProduit", [], "any", false, false, false, 67), "html", null, true);
                 yield "\" style=\"object-fit: cover;\">
                         ";
             } else {
-                // line 56
+                // line 69
                 yield "                        <div class=\"w-100 h-100 d-flex align-items-center justify-content-center bg-secondary\">
                             <i class=\"fas fa-image fa-4x text-white\"></i>
                         </div>
                         ";
             }
-            // line 60
+            // line 73
             yield "                        <div class=\"product-overlay\">
                             <a class=\"btn btn-square btn-primary rounded-circle mx-1\" 
                                href=\"";
-            // line 62
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_show", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 62)]), "html", null, true);
+            // line 75
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_show", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 75)]), "html", null, true);
             yield "\">
                                 <i class=\"fas fa-eye\"></i>
                             </a>
-                            <a class=\"btn btn-square btn-primary rounded-circle mx-1\" 
-                               href=\"";
-            // line 66
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_edit", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 66)]), "html", null, true);
-            yield "\">
-                                <i class=\"fas fa-edit\"></i>
-                            </a>
-                        </div>
+                            ";
+            // line 78
+            if ($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN")) {
+                // line 79
+                yield "                                <a class=\"btn btn-square btn-primary rounded-circle mx-1\" 
+                                   href=\"";
+                // line 80
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_edit", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 80)]), "html", null, true);
+                yield "\">
+                                    <i class=\"fas fa-edit\"></i>
+                                </a>
+                            ";
+            }
+            // line 84
+            yield "                        </div>
                     </div>
                     <div class=\"text-center p-4\">
                         <h5 class=\"mb-2\">";
-            // line 72
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "nomProduit", [], "any", false, false, false, 72), "html", null, true);
+            // line 87
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "nomProduit", [], "any", false, false, false, 87), "html", null, true);
             yield "</h5>
                         <span class=\"text-primary mb-0\">";
-            // line 73
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "prix", [], "any", false, false, false, 73), 2, ",", " "), "html", null, true);
+            // line 88
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "prix", [], "any", false, false, false, 88), 2, ",", " "), "html", null, true);
             yield " €</span>
                         <div class=\"mt-2\">
                             <span class=\"badge bg-";
-            // line 75
-            yield (((CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 75) > 10)) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 75) > 0)) ? ("warning text-dark") : ("danger"))));
+            // line 90
+            yield (((CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 90) > 10)) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 90) > 0)) ? ("warning text-dark") : ("danger"))));
             yield "\">
                                 Stock: ";
-            // line 76
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 76), "html", null, true);
+            // line 91
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 91), "html", null, true);
             yield "
                             </span>
                             <span class=\"badge bg-info ms-1\">";
-            // line 78
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "categorie", [], "any", false, false, false, 78), "html", null, true);
+            // line 93
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "categorie", [], "any", false, false, false, 93), "html", null, true);
             yield "</span>
                         </div>
                         <div class=\"d-flex justify-content-center mt-3\">
-    <a href=\"";
-            // line 81
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_show", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 81)]), "html", null, true);
-            yield "\" 
-       class=\"btn btn-outline-primary me-2\">
-        Voir détails
-    </a>
-    ";
-            // line 85
-            if ((CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 85) > 0)) {
-                // line 86
-                yield "        <form action=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_add", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 86)]), "html", null, true);
-                yield "\" method=\"post\">
-            <button type=\"submit\" class=\"btn btn-primary\">
-                <i class=\"fas fa-cart-plus me-1\"></i>Ajouter
-            </button>
-        </form>
-    ";
-            } else {
-                // line 92
-                yield "        <button class=\"btn btn-secondary\" disabled>
-            <i class=\"fas fa-cart-plus me-1\"></i>Indisponible
-        </button>
-    ";
-            }
+                            <a href=\"";
             // line 96
-            yield "</div>
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_show", ["id_produit" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 96)]), "html", null, true);
+            yield "\" 
+                               class=\"btn btn-outline-primary me-2\">
+                                Voir détails
+                            </a>
+                            ";
+            // line 100
+            if ((CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "stock", [], "any", false, false, false, 100) > 0)) {
+                // line 101
+                yield "                                <form action=\"";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_add", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["produit"], "idProduit", [], "any", false, false, false, 101)]), "html", null, true);
+                yield "\" method=\"post\">
+                                    <button type=\"submit\" class=\"btn btn-primary\">
+                                        <i class=\"fas fa-cart-plus me-1\"></i>Ajouter
+                                    </button>
+                                </form>
+                            ";
+            } else {
+                // line 107
+                yield "                                <button class=\"btn btn-secondary\" disabled>
+                                    <i class=\"fas fa-cart-plus me-1\"></i>Indisponible
+                                </button>
+                            ";
+            }
+            // line 111
+            yield "                        </div>
                     </div>
                 </div>
             </div>
             ";
             $context['_iterated'] = true;
         }
-        // line 100
+        // line 115
         if (!$context['_iterated']) {
-            // line 101
+            // line 116
             yield "            <div class=\"col-12 text-center\">
                 <div class=\"alert alert-info\">Aucun produit disponible pour le moment</div>
             </div>
@@ -282,10 +308,151 @@ class __TwigTemplate_86cbc2a65c83636bb5997bb00e4c1fe5 extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['produit'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 105
+        // line 120
         yield "        </div>
     </div>
 </div>
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    // line 125
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        // line 126
+        yield from $this->yieldParentBlock("javascripts", $context, $blocks);
+        yield "
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    const productsContainer = document.getElementById('productsContainer');
+    
+    // Vérifier si la reconnaissance vocale est disponible
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'fr-FR';
+        recognition.interimResults = false;
+        
+        recognition.onstart = function() {
+            voiceStatus.textContent = \"Écoute en cours... Parlez maintenant\";
+            voiceSearchBtn.innerHTML = '<i class=\"fas fa-microphone-slash\"></i>';
+            voiceSearchBtn.classList.add('btn-danger');
+            voiceSearchBtn.classList.remove('btn-outline-secondary');
+        };
+        
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            searchInput.value = transcript;
+            voiceStatus.textContent = \"Recherche vocale terminée\";
+            filterProducts(transcript);
+        };
+        
+        recognition.onerror = function(event) {
+            voiceStatus.textContent = \"Erreur: \" + event.error;
+            voiceSearchBtn.innerHTML = '<i class=\"fas fa-microphone\"></i>';
+            voiceSearchBtn.classList.remove('btn-danger');
+            voiceSearchBtn.classList.add('btn-outline-secondary');
+        };
+        
+        recognition.onend = function() {
+            voiceSearchBtn.innerHTML = '<i class=\"fas fa-microphone\"></i>';
+            voiceSearchBtn.classList.remove('btn-danger');
+            voiceSearchBtn.classList.add('btn-outline-secondary');
+        };
+        
+        voiceSearchBtn.addEventListener('click', function() {
+            try {
+                if (voiceSearchBtn.classList.contains('btn-danger')) {
+                    recognition.stop();
+                    return;
+                }
+                recognition.start();
+            } catch(e) {
+                voiceStatus.textContent = \"Erreur: \" + e.message;
+            }
+        });
+    } else {
+        voiceSearchBtn.disabled = true;
+        voiceStatus.textContent = \"La reconnaissance vocale n'est pas supportée par votre navigateur\";
+    }
+    
+    // Recherche manuelle
+    searchBtn.addEventListener('click', function() {
+        filterProducts(searchInput.value);
+    });
+    
+    // Recherche lors de la frappe (délai de 300ms)
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterProducts(this.value);
+        }, 300);
+    });
+    
+    // Fonction de filtrage des produits
+    function filterProducts(searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        
+        if (term === '') {
+            // Afficher tous les produits si la recherche est vide
+            document.querySelectorAll('.product-item').forEach(item => {
+                item.style.display = '';
+            });
+            return;
+        }
+        
+        let hasResults = false;
+        
+        document.querySelectorAll('.product-item').forEach(item => {
+            const productName = item.querySelector('h5').textContent.toLowerCase();
+            const productCategory = item.querySelector('.badge.bg-info').textContent.toLowerCase();
+            
+            if (productName.includes(term) || productCategory.includes(term)) {
+                item.style.display = '';
+                hasResults = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        // Afficher un message si aucun résultat
+        const noResultsAlert = document.querySelector('.alert-info');
+        if (!hasResults) {
+            if (!noResultsAlert) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'col-12 text-center';
+                alertDiv.innerHTML = '<div class=\"alert alert-warning\">Aucun produit ne correspond à votre recherche</div>';
+                productsContainer.appendChild(alertDiv);
+            }
+        } else if (noResultsAlert) {
+            noResultsAlert.remove();
+        }
+    }
+});
+</script>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -317,7 +484,7 @@ class __TwigTemplate_86cbc2a65c83636bb5997bb00e4c1fe5 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  286 => 105,  277 => 101,  275 => 100,  267 => 96,  261 => 92,  251 => 86,  249 => 85,  242 => 81,  236 => 78,  231 => 76,  227 => 75,  222 => 73,  218 => 72,  209 => 66,  202 => 62,  198 => 60,  192 => 56,  187 => 54,  182 => 53,  180 => 52,  175 => 49,  170 => 48,  150 => 31,  144 => 28,  138 => 27,  134 => 26,  128 => 25,  124 => 23,  120 => 21,  116 => 19,  114 => 18,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  339 => 126,  326 => 125,  312 => 120,  303 => 116,  301 => 115,  293 => 111,  287 => 107,  277 => 101,  275 => 100,  268 => 96,  262 => 93,  257 => 91,  253 => 90,  248 => 88,  244 => 87,  239 => 84,  232 => 80,  229 => 79,  227 => 78,  221 => 75,  217 => 73,  211 => 69,  206 => 67,  201 => 66,  199 => 65,  194 => 62,  189 => 61,  173 => 47,  165 => 43,  163 => 42,  157 => 39,  151 => 38,  147 => 37,  141 => 36,  137 => 34,  133 => 32,  129 => 30,  127 => 29,  110 => 14,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source

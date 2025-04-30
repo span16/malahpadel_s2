@@ -73,7 +73,7 @@ class __TwigTemplate_b09fb4e524cdb78101c10a0f07efb696 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Votre Panier - MALAH PADEL";
+        yield "Mon Panier - MALAH PADEL";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -98,43 +98,15 @@ class __TwigTemplate_b09fb4e524cdb78101c10a0f07efb696 extends Template
 
         // line 6
         yield "<div class=\"container py-5\">
-    <h1 class=\"mb-4\">Votre Panier 
-     ";
-        // line 8
-        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 8, $this->source); })()), "user", [], "any", false, false, false, 8)) {
-            // line 9
-            yield "                            <h2 class=\"mb-1\">👋 votre panier , ";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 9, $this->source); })()), "user", [], "any", false, false, false, 9), "prenom", [], "any", false, false, false, 9), "html", null, true);
-            yield " !</h2>
-                        ";
-        } else {
-            // line 11
-            yield "                            <h2 class=\"mb-1\">pour consulter votre panier veillez de vous connecter , Guest!</h2>
-                            <p>Please log in to access your personalized home page.</p>
-                        ";
-        }
-        // line 14
-        yield "        ";
-        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 14, $this->source); })())) > 0)) {
-            // line 15
-            yield "            <span class=\"badge bg-primary rounded-pill fs-6 align-middle\">
-                ";
-            // line 16
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::reduce($this->env, (isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 16, $this->source); })()), function ($__carry__, $__item__) use ($context, $macros) { $context["carry"] = $__carry__; $context["item"] = $__item__; return ((isset($context["carry"]) || array_key_exists("carry", $context) ? $context["carry"] : (function () { throw new RuntimeError('Variable "carry" does not exist.', 16, $this->source); })()) + CoreExtension::getAttribute($this->env, $this->source, (isset($context["item"]) || array_key_exists("item", $context) ? $context["item"] : (function () { throw new RuntimeError('Variable "item" does not exist.', 16, $this->source); })()), "quantite", [], "any", false, false, false, 16)); }, 0), "html", null, true);
-            yield " articles
-            </span>
-        ";
-        }
-        // line 19
-        yield "    </h1>
+    <h1 class=\"mb-4\">Votre Panier</h1>
     
     ";
-        // line 21
-        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 21, $this->source); })())) > 0)) {
-            // line 22
+        // line 9
+        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 9, $this->source); })())) > 0)) {
+            // line 10
             yield "        <div class=\"table-responsive\">
             <table class=\"table\">
-                <thead>
+                <thead class=\"table-light\">
                     <tr>
                         <th>Produit</th>
                         <th>Prix unitaire</th>
@@ -145,86 +117,81 @@ class __TwigTemplate_b09fb4e524cdb78101c10a0f07efb696 extends Template
                 </thead>
                 <tbody>
                     ";
-            // line 34
+            // line 22
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 34, $this->source); })()));
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 22, $this->source); })()));
             foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
-                // line 35
+                // line 23
                 yield "                        <tr>
                             <td>
                                 <div class=\"d-flex align-items-center\">
                                     ";
-                // line 38
-                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 38), "imageProduit", [], "any", false, false, false, 38)) {
-                    // line 39
+                // line 26
+                if (CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 26), "imageProduit", [], "any", false, false, false, 26)) {
+                    // line 27
                     yield "                                        <img src=\"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/produits/" . CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 39), "imageProduit", [], "any", false, false, false, 39))), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/produits/" . CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 27), "imageProduit", [], "any", false, false, false, 27))), "html", null, true);
                     yield "\" 
                                              alt=\"";
-                    // line 40
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 40), "nomProduit", [], "any", false, false, false, 40), "html", null, true);
+                    // line 28
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 28), "nomProduit", [], "any", false, false, false, 28), "html", null, true);
                     yield "\" 
                                              class=\"img-thumbnail me-3\" 
                                              style=\"width: 80px; height: 80px; object-fit: cover;\">
                                     ";
-                } else {
-                    // line 44
-                    yield "                                        <div class=\"img-thumbnail me-3 d-flex align-items-center justify-content-center\" 
-                                             style=\"width: 80px; height: 80px; background: #f8f9fa;\">
-                                            <i class=\"fas fa-image fa-2x text-muted\"></i>
-                                        </div>
-                                    ";
                 }
-                // line 49
+                // line 32
                 yield "                                    <div>
-                                        <h6 class=\"mb-0\">";
-                // line 50
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 50), "nomProduit", [], "any", false, false, false, 50), "html", null, true);
-                yield "</h6>
-                                        <small class=\"text-muted\">";
-                // line 51
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 51), "categorie", [], "any", false, false, false, 51), "html", null, true);
-                yield "</small>
+                                        <h5 class=\"mb-1\">";
+                // line 33
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 33), "nomProduit", [], "any", false, false, false, 33), "html", null, true);
+                yield "</h5>
+                                        <span class=\"badge bg-";
+                // line 34
+                yield (((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 34), "stock", [], "any", false, false, false, 34) > 10)) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 34), "stock", [], "any", false, false, false, 34) > 0)) ? ("warning text-dark") : ("danger"))));
+                yield "\">
+                                            Stock: ";
+                // line 35
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 35), "stock", [], "any", false, false, false, 35), "html", null, true);
+                yield "
+                                        </span>
                                     </div>
                                 </div>
                             </td>
                             <td>";
-                // line 55
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 55), "prix", [], "any", false, false, false, 55), 2, ",", " "), "html", null, true);
+                // line 40
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 40), "prix", [], "any", false, false, false, 40), 2, ",", " "), "html", null, true);
                 yield " €</td>
                             <td>
                                 <div class=\"d-flex align-items-center\">
-                                    <a href=\"";
-                // line 58
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_remove", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 58), "idProduit", [], "any", false, false, false, 58)]), "html", null, true);
-                yield "\" 
-                                       class=\"btn btn-sm btn-outline-secondary\">
-                                        <i class=\"fas fa-minus\"></i>
-                                    </a>
                                     <span class=\"mx-2\">";
-                // line 62
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "quantite", [], "any", false, false, false, 62), "html", null, true);
+                // line 43
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "quantite", [], "any", false, false, false, 43), "html", null, true);
                 yield "</span>
-                                    <a href=\"";
-                // line 63
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_add", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 63), "idProduit", [], "any", false, false, false, 63)]), "html", null, true);
+                                    <div class=\"btn-group btn-group-sm\">
+                                        <a href=\"";
+                // line 45
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_remove", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 45), "idProduit", [], "any", false, false, false, 45)]), "html", null, true);
                 yield "\" 
-                                       class=\"btn btn-sm btn-outline-secondary\">
-                                        <i class=\"fas fa-plus\"></i>
-                                    </a>
+                                           class=\"btn btn-outline-secondary\">-</a>
+                                        <a href=\"";
+                // line 47
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_add", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 47), "idProduit", [], "any", false, false, false, 47)]), "html", null, true);
+                yield "\" 
+                                           class=\"btn btn-outline-secondary\">+</a>
+                                    </div>
                                 </div>
                             </td>
                             <td>";
-                // line 69
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "sousTotal", [], "any", false, false, false, 69), 2, ",", " "), "html", null, true);
+                // line 52
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "sousTotal", [], "any", false, false, false, 52), 2, ",", " "), "html", null, true);
                 yield " €</td>
                             <td>
                                 <a href=\"";
-                // line 71
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_remove_all", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 71), "idProduit", [], "any", false, false, false, 71)]), "html", null, true);
+                // line 54
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_remove_all", ["id" => CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["item"], "produit", [], "any", false, false, false, 54), "idProduit", [], "any", false, false, false, 54)]), "html", null, true);
                 yield "\" 
-                                   class=\"btn btn-danger btn-sm\"
-                                   title=\"Supprimer du panier\">
+                                   class=\"btn btn-danger btn-sm\">
                                     <i class=\"fas fa-trash\"></i>
                                 </a>
                             </td>
@@ -234,36 +201,36 @@ class __TwigTemplate_b09fb4e524cdb78101c10a0f07efb696 extends Template
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_key'], $context['item'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 79
+            // line 61
             yield "                </tbody>
                 <tfoot>
-                    <tr class=\"fw-bold\">
-                        <td colspan=\"3\" class=\"text-end\">Total :</td>
-                        <td colspan=\"2\">";
-            // line 83
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber((isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 83, $this->source); })()), 2, ",", " "), "html", null, true);
+                    <tr>
+                        <td colspan=\"3\" class=\"text-end fw-bold\">Total :</td>
+                        <td colspan=\"2\" class=\"fw-bold\">";
+            // line 65
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber((isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 65, $this->source); })()), 2, ",", " "), "html", null, true);
             yield " €</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
-        
+
         <div class=\"d-flex justify-content-between mt-4\">
             <a href=\"";
-            // line 90
-            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index");
-            yield "\" class=\"btn btn-outline-primary\">
-                <i class=\"fas fa-arrow-left me-1\"></i> Continuer mes achats
+            // line 72
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_clear");
+            yield "\" class=\"btn btn-outline-danger\">
+                <i class=\"fas fa-trash me-1\"></i> Vider le panier
             </a>
             <div>
                 <a href=\"";
-            // line 94
-            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_panier_clear");
-            yield "\" class=\"btn btn-outline-danger me-2\">
-                    <i class=\"fas fa-trash-alt me-1\"></i> Vider le panier
+            // line 76
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index");
+            yield "\" class=\"btn btn-outline-primary me-2\">
+                    <i class=\"fas fa-arrow-left me-1\"></i> Continuer mes achats
                 </a>
                 <a href=\"";
-            // line 97
+            // line 79
             yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_checkout");
             yield "\" class=\"btn btn-primary\">
                     <i class=\"fas fa-credit-card me-1\"></i> Passer la commande
@@ -272,23 +239,19 @@ class __TwigTemplate_b09fb4e524cdb78101c10a0f07efb696 extends Template
         </div>
     ";
         } else {
-            // line 103
-            yield "        <div class=\"alert alert-info text-center py-5\">
-            <div class=\"py-3\">
-                <i class=\"fas fa-shopping-cart fa-4x text-muted mb-4\"></i>
-                <h4 class=\"alert-heading\">Votre panier est vide</h4>
-                <p class=\"mb-4\">Vous n'avez aucun article dans votre panier.</p>
-                <a href=\"";
-            // line 108
-            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index");
-            yield "\" class=\"btn btn-primary px-4\">
-                    <i class=\"fas fa-store me-2\"></i> Découvrez nos produits
-                </a>
-            </div>
+            // line 85
+            yield "        <div class=\"alert alert-info\">
+            Votre panier est vide
         </div>
+        <a href=\"";
+            // line 88
+            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index");
+            yield "\" class=\"btn btn-primary\">
+            <i class=\"fas fa-arrow-left me-1\"></i> Retour à la boutique
+        </a>
     ";
         }
-        // line 114
+        // line 92
         yield "</div>
 ";
         
@@ -321,7 +284,7 @@ class __TwigTemplate_b09fb4e524cdb78101c10a0f07efb696 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  292 => 114,  283 => 108,  276 => 103,  267 => 97,  261 => 94,  254 => 90,  244 => 83,  238 => 79,  224 => 71,  219 => 69,  210 => 63,  206 => 62,  199 => 58,  193 => 55,  186 => 51,  182 => 50,  179 => 49,  172 => 44,  165 => 40,  160 => 39,  158 => 38,  153 => 35,  149 => 34,  135 => 22,  133 => 21,  129 => 19,  123 => 16,  120 => 15,  117 => 14,  112 => 11,  106 => 9,  104 => 8,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  255 => 92,  248 => 88,  243 => 85,  234 => 79,  228 => 76,  221 => 72,  211 => 65,  205 => 61,  192 => 54,  187 => 52,  179 => 47,  174 => 45,  169 => 43,  163 => 40,  155 => 35,  151 => 34,  147 => 33,  144 => 32,  137 => 28,  132 => 27,  130 => 26,  125 => 23,  121 => 22,  107 => 10,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source

@@ -10,6 +10,17 @@
             <div class="col-lg-6">
                 <h1 class="display-4 mb-3 animated slideInDown">Nos Produits</h1>
                 <p class="animated slideInDown">Découvrez notre sélection exclusive d'équipements de padel</p>
+                {# Barre de recherche avec reconnaissance vocale #}
+                <div class="input-group mb-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un produit...">
+                    <button class="btn btn-outline-secondary" type="button" id="voiceSearchBtn">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="btn btn-primary" type="button" id="searchBtn">
+                        <i class="fas fa-search"></i> Rechercher
+                    </button>
+                </div>
+                <div id="voiceStatus" class="text-muted small"></div>
             </div>
             <div class="col-lg-6 text-end">
                 <div class="btn-group me-3">
@@ -46,7 +57,7 @@
             <h2 class="display-6 mb-5">Nos Derniers Produits</h2>
         </div>
         
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4 justify-content-center" id="productsContainer">
             {% for produit in produits %}
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="product-item bg-light rounded overflow-hidden h-100">
@@ -109,4 +120,123 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    const productsContainer = document.getElementById('productsContainer');
+    
+    // Vérifier si la reconnaissance vocale est disponible
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'fr-FR';
+        recognition.interimResults = false;
+        
+        recognition.onstart = function() {
+            voiceStatus.textContent = "Écoute en cours... Parlez maintenant";
+            voiceSearchBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+            voiceSearchBtn.classList.add('btn-danger');
+            voiceSearchBtn.classList.remove('btn-outline-secondary');
+        };
+        
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            searchInput.value = transcript;
+            voiceStatus.textContent = "Recherche vocale terminée";
+            filterProducts(transcript);
+        };
+        
+        recognition.onerror = function(event) {
+            voiceStatus.textContent = "Erreur: " + event.error;
+            voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            voiceSearchBtn.classList.remove('btn-danger');
+            voiceSearchBtn.classList.add('btn-outline-secondary');
+        };
+        
+        recognition.onend = function() {
+            voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            voiceSearchBtn.classList.remove('btn-danger');
+            voiceSearchBtn.classList.add('btn-outline-secondary');
+        };
+        
+        voiceSearchBtn.addEventListener('click', function() {
+            try {
+                if (voiceSearchBtn.classList.contains('btn-danger')) {
+                    recognition.stop();
+                    return;
+                }
+                recognition.start();
+            } catch(e) {
+                voiceStatus.textContent = "Erreur: " + e.message;
+            }
+        });
+    } else {
+        voiceSearchBtn.disabled = true;
+        voiceStatus.textContent = "La reconnaissance vocale n'est pas supportée par votre navigateur";
+    }
+    
+    // Recherche manuelle
+    searchBtn.addEventListener('click', function() {
+        filterProducts(searchInput.value);
+    });
+    
+    // Recherche lors de la frappe (délai de 300ms)
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterProducts(this.value);
+        }, 300);
+    });
+    
+    // Fonction de filtrage des produits
+    function filterProducts(searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        
+        if (term === '') {
+            // Afficher tous les produits si la recherche est vide
+            document.querySelectorAll('.product-item').forEach(item => {
+                item.style.display = '';
+            });
+            return;
+        }
+        
+        let hasResults = false;
+        
+        document.querySelectorAll('.product-item').forEach(item => {
+            const productName = item.querySelector('h5').textContent.toLowerCase();
+            const productCategory = item.querySelector('.badge.bg-info').textContent.toLowerCase();
+            
+            if (productName.includes(term) || productCategory.includes(term)) {
+                item.style.display = '';
+                hasResults = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        // Afficher un message si aucun résultat
+        const noResultsAlert = document.querySelector('.alert-info');
+        if (!hasResults) {
+            if (!noResultsAlert) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'col-12 text-center';
+                alertDiv.innerHTML = '<div class="alert alert-warning">Aucun produit ne correspond à votre recherche</div>';
+                productsContainer.appendChild(alertDiv);
+            }
+        } else if (noResultsAlert) {
+            noResultsAlert.remove();
+        }
+    }
+});
+</script>
 {% endblock %}
