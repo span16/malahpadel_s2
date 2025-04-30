@@ -158,19 +158,15 @@ class __TwigTemplate_86cbc2a65c83636bb5997bb00e4c1fe5 extends Template
         yield "\">Prix croissant</a></li>
                     </ul>
                 </div>
-                ";
-        // line 42
-        if ($this->extensions['Symfony\Bridge\Twig\Extension\SecurityExtension']->isGranted("ROLE_ADMIN")) {
-            // line 43
-            yield "                    <a href=\"";
-            yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_new");
-            yield "\" class=\"btn btn-primary px-4 py-2\">
+                
+                    <a href=\"";
+        // line 43
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_new");
+        yield "\" class=\"btn btn-primary px-4 py-2\">
                         <i class=\"fas fa-plus me-2\"></i>Ajouter un produit
                     </a>
-                ";
-        }
-        // line 47
-        yield "            </div>
+              
+            </div>
         </div>
     </div>
 </div>
@@ -484,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     public function getDebugInfo(): array
     {
-        return array (  339 => 126,  326 => 125,  312 => 120,  303 => 116,  301 => 115,  293 => 111,  287 => 107,  277 => 101,  275 => 100,  268 => 96,  262 => 93,  257 => 91,  253 => 90,  248 => 88,  244 => 87,  239 => 84,  232 => 80,  229 => 79,  227 => 78,  221 => 75,  217 => 73,  211 => 69,  206 => 67,  201 => 66,  199 => 65,  194 => 62,  189 => 61,  173 => 47,  165 => 43,  163 => 42,  157 => 39,  151 => 38,  147 => 37,  141 => 36,  137 => 34,  133 => 32,  129 => 30,  127 => 29,  110 => 14,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  335 => 126,  322 => 125,  308 => 120,  299 => 116,  297 => 115,  289 => 111,  283 => 107,  273 => 101,  271 => 100,  264 => 96,  258 => 93,  253 => 91,  249 => 90,  244 => 88,  240 => 87,  235 => 84,  228 => 80,  225 => 79,  223 => 78,  217 => 75,  213 => 73,  207 => 69,  202 => 67,  197 => 66,  195 => 65,  190 => 62,  185 => 61,  164 => 43,  157 => 39,  151 => 38,  147 => 37,  141 => 36,  137 => 34,  133 => 32,  129 => 30,  127 => 29,  110 => 14,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
