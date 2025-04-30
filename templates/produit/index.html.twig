@@ -21,6 +21,15 @@
                     </button>
                 </div>
                 <div id="voiceStatus" class="text-muted small"></div>
+                
+                {# Slider de prix - Nouveau #}
+                <div class="mt-4">
+                    <h5 class="mb-3">Filtrer par prix</h5>
+                    <div class="d-flex align-items-center">
+                        <input type="range" class="form-range w-50" id="priceRange" min="0" max="500" step="10" value="500">
+                        <span class="ms-3 badge bg-primary" id="priceValue">Jusqu'à 500 €</span>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-6 text-end">
                 <div class="btn-group me-3">
@@ -40,10 +49,9 @@
                     </ul>
                 </div>
                 
-                    <a href="{{ path('app_produit_new') }}" class="btn btn-primary px-4 py-2">
-                        <i class="fas fa-plus me-2"></i>Ajouter un produit
-                    </a>
-              
+                <a href="{{ path('app_produit_new') }}" class="btn btn-primary px-4 py-2">
+                    <i class="fas fa-plus me-2"></i>Ajouter un produit
+                </a>
             </div>
         </div>
     </div>
@@ -59,7 +67,7 @@
         
         <div class="row g-4 justify-content-center" id="productsContainer">
             {% for produit in produits %}
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" data-price="{{ produit.prix }}">
                 <div class="product-item bg-light rounded overflow-hidden h-100">
                     <div class="position-relative overflow-hidden" style="height: 250px;">
                         {% if produit.imageProduit %}
@@ -126,39 +134,62 @@
 {{ parent() }}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Éléments existants
     const voiceSearchBtn = document.getElementById('voiceSearchBtn');
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     const voiceStatus = document.getElementById('voiceStatus');
     const productsContainer = document.getElementById('productsContainer');
     
-    // Vérifier si la reconnaissance vocale est disponible
+    // Nouveaux éléments pour le slider de prix
+    const priceRange = document.getElementById('priceRange');
+    const priceValue = document.getElementById('priceValue');
+    
+    // Initialisation du prix max
+    const maxPrice = 500; // Vous pouvez calculer cela dynamiquement avec Math.max(...products.map(p => p.prix))
+    priceRange.max = maxPrice;
+    priceRange.value = maxPrice;
+    
+    // Gestion du slider de prix
+    priceRange.addEventListener('input', function() {
+        const selectedPrice = parseInt(this.value);
+        priceValue.textContent = `Jusqu'à ${selectedPrice} €`;
+        filterProductsByPrice(selectedPrice);
+    });
+    
+    // Fonction de filtrage par prix
+    function filterProductsByPrice(maxPrice) {
+        document.querySelectorAll('.product-item').forEach(item => {
+            const productPrice = parseFloat(item.closest('[data-price]').dataset.price);
+            item.style.display = productPrice <= maxPrice ? '' : 'none';
+        });
+    }
+    
+    // Reconnaissance vocale existante
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
     
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'fr-FR';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'fr-FR';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
 
-    // Empêche l'ajout de ponctuation (spécifique à Webkit/Chrome)
-    if ('webkitSpeechRecognition' in window) {
-        try {
-            recognition.grammars = new SpeechGrammarList();
-        } catch(e) {
-            console.log("Grammars not supported");
+        if ('webkitSpeechRecognition' in window) {
+            try {
+                recognition.grammars = new SpeechGrammarList();
+            } catch(e) {
+                console.log("Grammars not supported");
+            }
         }
-    }
 
-    recognition.onresult = function(event) {
-        let transcript = event.results[0][0].transcript
-                        .trim()
-                        .replace(/\.$/, ''); // Supprime le point final avec une regex
-                        
-        searchInput.value = transcript;
-        filterProducts(transcript);
-    };
+        recognition.onresult = function(event) {
+            let transcript = event.results[0][0].transcript
+                            .trim()
+                            .replace(/\.$/, '');
+            searchInput.value = transcript;
+            filterProducts(transcript);
+        };
 
         recognition.onerror = function(event) {
             voiceStatus.textContent = "Erreur: " + event.error;
@@ -203,25 +234,24 @@ if (SpeechRecognition) {
         }, 300);
     });
     
-    // Fonction de filtrage des produits
+    // Fonction de filtrage combinée (texte + prix)
     function filterProducts(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
-        
-        if (term === '') {
-            // Afficher tous les produits si la recherche est vide
-            document.querySelectorAll('.product-item').forEach(item => {
-                item.style.display = '';
-            });
-            return;
-        }
+        const maxPrice = parseInt(priceRange.value);
         
         let hasResults = false;
         
         document.querySelectorAll('.product-item').forEach(item => {
             const productName = item.querySelector('h5').textContent.toLowerCase();
             const productCategory = item.querySelector('.badge.bg-info').textContent.toLowerCase();
+            const productPrice = parseFloat(item.closest('[data-price]').dataset.price);
             
-            if (productName.includes(term) || productCategory.includes(term)) {
+            const textMatch = term === '' || 
+                            productName.includes(term) || 
+                            productCategory.includes(term);
+            const priceMatch = productPrice <= maxPrice;
+            
+            if (textMatch && priceMatch) {
                 item.style.display = '';
                 hasResults = true;
             } else {
@@ -229,13 +259,13 @@ if (SpeechRecognition) {
             }
         });
         
-        // Afficher un message si aucun résultat
+        // Gestion des messages "Aucun résultat"
         const noResultsAlert = document.querySelector('.alert-info');
         if (!hasResults) {
             if (!noResultsAlert) {
                 const alertDiv = document.createElement('div');
                 alertDiv.className = 'col-12 text-center';
-                alertDiv.innerHTML = '<div class="alert alert-warning">Aucun produit ne correspond à votre recherche</div>';
+                alertDiv.innerHTML = '<div class="alert alert-warning">Aucun produit ne correspond à vos critères</div>';
                 productsContainer.appendChild(alertDiv);
             }
         } else if (noResultsAlert) {
