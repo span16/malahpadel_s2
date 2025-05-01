@@ -229,12 +229,12 @@ class __TwigTemplate_f46cda4d33f54697de98be3bcd9a235b extends Template
             yield "\" class=\"btn btn-outline-primary me-2\">
                     <i class=\"fas fa-arrow-left me-1\"></i> Continuer mes achats
                 </a>
-                <a href=\"";
+              <a href=\"";
             // line 79
             yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_checkout");
             yield "\" class=\"btn btn-primary\">
-                    <i class=\"fas fa-credit-card me-1\"></i> Passer la commande
-                </a>
+    <i class=\"fas fa-credit-card me-1\"></i> Passer la commande
+</a>
             </div>
         </div>
     ";

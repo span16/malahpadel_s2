@@ -1,23 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Checkout - MALAH PADEL{% endblock %}
+{% block title %}Paiement - MALAH PADEL{% endblock %}
 
 {% block body %}
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow">
+    <h1 class="mb-4">Finaliser la commande</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="h4 mb-0">Commande confirmée</h2>
+                    <h5 class="mb-0">Récapitulatif de la commande</h5>
                 </div>
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-check-circle text-success fa-5x mb-4"></i>
-                    <h3 class="mb-3">Merci pour votre commande!</h3>
-                    <p class="lead">Votre commande a été enregistrée avec succès.</p>
-                    <p>Un email de confirmation vous a été envoyé.</p>
-                    <a href="{{ path('app_produit_index') }}" class="btn btn-primary mt-3">
-                        <i class="fas fa-arrow-left me-1"></i> Retour à la boutique
-                    </a>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for item in items %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>{{ item.nom_produit }} × {{ item.quantite }}</span>
+                                <span>{{ item.sous_total|number_format(2, ',', ' ') }} €</span>
+                            </li>
+                        {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between fw-bold">
+                            <span>Total</span>
+                            <span>{{ total|number_format(2, ',', ' ') }} €</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Paiement sécurisé</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Nous acceptons les paiements par carte bancaire via Stripe.</p>
+                    
+                    <form action="{{ path('app_checkout_payment') }}" method="POST">
+                        <button type="submit" class="btn btn-primary w-100 py-3">
+                            <i class="fas fa-credit-card me-2"></i> Payer {{ total|number_format(2, ',', ' ') }} €
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

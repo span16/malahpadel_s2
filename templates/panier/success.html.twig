@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande confirmée - MALAH PADEL{% endblock %}
+
+{% block body %}
+<div class="container py-5 text-center">
+    <h1 class="mb-4">Commande confirmée</h1>
+    
+    <div class="card p-5" style="max-width: 600px; margin: 0 auto;">
+        <i class="fas fa-check-circle text-success mb-4" style="font-size: 5rem;"></i>
+        <h3>Merci pour votre commande!</h3>
+        
+        <p class="my-4">Votre paiement a été accepté et votre commande a été enregistrée.</p>
+        <p class="mb-4">Un email de confirmation vous a été envoyé.</p>
+        
+        <a href="{{ path('app_produit_index') }}" class="btn btn-primary">
+            Retour à la boutique
+        </a>
+    </div>
+</div>
+{% endblock %}

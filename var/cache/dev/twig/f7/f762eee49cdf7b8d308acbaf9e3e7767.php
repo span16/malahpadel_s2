@@ -73,7 +73,7 @@ class __TwigTemplate_c70d8f42f2b6c2d7155168f9b86130d0 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Checkout - MALAH PADEL";
+        yield "Paiement - MALAH PADEL";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -98,23 +98,71 @@ class __TwigTemplate_c70d8f42f2b6c2d7155168f9b86130d0 extends Template
 
         // line 6
         yield "<div class=\"container py-5\">
-    <div class=\"row justify-content-center\">
-        <div class=\"col-lg-8\">
-            <div class=\"card shadow\">
+    <h1 class=\"mb-4\">Finaliser la commande</h1>
+    
+    <div class=\"row\">
+        <div class=\"col-md-8\">
+            <div class=\"card mb-4\">
                 <div class=\"card-header bg-primary text-white\">
-                    <h2 class=\"h4 mb-0\">Commande confirmée</h2>
+                    <h5 class=\"mb-0\">Récapitulatif de la commande</h5>
                 </div>
-                <div class=\"card-body text-center py-5\">
-                    <i class=\"fas fa-check-circle text-success fa-5x mb-4\"></i>
-                    <h3 class=\"mb-3\">Merci pour votre commande!</h3>
-                    <p class=\"lead\">Votre commande a été enregistrée avec succès.</p>
-                    <p>Un email de confirmation vous a été envoyé.</p>
-                    <a href=\"";
-        // line 18
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_produit_index");
-        yield "\" class=\"btn btn-primary mt-3\">
-                        <i class=\"fas fa-arrow-left me-1\"></i> Retour à la boutique
-                    </a>
+                <div class=\"card-body\">
+                    <ul class=\"list-group list-group-flush\">
+                        ";
+        // line 17
+        $context['_parent'] = $context;
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["items"]) || array_key_exists("items", $context) ? $context["items"] : (function () { throw new RuntimeError('Variable "items" does not exist.', 17, $this->source); })()));
+        foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
+            // line 18
+            yield "                            <li class=\"list-group-item d-flex justify-content-between\">
+                                <span>";
+            // line 19
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "nom_produit", [], "any", false, false, false, 19), "html", null, true);
+            yield " × ";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "quantite", [], "any", false, false, false, 19), "html", null, true);
+            yield "</span>
+                                <span>";
+            // line 20
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber(CoreExtension::getAttribute($this->env, $this->source, $context["item"], "sous_total", [], "any", false, false, false, 20), 2, ",", " "), "html", null, true);
+            yield " €</span>
+                            </li>
+                        ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_key'], $context['item'], $context['_parent']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        // line 23
+        yield "                        <li class=\"list-group-item d-flex justify-content-between fw-bold\">
+                            <span>Total</span>
+                            <span>";
+        // line 25
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber((isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 25, $this->source); })()), 2, ",", " "), "html", null, true);
+        yield " €</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class=\"col-md-4\">
+            <div class=\"card\">
+                <div class=\"card-header bg-primary text-white\">
+                    <h5 class=\"mb-0\">Paiement sécurisé</h5>
+                </div>
+                <div class=\"card-body\">
+                    <p class=\"text-muted\">Nous acceptons les paiements par carte bancaire via Stripe.</p>
+                    
+                    <form action=\"";
+        // line 40
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_checkout_payment");
+        yield "\" method=\"POST\">
+                        <button type=\"submit\" class=\"btn btn-primary w-100 py-3\">
+                            <i class=\"fas fa-credit-card me-2\"></i> Payer ";
+        // line 42
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatNumber((isset($context["total"]) || array_key_exists("total", $context) ? $context["total"] : (function () { throw new RuntimeError('Variable "total" does not exist.', 42, $this->source); })()), 2, ",", " "), "html", null, true);
+        yield " €
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -151,7 +199,7 @@ class __TwigTemplate_c70d8f42f2b6c2d7155168f9b86130d0 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  114 => 18,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  162 => 42,  157 => 40,  139 => 25,  135 => 23,  126 => 20,  120 => 19,  117 => 18,  113 => 17,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
