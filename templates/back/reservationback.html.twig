@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('vendors/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <style>
         /* ========== GENERAL STYLES ========== */
         body {
@@ -130,6 +131,9 @@
             font-size: 0.75rem;
             border-radius: 4px;
         }
+        .badge-confirmed { background-color: #28a745; }
+        .badge-pending { background-color: #ffc107; color: #212529; }
+        .badge-cancelled { background-color: #dc3545; }
         
         /* ========== RESPONSIVE ADJUSTMENTS ========== */
         @media (max-width: 992px) {
@@ -172,19 +176,54 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Statistiques modal */
+        .stats-modal .modal-dialog {
+            max-width: 800px;
+        }
+        .stats-modal .chart-container {
+            height: 400px;
+            width: 100%;
+        }
+        
+        /* Pagination */
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
 <div class="row">
-    {% if form is defined and form is not null %}
+    {% if form is defined and form is not null and (show_list is not defined or not show_list) %}
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <!-- Form Header -->
                 <div class="form-header">
-                    <h1 class="form-main-title">Nouvelle réservation</h1>
-                    <p class="form-sub-title">Réserver vos places pour l'événement</p>
+                    <h1 class="form-main-title">{{ form_title|default('Nouvelle réservation') }}</h1>
+                    <p class="form-sub-title">{% if reservation is defined and reservation.id %}Modifier la réservation #{{ reservation.id }}{% else %}Créer une nouvelle réservation{% endif %}</p>
                 </div>
                 
                 <!-- Form + Image Container -->
@@ -275,19 +314,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Terms and Conditions -->
-                                <div class="col-12">
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" id="conditions" required>
-                                        <label class="form-check-label" for="conditions">
-                                            J'accepte les <a href="#" class="text-primary">conditions générales</a> *
-                                        </label>
-                                        <div class="invalid-feedback">
-                                            Vous devez accepter les conditions générales
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- Buttons -->
                                 <div class="col-12">
                                     <button class="btn btn-primary me-2" type="submit">
@@ -315,112 +341,206 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
+                <!-- Formulaire de filtrage -->
+                <form id="filterForm" method="get" action="{{ path('admin_reservation_index') }}" class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="nom" class="form-label">Nom événement</label>
+                            <input type="text" name="nom" id="nom" class="form-control" 
+                                   value="{{ filters.nom|default('') }}" placeholder="Filtrer par nom">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="type" class="form-label">Type</label>
+                            <select name="type" id="type" class="form-select">
+                                <option value="">Tous les types</option>
+                                {% for type in types %}
+                                    <option value="{{ type }}" {{ filters.type|default('') == type ? 'selected' : '' }}>
+                                        {{ type }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="places_min" class="form-label">Places min</label>
+                            <input type="number" name="places_min" id="places_min" class="form-control" 
+                                   value="{{ filters.places_min|default('') }}" placeholder="Min" min="1">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="places_max" class="form-label">Places max</label>
+                            <input type="number" name="places_max" id="places_max" class="form-control" 
+                                   value="{{ filters.places_max|default('') }}" placeholder="Max" min="1">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="code" class="form-label">Code</label>
+                            <input type="text" name="code" id="code" class="form-control" 
+                                   value="{{ filters.code|default('') }}" placeholder="Code confirmation">
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="fas fa-filter me-1"></i> Filtrer
+                            </button>
+                            <a href="{{ path('admin_reservation_index') }}" class="btn btn-light">
+                                <i class="fas fa-times me-1"></i> Réinitialiser
+                            </a>
+                            <button type="button" id="exportBtn" class="btn btn-success ms-2">
+                                <i class="fas fa-file-export me-1"></i> Exporter
+                                <span class="export-spinner"></span>
+                            </button>
+                            <button type="button" class="btn btn-info ms-2" data-bs-toggle="modal" data-bs-target="#statsModal">
+                                <i class="fas fa-chart-pie me-1"></i> Statistiques
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="card-title mb-0">Liste des réservations ({{ total_reservations }})</h4>
+                    <h4 class="card-title mb-0">Liste des réservations (<span id="totalReservations">{{ total_reservations }}</span>)</h4>
                     <div class="d-flex">
-                        <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Rechercher..." style="width: 200px; margin-right: 10px;">
-                        <button class="btn btn-primary btn-sm" id="exportBtn">
-                            <i class="fas fa-file-export me-1"></i> Exporter
-                            <span class="export-spinner"></span>
-                        </button>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Recherche rapide...">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="table-responsive">
-                    <table class="table table-striped" id="reservationsTable">
-                        <thead class="table-dark">
-                            <tr>
-                                <th class="text-center">ID</th>
-                                <th>Événement</th>
-                                <th class="text-center">Type</th>
-                                <th class="text-center">Places</th>
-                                <th>Remarque</th>
-                                <th class="text-center">Code</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for reservation in reservations %}
-                            <tr>
-                                <td class="text-center">{{ reservation.id }}</td>
-                                <td>{{ reservation.nom }}</td>
-                                <td class="text-center">
-                                    <span class="badge 
-                                        {% if reservation.typeReservation == 'tournoi' %}bg-success
-                                        {% elseif reservation.typeReservation == 'groupe' %}bg-info
-                                        {% elseif reservation.typeReservation == 'simple' %}bg-primary
-                                        {% else %}bg-secondary
-                                        {% endif %}">
-                                        {{ reservation.typeReservation }}
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge bg-warning text-dark">{{ reservation.nombrePlaces }}</span>
-                                </td>
-                                <td>
-                                    {% if reservation.remarque %}
-                                        <span class="text-truncate" title="{{ reservation.remarque }}">
-                                            {{ reservation.remarque|length > 30 ? reservation.remarque|slice(0, 30) ~ '...' : reservation.remarque }}
-                                        </span>
-                                    {% else %}
-                                        <span class="text-muted">Aucune remarque</span>
-                                    {% endif %}
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge bg-light text-dark">{{ reservation.codeConfirmation }}</span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="action-buttons">
-                                        <a href="{{ path('admin_reservation_edit', {'id': reservation.id}) }}" 
-                                           class="btn btn-sm btn-outline-primary"
-                                           title="Modifier">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form method="post" 
-                                              action="{{ path('admin_reservation_delete', {'id': reservation.id}) }}" 
-                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation?');"
-                                              class="d-inline">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
-                                            <button class="btn btn-sm btn-outline-danger" title="Supprimer">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="7" class="text-center text-muted py-4">Aucune réservation trouvée</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <table class="table table-bordered table-hover" id="dataTable">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Événement</th>
+            <th>Type</th>
+            <th>Places</th>
+            <th>Prix</th>
+            <th>Code</th> {# Ajout de la colonne Code #}
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.nom }}</td>
+                <td>{{ reservation.typeReservation }}</td>
+                <td>{{ reservation.nombrePlaces }}</td>
+                <td>{{ reservation.prix }} €</td>
+                <td>{{ reservation.codeConfirmation }}</td> {# Affichage du code #}
+                <td>
+                    <span class="badge 
+                        {% if reservation.status == 'confirmé' %}badge-success
+                        {% elseif reservation.status == 'annulé' %}badge-danger
+                        {% elseif reservation.status == 'refusé' %}badge-secondary
+                        {% else %}badge-warning{% endif %}">
+                        {{ reservation.status }}
+                    </span>
+                </td>
+                <td class="action-buttons">
+    {% if reservation.id is defined %}
+       
+    {% else %}
+        <span class="text-danger small">ID manquant</span>
+    {% endif %}
+    
+    <a href="{{ path('admin_reservation_edit', {'id': reservation.id}) }}" 
+       class="btn btn-warning btn-sm" 
+       title="Modifier">
+        <i class="fas fa-edit me-1"></i> Modifier
+    </a>
+    
+    <form method="post" action="{{ path('admin_reservation_delete', {'id': reservation.id}) }}" class="d-inline">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+        <button class="btn btn-danger btn-sm" 
+                title="Supprimer" 
+                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')">
+            <i class="fas fa-trash me-1"></i> Supprimer
+        </button>
+    </form>
+</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8" class="text-center">Aucune réservation trouvée</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
                 </div>
-                
-                {% if reservations|length > 0 %}
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="text-muted">
-                        Affichage de <b>{{ reservations|length }}</b> réservation(s) sur <b>{{ total_reservations }}</b>
+
+                <!-- Pagination -->
+                {% if reservations is not empty %}
+                    <div class="navigation mt-4">
+                        {{ knp_pagination_render(reservations) }}
                     </div>
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Précédent</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Suivant</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
                 {% endif %}
             </div>
         </div>
     </div>
     {% endif %}
+</div>
+
+<!-- Modal pour les statistiques -->
+<div class="modal fade stats-modal" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="statsModalLabel">Statistiques des Réservations</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <h4 class="mb-3">Répartition des paiements</h4>
+                    
+                    <!-- Tableau des statistiques -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">Type de réservation</th>
+                                    <th class="text-center">Nombre de réservations</th>
+                                    <th class="text-center">Total des paiements</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if statsTable is defined and statsTable is not empty %}
+                                    {% for stat in statsTable %}
+                                        <tr>
+                                            <td class="text-center">{{ stat.type }}</td>
+                                            <td class="text-center">{{ stat.count }}</td>
+                                            <td class="text-center">{{ stat.total }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">Aucune donnée statistique disponible</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Graphique -->
+                {% if chart is defined and chart.data.labels|length > 0 %}
+                    <div class="mt-4">
+                        <h4 class="mb-3">Visualisation graphique</h4>
+                        <div class="chart-container">
+                            {{ render_chart(chart) }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
 </div>
 {% endblock %}
 
@@ -431,7 +551,10 @@
     <script src="{{ asset('js/file-upload.js') }}"></script>
     <script src="{{ asset('js/typeahead.js') }}"></script>
     <script src="{{ asset('js/select2.js') }}"></script>
-    
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    {{ encore_entry_script_tags('chart') }}
+
     <script>
         // Auto-close alerts after 5 seconds
         setTimeout(() => {
@@ -447,15 +570,6 @@
             
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', event => {
-                    const conditionsCheckbox = document.getElementById('conditions');
-                    if (!conditionsCheckbox.checked) {
-                        conditionsCheckbox.classList.add('is-invalid');
-                        event.preventDefault();
-                        event.stopPropagation();
-                    } else {
-                        conditionsCheckbox.classList.remove('is-invalid');
-                    }
-
                     if (!form.checkValidity()) {
                         event.preventDefault();
                         event.stopPropagation();
@@ -468,97 +582,78 @@
         
         // Initialize select2
         $(document).ready(function() {
-            $('.form-select').select2({
-                theme: 'bootstrap'
+            // Initialize DataTable
+            $('#dataTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json"
+                },
+                "columnDefs": [
+                    { "orderable": false, "targets": [7] } // Disable sorting on actions column
+                ],
+                "pageLength": 25
+            });
+
+            // Load event names via AJAX for select2
+            $('#reservation_nom').select2({
+                theme: 'bootstrap',
+                ajax: {
+                    url: '{{ path('admin_reservation_event_names') }}',
+                    dataType: 'json',
+                    processResults: function (data) {
+                        return {
+                            results: Object.keys(data).map(function(key) {
+                                return {id: key, text: data[key]};
+                            })
+                        };
+                    }
+                }
+            });
+
+            // Initialiser le modal des statistiques
+            $('#statsModal').on('shown.bs.modal', function () {
+                // Redessiner le graphique quand le modal est ouvert
+                if (typeof Chart !== 'undefined' && typeof myChart !== 'undefined') {
+                    myChart.update();
+                }
             });
         });
 
-        // Client-side search
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#reservationsTable tbody tr');
-            
-            rows.forEach(row => {
-                const rowText = Array.from(row.cells)
-                    .map(cell => {
-                        const badge = cell.querySelector('.badge');
-                        return badge ? badge.textContent.trim() : cell.textContent.trim();
-                    })
-                    .join(' ')
-                    .toLowerCase();
-                
-                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
-            });
-            
-            updateDisplayCount();
-        });
-
-        // Data export
+        // Data export with filters
         document.getElementById('exportBtn').addEventListener('click', function() {
             const btn = this;
             const spinner = btn.querySelector('.export-spinner');
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#reservationsTable tbody tr');
+            
+            const filters = {
+                nom: document.getElementById('nom').value,
+                type: document.getElementById('type').value,
+                places_min: document.getElementById('places_min').value,
+                places_max: document.getElementById('places_max').value,
+                code: document.getElementById('code').value
+            };
+            
+            const url = new URL('{{ path('admin_reservation_export') }}', window.location.origin);
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value) url.searchParams.append(key, value);
+            });
             
             btn.disabled = true;
             spinner.style.display = 'inline-block';
             
-            let dataToExport = [];
-            
-            const headers = [
-                'ID', 
-                'Événement', 
-                'Type', 
-                'Places', 
-                'Remarque', 
-                'Code'
-            ];
-            dataToExport.push(headers.join(','));
-            
-            rows.forEach(row => {
-                if (row.style.display !== 'none') {
-                    const rowData = Array.from(row.cells)
-                        .slice(0, -1)
-                        .map(cell => {
-                            const badge = cell.querySelector('.badge');
-                            let text = badge ? badge.textContent.trim() : cell.textContent.trim();
-                            
-                            if (text.includes('"') || text.includes(',')) {
-                                text = `"${text.replace(/"/g, '""')}"`;
-                            }
-                            
-                            return text;
-                        });
-                    
-                    dataToExport.push(rowData.join(','));
-                }
-            });
-            
-            const csvContent = dataToExport.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `reservations_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            window.location.href = url.toString();
             
             setTimeout(() => {
                 spinner.style.display = 'none';
                 btn.disabled = false;
-            }, 500);
+            }, 1000);
         });
 
-        // Update displayed count
-        function updateDisplayCount() {
-            const visibleRows = document.querySelectorAll('#reservationsTable tbody tr:not([style*="display: none"])').length;
-            const totalRows = document.querySelectorAll('#reservationsTable tbody tr').length;
-            const countElement = document.querySelector('.text-muted');
-            
-            if (countElement) {
-                countElement.innerHTML = `Affichage de <b>${visibleRows}</b> réservation(s) sur <b>${totalRows}</b>`;
-            }
+        // Loading overlay functions
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
         }
     </script>
 {% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Détails Réservation #{{ reservation.id }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .card-header {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+        }
+        .card-header h2 {
+            font-size: 1.5rem;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .badge {
+            font-size: 1rem;
+            padding: 0.5em 0.75em;
+        }
+        .btn i {
+            margin-right: 0.5rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h2 class="mb-0">
+                        <i class="fas fa-info-circle"></i> Détails Réservation #{{ reservation.id }}
+                    </h2>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Colonne 1 : Type & Places -->
+                        <div class="col-md-6 mb-3">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th class="bg-light">Type</th>
+                                    <td>{{ reservation.typeReservation }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Places</th>
+                                    <td>{{ reservation.nombrePlaces }}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Colonne 2 : Prix, Code, Statut, Remarques -->
+                        <div class="col-md-6 mb-3">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th class="bg-light">Prix</th>
+                                    <td>{{ reservation.prix }} €</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Code</th>
+                                    <td>{{ reservation.codeConfirmation }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Statut</th>
+                                    <td>
+                                        <span class="badge 
+                                            {% if reservation.status == 'confirmé' %}bg-success
+                                            {% elseif reservation.status == 'annulé' %}bg-danger
+                                            {% else %}bg-warning text-dark{% endif %}">
+                                            {{ reservation.status|capitalize }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Remarques</th>
+                                    <td>{{ reservation.remarque is not empty ? reservation.remarque : 'Aucune' }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ path('admin_reservation_index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                        <div>
+                            <a href="{{ path('admin_reservation_edit', {'id': reservation.id}) }}" class="btn btn-warning me-2">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                            {{ include('back/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

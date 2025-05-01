@@ -1,0 +1,12 @@
+<div id="{{ id }}" style="width: {{ width }}px; height: {{ height }}px;"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable({{ data|json_encode|raw }});
+        var options = {{ options|json_encode|raw }};
+        var chart = new google.visualization.{{ type }}Chart(document.getElementById('{{ id }}'));
+        chart.draw(data, options);
+    });
+</script>

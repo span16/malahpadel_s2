@@ -6,6 +6,9 @@ parameters:
     recaptcha.site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha.secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
     avatars_directory: '%kernel.project_dir%/public/uploads/avatars'
+        # Paramètre pour récupérer la clé secrète de Stripe depuis le fichier .env
+    stripe.secret_key: '%env(STRIPE_SECRET_KEY)%'
+
 
 services:
     # Default configuration for services in *this* file
@@ -47,3 +50,7 @@ services:
     # Enregistrement explicite du contrôleur EmploiDuTempsController
     App\Controller\EmploiDuTempsController:
         tags: ['controller.service_arguments']
+    # Explicit configuration for StripeController
+    App\Controller\StripeController:
+        arguments:
+            $stripeSecretKey: '%stripe.secret_key%'

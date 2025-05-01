@@ -6,41 +6,51 @@
     {{ parent() }}
     <style>
         .reservation-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
             margin-bottom: 20px;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
         }
-        
-        .reservation-card h3 {
+        .reservation-card:hover {
+            transform: translateY(-5px);
+        }
+        .reservation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+        .reservation-title {
+            font-size: 1.25rem;
+            font-weight: 600;
             color: #2c3e50;
-            margin-top: 0;
         }
-        
-        .reservation-meta {
-            margin: 10px 0;
-            color: #7f8c8d;
+        .reservation-price {
+            font-size: 1rem;
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
         }
-        
+        .reservation-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
         .reservation-actions {
-            margin-top: 15px;
+            margin-top: 1rem;
         }
-        
-        .btn-cancel {
-            background-color: #e74c3c !important;
-            color: white;
-        }
-        
-        .btn-cancel:hover {
-            background-color: #c0392b !important;
-            color: white;
+        .reservation-actions .btn {
+            margin-right: 8px;
         }
     </style>
 {% endblock %}
 
-{% block body %}
+{% block content %}
     <!-- Header Start -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
@@ -141,42 +151,85 @@
     <!-- Reservation Form End -->
 
     <!-- Réservations existantes -->
-    <div class="container-fluid py-5">
-        <div class="container">
-            <div class="section-title text-center">
-                <h4 class="text-primary">Vos réservations</h4>
-                <h1 class="display-5 mb-5">Historique des réservations</h1>
-            </div>
+    <!-- Historique des Réservations -->
+<div class="container-fluid py-5 bg-light">
+    <div class="container">
+        <div class="section-title text-center mb-5">
+            <h4 class="text-primary">Vos réservations</h4>
+            <h1 class="display-5 mb-3">Historique des réservations</h1>
             
-            {% if reservations|length > 0 %}
-                <div class="reservation-list wow fadeInUp" data-wow-delay="0.3s">
-                    {% for reservation in reservations %}
-                        <div class="reservation-card">
-                            <h3>{{ reservation.nom }}</h3>
-                            
-                            <div class="reservation-meta">
-                                <p><strong>Type:</strong> {{ reservation.typeReservation }}</p>
-                                <p><strong>Places:</strong> {{ reservation.nombrePlaces }}</p>
-                                <p><strong>Code:</strong> {{ reservation.codeConfirmation }}</p>
+        </div>
+
+        {% if reservations|length > 0 %}
+            <div class="row g-4">
+                {% for reservation in reservations %}
+                    <div class="col-lg-6" data-status="{{ reservation.status|lower }}">
+                        <div class="reservation-card h-100">
+                            <div class="reservation-header">
+                                <div>
+                                    <span class="reservation-title">{{ reservation.nom }}</span>
+                                    <span class="badge 
+                                        {% if reservation.status == 'confirmé' %}bg-success
+                                        {% elseif reservation.status == 'en_attente' %}bg-warning text-dark
+                                        {% elseif reservation.status == 'payé' %}bg-info
+                                        {% elseif reservation.status == 'refusé' %}bg-secondary
+                                        {% else %}bg-danger
+                                        {% endif %} ms-2">
+                                        {{ reservation.status|replace({'_': ' '})|capitalize }}
+                                    </span>
+                                </div>
+                                <span class="reservation-price">{{ reservation.prix }} €</span>
                             </div>
                             
-                            <div class="reservation-actions">
-                               
-                                <a href="{{ path('app_reclamation_new', {'reservation_id': reservation.id}) }}" 
-                                   class="btn btn-sm btn-cancel btn-danger">
-                                    <i class="fas fa-times"></i> Annuler
-                                </a>
+                            <div class="reservation-info">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><i class="fas fa-tag me-2 text-primary"></i> <strong>Type :</strong> {{ reservation.typeReservation }}</p>
+                                        <p><i class="fas fa-users me-2 text-primary"></i> <strong>Places :</strong> {{ reservation.nombrePlaces }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><i class="fas fa-barcode me-2 text-primary"></i> <strong>Réf. :</strong> {{ reservation.codeConfirmation }}</p>
+                                        <p><i class="fas fa-info-circle me-2 text-primary"></i> <strong>ID :</strong> {{ reservation.id }}</p>
+                                    </div>
+                                </div>
+                                
+                                {% if reservation.remarque %}
+                                    <div class="alert alert-light mt-3 mb-0">
+                                        <i class="fas fa-sticky-note me-2"></i> {{ reservation.remarque }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="reservation-actions d-flex justify-content-between align-items-center mt-3">
+                                
+                                <div class="btn-group">
+                                    <a href="{{ path('app_reservation_pdf', {'id': reservation.id}) }}" 
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </a>
+                                    <a href="{{ path('app_reclamation_new', {'reservation_id': reservation.id}) }}" 
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')">
+                                        <i class="fas fa-times"></i> Annuler
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="alert alert-info wow fadeInUp" data-wow-delay="0.5s">
-                    <i class="fas fa-info-circle me-2"></i> Aucune réservation trouvée.
-                </div>
-            {% endif %}
-        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state wow fadeInUp" data-wow-delay="0.3s">
+                <img src="{{ asset('img/empty-reservation.svg') }}" alt="Aucune réservation" class="img-fluid mb-4" style="max-width: 300px;">
+                <h4 class="mb-3">Aucune réservation trouvée</h4>
+                <p class="text-muted mb-4">Vous n'avez pas encore effectué de réservation.</p>
+                <a href="#reservation-form" class="btn btn-primary px-4">
+                    <i class="fas fa-plus me-2"></i>Faire une réservation
+                </a>
+            </div>
+        {% endif %}
     </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

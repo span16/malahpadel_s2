@@ -19,6 +19,7 @@
         "phpdocumentor/reflection-docblock": "^5.6",
         "phpoffice/phpspreadsheet": "^4.2",
         "phpstan/phpdoc-parser": "^2.1",
+        "picqer/php-barcode-generator": "^3.2",
         "setasign/fpdi": "^2.6",
         "setasign/fpdi-tcpdf": "^2.3",
         "stripe/stripe-php": "^17.2",

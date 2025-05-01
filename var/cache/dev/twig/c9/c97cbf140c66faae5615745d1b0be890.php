@@ -32,7 +32,7 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         $this->blocks = [
             'title' => [$this, 'block_title'],
             'stylesheets' => [$this, 'block_stylesheets'],
-            'body' => [$this, 'block_body'],
+            'content' => [$this, 'block_content'],
             'javascripts' => [$this, 'block_javascripts'],
         ];
     }
@@ -104,36 +104,46 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         yield "
     <style>
         .reservation-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
             margin-bottom: 20px;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
         }
-        
-        .reservation-card h3 {
+        .reservation-card:hover {
+            transform: translateY(-5px);
+        }
+        .reservation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+        .reservation-title {
+            font-size: 1.25rem;
+            font-weight: 600;
             color: #2c3e50;
-            margin-top: 0;
         }
-        
-        .reservation-meta {
-            margin: 10px 0;
-            color: #7f8c8d;
+        .reservation-price {
+            font-size: 1rem;
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
         }
-        
+        .reservation-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
         .reservation-actions {
-            margin-top: 15px;
+            margin-top: 1rem;
         }
-        
-        .btn-cancel {
-            background-color: #e74c3c !important;
-            color: white;
-        }
-        
-        .btn-cancel:hover {
-            background-color: #c0392b !important;
-            color: white;
+        .reservation-actions .btn {
+            margin-right: 8px;
         }
     </style>
 ";
@@ -146,27 +156,27 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         yield from [];
     }
 
-    // line 43
+    // line 53
     /**
      * @return iterable<null|scalar|\Stringable>
      */
-    public function block_body(array $context, array $blocks = []): iterable
+    public function block_content(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
         $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "content"));
 
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "content"));
 
-        // line 44
+        // line 54
         yield "    <!-- Header Start -->
     <div class=\"container-fluid bg-breadcrumb\">
         <div class=\"container text-center py-5\" style=\"max-width: 900px;\">
             <h4 class=\"text-white display-4 mb-4 wow fadeInDown\" data-wow-delay=\"0.1s\">Votre Réservation</h4>
             <ol class=\"breadcrumb d-flex justify-content-center mb-0 wow fadeInDown\" data-wow-delay=\"0.3s\">
                 <li class=\"breadcrumb-item\"><a href=\"";
-        // line 49
+        // line 59
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_home");
         yield "\">Home</a></li>
                 <li class=\"breadcrumb-item\"><a href=\"#\">Pages</a></li>
@@ -201,14 +211,14 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
                         <h2 class=\"text-white mb-4\">Nouvelle réservation</h2>
                         
                         ";
-        // line 81
+        // line 91
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 81, $this->source); })()), "flashes", ["success"], "method", false, false, false, 81));
+        $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 91, $this->source); })()), "flashes", ["success"], "method", false, false, false, 91));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 82
+            // line 92
             yield "                            <div class=\"alert alert-success alert-dismissible fade show mb-4\">
                                 <i class=\"fas fa-check-circle me-2\"></i> ";
-            // line 83
+            // line 93
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["message"], "html", null, true);
             yield "
                                 <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
@@ -218,17 +228,17 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['message'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 87
+        // line 97
         yield "                        
                         ";
-        // line 88
+        // line 98
         $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 88, $this->source); })()), "flashes", ["error"], "method", false, false, false, 88));
+        $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 98, $this->source); })()), "flashes", ["error"], "method", false, false, false, 98));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 89
+            // line 99
             yield "                            <div class=\"alert alert-danger alert-dismissible fade show mb-4\">
                                 <i class=\"fas fa-exclamation-circle me-2\"></i> ";
-            // line 90
+            // line 100
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["message"], "html", null, true);
             yield "
                                 <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
@@ -238,35 +248,35 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['message'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 94
+        // line 104
         yield "
                         ";
-        // line 95
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 95, $this->source); })()), 'form_start', ["attr" => ["class" => "form-horizontal needs-validation", "novalidate" => "novalidate"]]);
+        // line 105
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 105, $this->source); })()), 'form_start', ["attr" => ["class" => "form-horizontal needs-validation", "novalidate" => "novalidate"]]);
         yield "
                             <div class=\"row g-3\">
                                 ";
-        // line 97
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 97, $this->source); })()), "nom", [], "any", false, false, false, 97), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0"]]);
-        // line 100
-        yield "
-
-                                ";
-        // line 102
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 102, $this->source); })()), "typeReservation", [], "any", false, false, false, 102), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0"]]);
-        // line 105
-        yield "
-
-                                ";
         // line 107
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 107, $this->source); })()), "nombrePlaces", [], "any", false, false, false, 107), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0"]]);
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 107, $this->source); })()), "nom", [], "any", false, false, false, 107), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0"]]);
         // line 110
         yield "
 
                                 ";
         // line 112
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 112, $this->source); })()), "remarque", [], "any", false, false, false, 112), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0", "style" => "height: 100px"]]);
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 112, $this->source); })()), "typeReservation", [], "any", false, false, false, 112), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0"]]);
         // line 115
+        yield "
+
+                                ";
+        // line 117
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 117, $this->source); })()), "nombrePlaces", [], "any", false, false, false, 117), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0"]]);
+        // line 120
+        yield "
+
+                                ";
+        // line 122
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(CoreExtension::getAttribute($this->env, $this->source, (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 122, $this->source); })()), "remarque", [], "any", false, false, false, 122), 'row', ["label_attr" => ["class" => "text-white mb-2 fw-bold"], "attr" => ["class" => "form-control bg-white border-0", "style" => "height: 100px"]]);
+        // line 125
         yield "
 
                                 <div class=\"col-12\">
@@ -288,8 +298,8 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
                                 </div>
                             </div>
                         ";
-        // line 135
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 135, $this->source); })()), 'form_end');
+        // line 145
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 145, $this->source); })()), 'form_end');
         yield "
                     </div>
                 </div>
@@ -299,74 +309,160 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
     <!-- Reservation Form End -->
 
     <!-- Réservations existantes -->
-    <div class=\"container-fluid py-5\">
-        <div class=\"container\">
-            <div class=\"section-title text-center\">
-                <h4 class=\"text-primary\">Vos réservations</h4>
-                <h1 class=\"display-5 mb-5\">Historique des réservations</h1>
-            </div>
+    <!-- Historique des Réservations -->
+<div class=\"container-fluid py-5 bg-light\">
+    <div class=\"container\">
+        <div class=\"section-title text-center mb-5\">
+            <h4 class=\"text-primary\">Vos réservations</h4>
+            <h1 class=\"display-5 mb-3\">Historique des réservations</h1>
             
-            ";
-        // line 151
-        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 151, $this->source); })())) > 0)) {
-            // line 152
-            yield "                <div class=\"reservation-list wow fadeInUp\" data-wow-delay=\"0.3s\">
-                    ";
-            // line 153
+        </div>
+
+        ";
+        // line 163
+        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 163, $this->source); })())) > 0)) {
+            // line 164
+            yield "            <div class=\"row g-4\">
+                ";
+            // line 165
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 153, $this->source); })()));
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 165, $this->source); })()));
             foreach ($context['_seq'] as $context["_key"] => $context["reservation"]) {
-                // line 154
-                yield "                        <div class=\"reservation-card\">
-                            <h3>";
-                // line 155
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "nom", [], "any", false, false, false, 155), "html", null, true);
-                yield "</h3>
-                            
-                            <div class=\"reservation-meta\">
-                                <p><strong>Type:</strong> ";
-                // line 158
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "typeReservation", [], "any", false, false, false, 158), "html", null, true);
-                yield "</p>
-                                <p><strong>Places:</strong> ";
-                // line 159
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "nombrePlaces", [], "any", false, false, false, 159), "html", null, true);
-                yield "</p>
-                                <p><strong>Code:</strong> ";
-                // line 160
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "codeConfirmation", [], "any", false, false, false, 160), "html", null, true);
-                yield "</p>
+                // line 166
+                yield "                    <div class=\"col-lg-6\" data-status=\"";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::lower($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "status", [], "any", false, false, false, 166)), "html", null, true);
+                yield "\">
+                        <div class=\"reservation-card h-100\">
+                            <div class=\"reservation-header\">
+                                <div>
+                                    <span class=\"reservation-title\">";
+                // line 170
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "nom", [], "any", false, false, false, 170), "html", null, true);
+                yield "</span>
+                                    <span class=\"badge 
+                                        ";
+                // line 172
+                if ((CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "status", [], "any", false, false, false, 172) == "confirmé")) {
+                    yield "bg-success
+                                        ";
+                } elseif ((CoreExtension::getAttribute($this->env, $this->source,                 // line 173
+$context["reservation"], "status", [], "any", false, false, false, 173) == "en_attente")) {
+                    yield "bg-warning text-dark
+                                        ";
+                } elseif ((CoreExtension::getAttribute($this->env, $this->source,                 // line 174
+$context["reservation"], "status", [], "any", false, false, false, 174) == "payé")) {
+                    yield "bg-info
+                                        ";
+                } elseif ((CoreExtension::getAttribute($this->env, $this->source,                 // line 175
+$context["reservation"], "status", [], "any", false, false, false, 175) == "refusé")) {
+                    yield "bg-secondary
+                                        ";
+                } else {
+                    // line 176
+                    yield "bg-danger
+                                        ";
+                }
+                // line 177
+                yield " ms-2\">
+                                        ";
+                // line 178
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), Twig\Extension\CoreExtension::replace(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "status", [], "any", false, false, false, 178), ["_" => " "])), "html", null, true);
+                yield "
+                                    </span>
+                                </div>
+                                <span class=\"reservation-price\">";
+                // line 181
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "prix", [], "any", false, false, false, 181), "html", null, true);
+                yield " €</span>
                             </div>
                             
-                            <div class=\"reservation-actions\">
-                               
-                                <a href=\"";
-                // line 165
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reclamation_new", ["reservation_id" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 165)]), "html", null, true);
+                            <div class=\"reservation-info\">
+                                <div class=\"row\">
+                                    <div class=\"col-md-6\">
+                                        <p><i class=\"fas fa-tag me-2 text-primary\"></i> <strong>Type :</strong> ";
+                // line 187
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "typeReservation", [], "any", false, false, false, 187), "html", null, true);
+                yield "</p>
+                                        <p><i class=\"fas fa-users me-2 text-primary\"></i> <strong>Places :</strong> ";
+                // line 188
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "nombrePlaces", [], "any", false, false, false, 188), "html", null, true);
+                yield "</p>
+                                    </div>
+                                    <div class=\"col-md-6\">
+                                        <p><i class=\"fas fa-barcode me-2 text-primary\"></i> <strong>Réf. :</strong> ";
+                // line 191
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "codeConfirmation", [], "any", false, false, false, 191), "html", null, true);
+                yield "</p>
+                                        <p><i class=\"fas fa-info-circle me-2 text-primary\"></i> <strong>ID :</strong> ";
+                // line 192
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 192), "html", null, true);
+                yield "</p>
+                                    </div>
+                                </div>
+                                
+                                ";
+                // line 196
+                if (CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "remarque", [], "any", false, false, false, 196)) {
+                    // line 197
+                    yield "                                    <div class=\"alert alert-light mt-3 mb-0\">
+                                        <i class=\"fas fa-sticky-note me-2\"></i> ";
+                    // line 198
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "remarque", [], "any", false, false, false, 198), "html", null, true);
+                    yield "
+                                    </div>
+                                ";
+                }
+                // line 201
+                yield "                            </div>
+                            
+                            <div class=\"reservation-actions d-flex justify-content-between align-items-center mt-3\">
+                                
+                                <div class=\"btn-group\">
+                                    <a href=\"";
+                // line 206
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservation_pdf", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 206)]), "html", null, true);
                 yield "\" 
-                                   class=\"btn btn-sm btn-cancel btn-danger\">
-                                    <i class=\"fas fa-times\"></i> Annuler
-                                </a>
+                                       class=\"btn btn-sm btn-outline-secondary\">
+                                        <i class=\"fas fa-file-pdf\"></i> PDF
+                                    </a>
+                                    <a href=\"";
+                // line 210
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reclamation_new", ["reservation_id" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 210)]), "html", null, true);
+                yield "\" 
+                                       class=\"btn btn-sm btn-outline-danger\"
+                                       onclick=\"return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')\">
+                                        <i class=\"fas fa-times\"></i> Annuler
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    ";
+                    </div>
+                ";
             }
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_key'], $context['reservation'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 172
-            yield "                </div>
-            ";
+            // line 220
+            yield "            </div>
+        ";
         } else {
-            // line 174
-            yield "                <div class=\"alert alert-info wow fadeInUp\" data-wow-delay=\"0.5s\">
-                    <i class=\"fas fa-info-circle me-2\"></i> Aucune réservation trouvée.
-                </div>
-            ";
+            // line 222
+            yield "            <div class=\"empty-state wow fadeInUp\" data-wow-delay=\"0.3s\">
+                <img src=\"";
+            // line 223
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("img/empty-reservation.svg"), "html", null, true);
+            yield "\" alt=\"Aucune réservation\" class=\"img-fluid mb-4\" style=\"max-width: 300px;\">
+                <h4 class=\"mb-3\">Aucune réservation trouvée</h4>
+                <p class=\"text-muted mb-4\">Vous n'avez pas encore effectué de réservation.</p>
+                <a href=\"#reservation-form\" class=\"btn btn-primary px-4\">
+                    <i class=\"fas fa-plus me-2\"></i>Faire une réservation
+                </a>
+            </div>
+        ";
         }
-        // line 178
-        yield "        </div>
-    </div>
+        // line 231
+        yield "    </div>
+</div>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -377,7 +473,7 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         yield from [];
     }
 
-    // line 182
+    // line 235
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -390,7 +486,7 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
-        // line 183
+        // line 236
         yield "    ";
         yield from $this->yieldParentBlock("javascripts", $context, $blocks);
         yield "
@@ -448,7 +544,7 @@ class __TwigTemplate_ff69ea77f21a7a06b6f89aaf8d8fcb4a extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  394 => 183,  381 => 182,  368 => 178,  362 => 174,  358 => 172,  345 => 165,  337 => 160,  333 => 159,  329 => 158,  323 => 155,  320 => 154,  316 => 153,  313 => 152,  311 => 151,  292 => 135,  270 => 115,  268 => 112,  264 => 110,  262 => 107,  258 => 105,  256 => 102,  252 => 100,  250 => 97,  245 => 95,  242 => 94,  232 => 90,  229 => 89,  225 => 88,  222 => 87,  212 => 83,  209 => 82,  205 => 81,  170 => 49,  163 => 44,  150 => 43,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
+        return array (  490 => 236,  477 => 235,  464 => 231,  453 => 223,  450 => 222,  446 => 220,  430 => 210,  423 => 206,  416 => 201,  410 => 198,  407 => 197,  405 => 196,  398 => 192,  394 => 191,  388 => 188,  384 => 187,  375 => 181,  369 => 178,  366 => 177,  362 => 176,  357 => 175,  353 => 174,  349 => 173,  345 => 172,  340 => 170,  332 => 166,  328 => 165,  325 => 164,  323 => 163,  302 => 145,  280 => 125,  278 => 122,  274 => 120,  272 => 117,  268 => 115,  266 => 112,  262 => 110,  260 => 107,  255 => 105,  252 => 104,  242 => 100,  239 => 99,  235 => 98,  232 => 97,  222 => 93,  219 => 92,  215 => 91,  180 => 59,  173 => 54,  160 => 53,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
     }
 
     public function getSourceContext(): Source

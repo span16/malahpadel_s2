@@ -11,7 +11,7 @@ class Reclamation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "id_reclamation", type: "integer")]
+    #[ORM\Column(name: "id_reclamation", type: "integer")] 
     private ?int $id = null;
 
     #[ORM\Column(type: "date")]
@@ -42,8 +42,8 @@ class Reclamation
         maxMessage: "L'état ne peut pas dépasser {{ limit }} caractères"
     )]
     #[Assert\Choice(
-        choices: ["en cours", "traitée", "rejetée", "nouvelle"],
-        message: "L'état doit être une valeur valide (en cours, traitée, rejetée, nouvelle)"
+        choices: ["Nouvelle", "En cours", "Traitée", "Rejetée"], // Majuscules
+        message: "L'état doit être une valeur valide (Nouvelle, En cours, Traitée, Rejetée)"
     )]
     private ?string $etat = null;
 
@@ -87,10 +87,23 @@ class Reclamation
     }
 
     public function setEtat(string $etat): self
-    {
-        $this->etat = $etat;
-        return $this;
+{
+    // Normaliser la casse pour éviter les problèmes
+    $normalizedEtat = ucfirst(mb_strtolower(trim($etat)));
+    
+    $validStates = ['Nouvelle', 'En cours', 'Traitée', 'Rejetée'];
+    
+    if (!in_array($normalizedEtat, $validStates)) {
+        throw new \InvalidArgumentException(sprintf(
+            "L'état '%s' n'est pas valide. Les états valides sont: %s",
+            $etat,
+            implode(', ', $validStates)
+        ));
     }
+
+    $this->etat = $normalizedEtat;
+    return $this;
+}   
 
     public function getReservation(): ?Reservation
     {

@@ -5,13 +5,29 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Reservation
 {
+    public const TYPES = [
+        'simple', 
+        'duo', 
+        'groupe', 
+        'vip', 
+        'tournoi', 
+        'location', 
+        'coach'
+    ];
+
+    public const STATUSES = [
+        'en_attente',
+        'payé',
+        'annulé',
+        'confirmé',
+        'refusé'
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "id_R", type: "integer")]
@@ -19,18 +35,28 @@ class Reservation
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Vous devez sélectionner un événement")]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: "Le nom de l'événement doit contenir au moins {{ limit }} caractères",
+        maxMessage: "Le nom de l'événement ne peut pas dépasser {{ limit }} caractères"
+    )]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "type_reservation", length: 255)]
     #[Assert\NotBlank(message: "Le type de réservation est obligatoire")]
     #[Assert\Choice(
-        choices: ['simple', 'duo', 'groupe', 'vip', 'tournoi', 'location', 'coach'],
-        message: "Type de réservation invalide"
+        choices: self::TYPES,
+        message: "Type de réservation invalide. Choisissez parmi : {{ choices }}"
     )]
     private ?string $typeReservation = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "nombre_places")]
     #[Assert\NotBlank(message: "Le nombre de places est obligatoire")]
+    #[Assert\Type(
+        type: "integer",
+        message: "Le nombre de places doit être un nombre entier"
+    )]
     #[Assert\Range(
         min: 1,
         max: 100,
@@ -47,21 +73,38 @@ class Reservation
     )]
     private ?string $remarque = null;
 
-    #[ORM\Column(unique: true)]
+    #[ORM\Column(name: "code_confirmation", unique: true)]
     private ?int $codeConfirmation = null;
+
+    #[ORM\Column(type: 'float')]
+    #[Assert\NotBlank(message: "Le prix est obligatoire")]
+    #[Assert\Type(
+        type: "float",
+        message: "Le prix doit être un nombre décimal"
+    )]
+    #[Assert\PositiveOrZero(message: "Le prix ne peut pas être négatif")]
+    #[Assert\Range(
+        min: 0,
+        max: 1000,
+        notInRangeMessage: "Le prix doit être compris entre {{ min }}€ et {{ max }}€"
+    )]
+    private float $prix = 50.0;
+
+    #[ORM\Column(type: 'string', length: 20, options: ['default' => 'en_attente'])]
+    #[Assert\NotBlank(message: "Le statut est obligatoire")]
+    #[Assert\Choice(
+        choices: self::STATUSES,
+        message: "Statut invalide. Choisissez parmi : {{ choices }}"
+    )]
+    private string $status = 'en_attente';
 
     #[ORM\PrePersist]
     public function generateConfirmationCode(): void
     {
-        error_log('PrePersist callback executed - Generating confirmation code');
         if ($this->codeConfirmation === null) {
             $this->codeConfirmation = random_int(100000, 999999);
-            error_log('Generated code: '.$this->codeConfirmation);
         }
     }
-    
-#[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Paiement::class, cascade: ['persist', 'remove'])]
-private Collection $paiements;
 
     public function getId(): ?int
     {
@@ -123,6 +166,28 @@ private Collection $paiements;
         return $this;
     }
 
+    public function getPrix(): float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
     public function __toString(): string
     {
         return sprintf(
@@ -132,33 +197,4 @@ private Collection $paiements;
             $this->typeReservation ?? 'Aucun type'
         );
     }
-    public function getPaiements(): Collection
-{
-    return $this->paiements;
-}
-
-public function addPaiement(Paiement $paiement): self
-{
-    if (!$this->paiements->contains($paiement)) {
-        $this->paiements[] = $paiement;
-        $paiement->setReservation($this);
-    }
-
-    return $this;
-}
-
-public function removePaiement(Paiement $paiement): self
-{
-    if ($this->paiements->removeElement($paiement)) {
-        if ($paiement->getReservation() === $this) {
-            $paiement->setReservation(null);
-        }
-    }
-
-    return $this;
-}
-public function __construct()
-{
-    $this->paiements = new ArrayCollection();
-}
 }

@@ -149,6 +149,7 @@ class ComposerStaticInit1239709a721278af183dc37e270d8a17
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
             'Psr\\Cache\\' => 10,
+            'Picqer\\Barcode\\' => 15,
             'PhpParser\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PHPStan\\PhpDocParser\\' => 21,
@@ -596,6 +597,10 @@ class ComposerStaticInit1239709a721278af183dc37e270d8a17
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'PhpParser\\' => 
         array (

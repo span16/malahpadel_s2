@@ -109,6 +109,7 @@
     <parameter key="recaptcha.site_key">%env(RECAPTCHA_SITE_KEY)%</parameter>
     <parameter key="recaptcha.secret_key">%env(RECAPTCHA_SECRET_KEY)%</parameter>
     <parameter key="avatars_directory">C:\Users\USER\Desktop\padel_projet_git\malahpadel_s2-integration-master/public/uploads/avatars</parameter>
+    <parameter key="stripe.secret_key">%env(STRIPE_SECRET_KEY)%</parameter>
     <parameter key="event_dispatcher.event_aliases" type="collection">
       <parameter key="Symfony\Component\Console\Event\ConsoleCommandEvent">console.command</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
@@ -774,6 +775,7 @@
       <argument type="service" id="App\Repository\EvenementRepository"/>
       <argument type="service" id="security.csrf.token_manager"/>
       <argument type="service" id="monolog.logger"/>
+      <argument type="service" id="chartjs.builder"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\ReservationController"/>
       </call>
@@ -784,6 +786,15 @@
       <argument type="service" id="App\Service\RecaptchaService"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\SecurityController"/>
+      </call>
+    </service>
+    <service id="App\Controller\StripeController" class="App\Controller\StripeController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <argument>%env(STRIPE_SECRET_KEY)%</argument>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\StripeController"/>
       </call>
     </service>
     <service id="App\Controller\TerrainController" class="App\Controller\TerrainController" public="true" autowire="true" autoconfigure="true">
@@ -930,6 +941,9 @@
     <service id="App\Service\ParameterService" class="App\Service\ParameterService" autowire="true" autoconfigure="true">
       <argument type="service" id="parameter_bag"/>
     </service>
+    <service id="App\Service\PdfGeneratorService" class="App\Service\PdfGeneratorService" autowire="true" autoconfigure="true">
+      <argument type="service" id="twig"/>
+    </service>
     <service id="App\Service\RecaptchaService" class="App\Service\RecaptchaService" autowire="true" autoconfigure="true">
       <argument type="service" id=".debug.http_client"/>
       <argument>%env(RECAPTCHA_SECRET_KEY)%</argument>
@@ -976,7 +990,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.q7.GjwN"/>
+      <argument type="service" id=".service_locator.7OjkzHC"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -4140,7 +4154,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.q7.GjwN"/>
+      <argument type="service" id=".service_locator.7OjkzHC"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -9471,6 +9485,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\StripeController" class="App\Controller\StripeController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\StripeController" class="App\Controller\StripeController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\StripeController" class="App\Controller\StripeController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\TerrainController" class="App\Controller\TerrainController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\TerrainController" class="App\Controller\TerrainController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\TerrainController" class="App\Controller\TerrainController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -10322,6 +10339,19 @@
         <argument key="reservation" type="service_closure" id=".errored..service_locator.h9c0uBq.App\Entity\Reservation"/>
       </argument>
     </service>
+    <service id=".service_locator.ZUwwaRD" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="paginator" type="service_closure" id="knp_paginator"/>
+      </argument>
+    </service>
+    <service id=".service_locator.vYlEv90" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="pdfGenerator" type="service_closure" id="App\Service\PdfGeneratorService"/>
+        <argument key="reservation" type="service_closure" id=".errored..service_locator.vYlEv90.App\Entity\Reservation"/>
+      </argument>
+    </service>
     <service id=".service_locator.rSTd.nA" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -10385,7 +10415,7 @@
         <argument key="user" type="service_closure" id=".errored..service_locator.rvMNZGh.App\Entity\User"/>
       </argument>
     </service>
-    <service id=".service_locator.q7.GjwN" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.7OjkzHC" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AnnonceMatchController::delete" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -10482,13 +10512,18 @@
         <argument key="App\Controller\RegistrationController::verifyUserEmail" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\ReservationController::adminDelete" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController::adminEdit" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\ReservationController::adminIndex" type="service_closure" id=".service_locator.ZUwwaRD"/>
         <argument key="App\Controller\ReservationController::cancel" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController::delete" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController::edit" type="service_closure" id=".service_locator.h9c0uBq"/>
-        <argument key="App\Controller\ReservationController::show" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\ReservationController::generateBarcode" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\ReservationController::generatePdf" type="service_closure" id=".service_locator.vYlEv90"/>
         <argument key="App\Controller\SecurityController::forgotPassword" type="service_closure" id=".service_locator.6PYrsJc"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\SecurityController::resetPassword" type="service_closure" id=".service_locator.f6ewwOm"/>
+        <argument key="App\Controller\StripeController::cancel" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\StripeController::createCheckoutSession" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\StripeController::success" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\TerrainController::delete" type="service_closure" id=".service_locator.OHPtpZA"/>
         <argument key="App\Controller\TerrainController::edit" type="service_closure" id=".service_locator.OHPtpZA"/>
         <argument key="App\Controller\TerrainController::index" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -10598,13 +10633,18 @@
         <argument key="App\Controller\RegistrationController:verifyUserEmail" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\ReservationController:adminDelete" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController:adminEdit" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\ReservationController:adminIndex" type="service_closure" id=".service_locator.ZUwwaRD"/>
         <argument key="App\Controller\ReservationController:cancel" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController:delete" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\ReservationController:edit" type="service_closure" id=".service_locator.h9c0uBq"/>
-        <argument key="App\Controller\ReservationController:show" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\ReservationController:generateBarcode" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\ReservationController:generatePdf" type="service_closure" id=".service_locator.vYlEv90"/>
         <argument key="App\Controller\SecurityController:forgotPassword" type="service_closure" id=".service_locator.6PYrsJc"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\SecurityController:resetPassword" type="service_closure" id=".service_locator.f6ewwOm"/>
+        <argument key="App\Controller\StripeController:cancel" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\StripeController:createCheckoutSession" type="service_closure" id=".service_locator.h9c0uBq"/>
+        <argument key="App\Controller\StripeController:success" type="service_closure" id=".service_locator.h9c0uBq"/>
         <argument key="App\Controller\TerrainController:delete" type="service_closure" id=".service_locator.OHPtpZA"/>
         <argument key="App\Controller\TerrainController:edit" type="service_closure" id=".service_locator.OHPtpZA"/>
         <argument key="App\Controller\TerrainController:index" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -11516,6 +11556,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\StripeController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\StripeController"/>
+      <argument>App\Controller\StripeController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
     <service id=".service_locator.O2p6Lk7.App\Controller\TerrainController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\TerrainController"/>
       <argument>App\Controller\TerrainController</argument>
@@ -11782,6 +11828,7 @@
           <argument>App\Controller\RegistrationController</argument>
           <argument>App\Controller\ReservationController</argument>
           <argument>App\Controller\SecurityController</argument>
+          <argument>App\Controller\StripeController</argument>
           <argument>App\Controller\TerrainController</argument>
           <argument>App\Controller\UserController</argument>
           <argument>App\Controller\EmploiDuTempsController</argument>
@@ -12197,6 +12244,9 @@
     </service>
     <service id=".errored..service_locator.h9c0uBq.App\Entity\Reservation" class="App\Entity\Reservation">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.h9c0uBq&quot;: it needs an instance of &quot;App\Entity\Reservation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.vYlEv90.App\Entity\Reservation" class="App\Entity\Reservation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.vYlEv90&quot;: it needs an instance of &quot;App\Entity\Reservation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.Bl_KJXW.App\Entity\Terrain" class="App\Entity\Terrain">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.Bl_KJXW&quot;: it needs an instance of &quot;App\Entity\Terrain&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
@@ -13559,7 +13609,7 @@
     <service id="ApiPlatform\Symfony\Security\ResourceAccessCheckerInterface" alias="api_platform.security.resource_access_checker"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.w7.f4fT" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.q7.GjwN"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.7OjkzHC"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -13604,11 +13654,12 @@
     <service id=".service_locator.EENpeTp" alias=".service_locator.EfkQwTW"/>
     <service id=".service_locator.esq6qmt" alias=".service_locator.4DQ7R8O"/>
     <service id=".service_locator.NYbRE5z" alias=".service_locator.f6ewwOm"/>
+    <service id=".service_locator.VwPFK78" alias=".service_locator.vYlEv90"/>
     <service id=".service_locator.WHWcPEi" alias=".service_locator.6PYrsJc"/>
     <service id=".service_locator.FqVIdDz" alias=".service_locator.OHPtpZA"/>
     <service id=".service_locator.2AheOfr" alias=".service_locator.otSeFVa"/>
     <service id=".service_locator.R0Sb2kd" alias=".service_locator.rvMNZGh"/>
-    <service id=".service_locator.hzDxlol" alias=".service_locator.q7.GjwN"/>
+    <service id=".service_locator.tL7rXbI" alias=".service_locator.7OjkzHC"/>
     <service id=".service_locator.BFrsqsn" alias=".service_locator.F9PKc.7"/>
     <service id=".service_locator.o1jEJUN" alias=".service_locator.9.eU1SR"/>
     <service id=".service_locator.XtmiKbi" alias=".service_locator.MfxSDRP"/>
@@ -13747,6 +13798,8 @@
     <service id=".service_locator.LETTFm1" alias=".service_locator.f6ewwOm"/>
     <service id=".service_locator.025Wi8b" alias=".service_locator.kPUOGb8"/>
     <service id=".service_locator.bRbdH2p" alias=".service_locator.h9c0uBq"/>
+    <service id=".service_locator.qeo2seP" alias=".service_locator.ZUwwaRD"/>
+    <service id=".service_locator.DhGzFA." alias=".service_locator.vYlEv90"/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
     <service id=".service_locator.2u2E1.k" alias=".service_locator.6PYrsJc"/>
     <service id=".service_locator.8rQhDU3" alias=".service_locator.Bl_KJXW"/>

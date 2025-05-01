@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Evenement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class EvenementRepository extends ServiceEntityRepository
 {
@@ -13,8 +13,6 @@ class EvenementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Evenement::class);
     }
-
-    // Add custom methods as needed
 
     public function findAllOrderedByName(): array
     {
@@ -42,5 +40,6 @@ class EvenementRepository extends ServiceEntityRepository
             ->setParameter('now', new \DateTime())
             ->orderBy('e.dateDebut', 'ASC');
     }
-
 }
+
+

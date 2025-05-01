@@ -2,12 +2,7 @@
 
 {% block title %}Réclamation - Malah Padel{% endblock %}
 
-  {% block body %}
-<!-- Spinner Start -->
-
-<!-- Spinner End -->
-
-<!-- Header Section -->
+{% block content %}
 <div class="container-fluid bg-breadcrumb">
     <div class="container text-center py-5" style="max-width: 900px;">
         <h1 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">
@@ -20,15 +15,19 @@
     </div>
 </div>
 
-<!-- Reclamation Form Section -->
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
-            <!-- Left Column - Information -->
+            <!-- Colonne gauche - Informations -->
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="section-title text-start">
                     <h4 class="text-primary mb-3">✉️ Nous contacter</h4>
                     <h2 class="display-5 mb-4">Un problème à signaler ?</h2>
+                    
+                    <!-- Bloc Statistiques AJOUTÉ -->
+                    
+                    <!-- Fin Bloc Statistiques -->
+
                     <p class="mb-4">Décrivez-nous votre réclamation en détail. Notre équipe s'engage à vous répondre dans les plus brefs délais.</p>
                     
                     <div class="d-flex align-items-center pt-2">
@@ -43,7 +42,7 @@
                 </div>
             </div>
             
-            <!-- Right Column - Form (exactement comme votre version originale) -->
+            <!-- Colonne droite - Formulaire -->
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="card shadow">
                     <div class="card-header {% if is_cancellation %}bg-danger{% else %}bg-primary{% endif %} text-white">

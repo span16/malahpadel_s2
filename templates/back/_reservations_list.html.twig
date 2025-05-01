@@ -1,0 +1,125 @@
+<div class="table-responsive wow fadeInUp" data-wow-delay="0.3s">
+    <table class="table table-striped table-hover" id="reservationsTable">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center">#</th>
+                <th>Événement</th>
+                <th class="text-center">Type</th>
+                <th class="text-center">Places</th>
+                <th class="text-center">Code</th>
+                <th class="text-center action-buttons">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td class="text-center">{{ reservation.id }}</td>
+                    <td>{{ reservation.nom }}</td>
+                    <td class="text-center">
+                        <span class="badge 
+                            {% if reservation.typeReservation == 'tournoi' %}bg-success
+                            {% elseif reservation.typeReservation == 'groupe' %}bg-info
+                            {% elseif reservation.typeReservation == 'simple' %}bg-primary
+                            {% else %}bg-secondary
+                            {% endif %}">
+                            {{ reservation.typeReservation }}
+                        </span>
+                    </td>
+                    <td class="text-center"><span class="badge bg-warning text-dark">{{ reservation.nombrePlaces }}</span></td>
+                    <td class="text-center"><code>{{ reservation.codeConfirmation }}</code></td>
+                    <td class="text-center action-buttons">
+                        <a href="{{ path('admin_reservation_edit', {'id': reservation.id}) }}" 
+                           class="btn btn-sm btn-warning"
+                           title="Modifier">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form method="post" 
+                              action="{{ path('admin_reservation_delete', {'id': reservation.id}) }}" 
+                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation?');"
+                              class="d-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                            <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <div class="alert alert-info wow fadeInUp" data-wow-delay="0.3s">
+                            <i class="fas fa-info-circle me-2"></i> Aucune réservation trouvée.
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if reservations|length > 0 %}
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <div class="text-muted">
+        Affichage de <b>{{ reservations|length }}</b> réservation(s) sur <b>{{ total_reservations }}</b>
+    </div>
+    <nav>
+        <ul class="pagination pagination-sm mb-0 wow fadeInUp" data-wow-delay="0.3s">
+            <li class="page-item {{ current_page == 1 ? 'disabled' : '' }}">
+                <a class="page-link" 
+                   href="{{ path('admin_reservation_index', {page: current_page - 1, limit: limit, 
+                        nom: filters.nom|default(''), 
+                        type: filters.type|default(''),
+                        places_min: filters.places_min|default(''),
+                        places_max: filters.places_max|default(''),
+                        code: filters.code|default('')}) }}" 
+                   tabindex="-1">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+            
+            {% for i in 1..min(total_pages, 5) %}
+                <li class="page-item {{ current_page == i ? 'active' : '' }}">
+                    <a class="page-link" 
+                       href="{{ path('admin_reservation_index', {page: i, limit: limit, 
+                            nom: filters.nom|default(''), 
+                            type: filters.type|default(''),
+                            places_min: filters.places_min|default(''),
+                            places_max: filters.places_max|default(''),
+                            code: filters.code|default('')}) }}">
+                        {{ i }}
+                    </a>
+                </li>
+            {% endfor %}
+            
+            {% if total_pages > 5 %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" 
+                       href="{{ path('admin_reservation_index', {page: total_pages, limit: limit, 
+                            nom: filters.nom|default(''), 
+                            type: filters.type|default(''),
+                            places_min: filters.places_min|default(''),
+                            places_max: filters.places_max|default(''),
+                            code: filters.code|default('')}) }}">
+                        {{ total_pages }}
+                    </a>
+                </li>
+            {% endif %}
+            
+            <li class="page-item {{ current_page == total_pages ? 'disabled' : '' }}">
+                <a class="page-link" 
+                   href="{{ path('admin_reservation_index', {page: current_page + 1, limit: limit, 
+                        nom: filters.nom|default(''), 
+                        type: filters.type|default(''),
+                        places_min: filters.places_min|default(''),
+                        places_max: filters.places_max|default(''),
+                        code: filters.code|default('')}) }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endif %}

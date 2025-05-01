@@ -17,31 +17,31 @@ class ReclamationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
 {
     $builder
-        ->add('date', DateType::class, [
-            'label' => 'Date de réclamation',
-            'widget' => 'single_text',
-            'required' => true,
-            'attr' => ['class' => 'form-control']
-        ])
-        ->add('raison', TextareaType::class, [
-            'label' => 'Raison de la réclamation',
-            'required' => true,
-            'attr' => [
-                'class' => 'form-control',
-                'rows' => 5
-            ]
-        ])
-        ->add('etat', ChoiceType::class, [
-            'label' => 'État',
-            'choices' => [
-                'Nouvelle' => 'nouvelle',
-                'En cours' => 'en cours',
-                'Traitée' => 'traitée',
-                'Rejetée' => 'rejetée'
-            ],
-            'required' => true,
-            'attr' => ['class' => 'form-control']
-        ]);
+    ->add('date', DateType::class, [
+        'label' => 'Date de réclamation',
+        'widget' => 'single_text',
+        'required' => true,
+        'attr' => ['class' => 'form-control']
+    ])
+    ->add('raison', TextareaType::class, [
+        'label' => 'Raison de la réclamation',
+        'required' => true,
+        'attr' => [
+            'class' => 'form-control',
+            'rows' => 5
+        ]
+    ])
+    ->add('etat', ChoiceType::class, [
+        'label' => 'État',
+        'choices' => [
+            'Nouvelle' => 'Nouvelle', // Majuscules comme dans l'entité
+            'En cours' => 'En cours',
+            'Traitée' => 'Traitée',
+            'Rejetée' => 'Rejetée'
+        ],
+        'required' => true,
+        'attr' => ['class' => 'form-control']
+    ]);
 
     if ($options['include_reservation_field']) {
         $builder->add('reservation', EntityType::class, [

@@ -18,8 +18,16 @@
         {% endif %}
     </div>
 
-    <div class="mb-3">
-        {{ form_label(form.etat, 'État', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
-    </div>
+   <div class="mb-3">
+    {{ form_label(form.etat, 'État', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.etat, {
+        'attr': {
+            'class': 'form-select',
+            'data-controller': 'select2'
+        }
+    }) }}
+    <small class="form-text text-muted">
+        Choisissez parmi: Nouvelle, En cours, Traitée, Rejetée
+    </small>
+</div>
 {{ form_end(form) }}

@@ -1,0 +1,71 @@
+{% extends 'pdf/base_pdf.html.twig' %}
+
+{% block title %}Dossier Réservation - Mallah Padel{% endblock %}
+
+{% block content %}
+    <div style="font-family: Arial, sans-serif; color: #2c3e50; margin: 20px;">
+        <!-- En-tête -->
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 15px;">
+            <h1 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin: 0;">Dossier de Réservation</h1>
+            <p style="font-size: 14px; color: #7f8c8d; margin-top: 5px;">Mallah Padel - Réservation Officielle</p>
+        </div>
+
+        <!-- Informations de la réservation -->
+        <div style="border: 1px solid #dfe6e9; padding: 20px; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h2 style="font-size: 18px; font-weight: bold; color: #3498db; margin-bottom: 15px; border-bottom: 1px solid #dfe6e9; padding-bottom: 5px;">Détails de la Réservation</h2>
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <tr style="background-color: #f5f7fa;">
+                    <td style="width: 35%; padding: 12px; font-weight: bold; border-bottom: 1px solid #dfe6e9;">Numéro de Réservation :</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dfe6e9;">{{ reservation.id }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; font-weight: bold; border-bottom: 1px solid #dfe6e9;">Nom du client :</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dfe6e9;">{{ reservation.nom }}</td>
+                </tr>
+                <tr style="background-color: #f5f7fa;">
+                    <td style="padding: 12px; font-weight: bold; border-bottom: 1px solid #dfe6e9;">Type de réservation :</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dfe6e9;">{{ reservation.typeReservation }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; font-weight: bold; border-bottom: 1px solid #dfe6e9;">Nombre de places :</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dfe6e9;">{{ reservation.nombrePlaces }}</td>
+                </tr>
+                <tr style="background-color: #f5f7fa;">
+                    <td style="padding: 12px; font-weight: bold; border-bottom: 1px solid #dfe6e9;">Prix :</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dfe6e9;">{{ reservation.prix }} €</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; font-weight: bold; border-bottom: 1px solid #dfe6e9;">Statut :</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dfe6e9;">
+                        <span style="color: {% if reservation.status == 'confirmé' %}#28a745{% elseif reservation.status == 'annulé' %}#dc3545{% else %}#ffc107{% endif %}; font-weight: bold;">
+                            {{ reservation.status|capitalize }}
+                        </span>
+                    </td>
+                </tr>
+                <tr style="background-color: #f5f7fa;">
+                    <td style="padding: 12px; font-weight: bold;">Remarques :</td>
+                    <td style="padding: 12px;">{{ reservation.remarque ?: 'Aucune' }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Code-barres -->
+        <div style="margin-top: 30px; text-align: center; border: 1px solid #dfe6e9; padding: 15px; border-radius: 8px; background-color: #ffffff;">
+            <h3 style="font-size: 16px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">Code-barres de Confirmation</h3>
+            <img src="data:image/png;base64,{{ barcode }}" alt="Code-barres" style="max-width: 200px;">
+        </div>
+
+        <!-- Espace pour signature manuelle -->
+        <div style="margin-top: 30px; text-align: left; border: 1px solid #dfe6e9; padding: 15px; border-radius: 8px; background-color: #ffffff;">
+            <h3 style="font-size: 16px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">Signature</h3>
+            <div style="border-bottom: 1px solid #2c3e50; width: 250px; margin-top: 40px;"></div>
+            <p style="font-size: 12px; color: #7f8c8d; margin-top: 5px;">(Signature manuelle du client)</p>
+        </div>
+
+        <!-- Pied de page -->
+        <div style="margin-top: 40px; text-align: center; font-size: 12px; color: #7f8c8d; border-top: 1px solid #dfe6e9; padding-top: 10px;">
+            <p>Document généré le {{ "now"|date("d/m/Y à H:i") }}</p>
+            <p>Mallah Padel - © {{ "now"|date("Y") }} | Contact : contact@mallahpadel.com</p>
+        </div>
+    </div>
+{% endblock %}

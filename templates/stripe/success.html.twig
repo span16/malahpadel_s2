@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement réussi{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background: #f2f6fc;
+        }
+        .payment-success-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+        .payment-success-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.6s ease;
+        }
+        @keyframes fadeInUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .payment-icon {
+            font-size: 60px;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+        .payment-success-card h2 {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .payment-details {
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+        .payment-details p {
+            margin-bottom: 0.75rem;
+            font-size: 16px;
+            color: #555;
+        }
+        .payment-details span {
+            font-weight: bold;
+            color: #000;
+        }
+        .btn-back {
+            margin-top: 2rem;
+            padding: 0.6rem 2.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        .celebration-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="payment-success-wrapper">
+    <div class="payment-success-card text-center position-relative">
+        <div class="celebration-bg">
+            <!-- Optionnel : ajouter un effet SVG ou JS ici si tu veux aller encore plus loin -->
+        </div>
+
+        <div>
+            <i class="fas fa-check-circle payment-icon"></i>
+            <h2>Paiement réussi</h2>
+            <p class="text-muted mb-3">Merci pour votre réservation ! Voici les détails :</p>
+        </div>
+
+        <div class="payment-details">
+            <p><strong>Réservation :</strong> <span>{{ reservation.nom }}</span></p>
+            <p><strong>Type :</strong> <span>{{ reservation.typeReservation }}</span></p>
+            <p><strong>Montant :</strong> <span>{{ reservation.prix }} €</span></p>
+            <p><strong>Code de confirmation :</strong> <span class="text-success">{{ reservation.codeConfirmation }}</span></p>
+        </div>
+
+        <div class="text-center">
+            <a href="{{ path('app_reservation') }}" class="btn btn-success btn-back">
+                <i class="fas fa-arrow-left me-2"></i> Retour à mes réservations
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

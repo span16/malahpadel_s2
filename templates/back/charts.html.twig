@@ -1,0 +1,121 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Statistiques des Réservations{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .chart-container {
+        position: relative;
+        height: {% if is_standalone|default(false) %}70vh{% else %}400px{% endif %};
+        width: 100%;
+    }
+    
+    .stats-table {
+        max-height: {% if is_standalone|default(false) %}70vh{% else %}300px{% endif %};
+        overflow-y: auto;
+    }
+    
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 50vh;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+{% if is_standalone|default(false) %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-chart-pie mr-2"></i>
+                Statistiques des Réservations
+            </h1>
+        </div>
+    </div>
+{% endif %}
+
+<div class="row">
+    <!-- Graphique -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    Répartition par type de réservation
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    {{ render_chart(chart) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    Détails des réservations
+                </h6>
+                <span class="badge bg-primary">
+                    Total: {{ statsTable|length }} types
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive stats-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th class="text-end">Nombre</th>
+                                <th class="text-end">Total</th>
+                                {% if is_standalone|default(false) %}
+                                <th class="text-end">%</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set totalCount = statsTable|reduce((sum, item) => sum + item.count, 0) %}
+                            {% for stat in statsTable %}
+                            <tr>
+                                <td>{{ stat.type }}</td>
+                                <td class="text-end">{{ stat.count|number_format(0, ',', ' ') }}</td>
+                                <td class="text-end">{{ stat.total }}</td>
+                                {% if is_standalone|default(false) %}
+                                <td class="text-end">{{ (stat.count / totalCount * 100)|number_format(1) }}%</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if is_standalone|default(false) %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Redimensionnement responsive du graphique
+    function resizeChart() {
+        if (typeof chart !== 'undefined') {
+            chart.resize();
+        }
+    }
+    
+    window.addEventListener('resize', resizeChart);
+    resizeChart();
+});
+</script>
+{% endblock %}

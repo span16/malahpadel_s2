@@ -194,6 +194,63 @@
             background-color: rgba(40, 167, 69, 0.1);
             color: #28A745;
         }
+        /* ========== ACTION BUTTONS STYLES ========== */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.action-buttons .btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.action-buttons .btn i {
+    margin: 0;
+}
+
+/* Style spécifique pour le bouton stats */
+.action-buttons .btn-stats {
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+}
+
+.action-buttons .btn-stats:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+/* Style pour le bouton de suppression */
+.action-buttons .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.action-buttons .btn-danger:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
+/* Style pour le bouton d'édition */
+.action-buttons .btn-primary {
+    background-color: #3498DB;
+    border-color: #3498DB;
+}
+
+.action-buttons .btn-primary:hover {
+    background-color: #2980B9;
+    border-color: #2980B9;
+}
     </style>
 {% endblock %}
 
@@ -320,27 +377,17 @@
                         <h4 class="card-title mb-0">Gestion des Réclamations</h4>
                         <small class="text-muted">Liste complète des réclamations enregistrées</small>
                     </div>
-                    <div class="d-flex">
-                        <div class="input-group me-3" style="width: 250px;">
-                            <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
-                            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Rechercher...">
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" id="exportBtn">
-                                <i class="fas fa-file-export me-1"></i> Exporter
-                                <span class="export-spinner"></span>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" 
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Options d'export</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#" id="exportCSV">CSV</a></li>
-                                <li><a class="dropdown-item" href="#" id="exportPDF">PDF</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    
                 </div>
+
+                <div>
+        {# Ajoutez ce bouton à côté des autres boutons d'action #}
+        <a href="{{ path('app_reclamation_visualisation') }}" 
+   class="btn btn-info btn-sm" 
+   title="Visualisation des données">
+    <i class="fas fa-chart-line me-1"></i> Visualisation
+</a>
+    </div>
 
                 <!-- Stats cards row -->
                 <div class="row mb-4">
@@ -380,7 +427,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="text-muted fw-normal">En cours</h6>
-                                        <h4 class="mb-0">{{ reclamations|filter(r => r.etat == 'En cours')|length }}</h4>
+                                        <h4 class="mb-0">{{ reclamations|filter(r => r.etat == 'En cours')|length }} </h4>
                                     </div>
                                     <div class="stats-icon stats-icon-info">
                                         <i class="fas fa-spinner"></i>
@@ -394,10 +441,25 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted fw-normal">Résolues</h6>
+                                        <h6 class="text-muted fw-normal">Traitée</h6>
                                         <h4 class="mb-0">{{ reclamations|filter(r => r.etat == 'Résolue')|length }}</h4>
                                     </div>
                                     <div class="stats-icon stats-icon-success">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card stats-card-cancel">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted fw-normal">Rejetée</h6>
+                                        <h4 class="mb-0">{{ reclamations|filter(r => r.etat == 'Rejetée')|length }}</h4>
+                                    </div>
+                                    <div class="stats-icon stats-icon-cancel">
                                         <i class="fas fa-check-circle"></i>
                                     </div>
                                 </div>
@@ -457,12 +519,16 @@
                                         {% if reclamation.etat == 'Nouvelle' %}bg-warning text-dark
                                         {% elseif reclamation.etat == 'En cours' %}bg-info
                                         {% elseif reclamation.etat == 'Résolue' %}bg-success
+                                        {% elseif reclamation.etat == 'Rejetée' %}bg-echec
+
                                         {% else %}bg-danger
                                         {% endif %}">
                                         <i class="fas 
                                             {% if reclamation.etat == 'Nouvelle' %}fa-exclamation
                                             {% elseif reclamation.etat == 'En cours' %}fa-spinner
                                             {% elseif reclamation.etat == 'Résolue' %}fa-check
+                                            {% elseif reclamation.etat == 'Rejetée' %}fa-check
+
                                             {% else %}fa-times
                                             {% endif %} me-1"></i>
                                         {{ reclamation.etat }}
@@ -476,30 +542,33 @@
                                     {% else %}
                                         <span class="badge bg-light text-muted">Aucune</span>
                                     {% endif %}
-                                </td>
                                 <td class="text-center">
-                                    <div class="action-buttons">
-                                    
-                                        
-                                        <!-- Bouton Modifier -->
-                                        <a href="{{ path('admin_reclamation_edit', {'id': reclamation.id}) }}" 
-                                           class="btn btn-sm btn-primary" 
-                                           title="Modifier">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        
-                                        <!-- Bouton Supprimer -->
-                                        <form method="post" 
-                                              action="{{ path('admin_reclamation_delete', {'id': reclamation.id}) }}" 
-                                              onsubmit="return confirm('Confirmer la suppression ?');" 
-                                              style="display:inline;">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton{{ reclamation.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ reclamation.id }}">
+            <li>
+                <a class="dropdown-item" href="{{ path('admin_reclamation_edit', {'id': reclamation.id}) }}">
+                    <i class="fas fa-edit me-2"></i> Modifier
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ path('admin_reclamation_stats') }}">
+                    <i class="fas fa-chart-bar me-2"></i> Statistiques
+                </a>
+            </li>
+            <li>
+                <form method="POST" action="{{ path('admin_reclamation_delete', {'id': reclamation.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
+                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">
+                        <i class="fas fa-trash-alt me-2"></i> Supprimer
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</td>
                             </tr>
                             {% else %}
                             <tr>
@@ -590,92 +659,5 @@
                 theme: 'bootstrap'
             });
         });
-
-        // Client-side search
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#reclamationsTable tbody tr');
-            
-            rows.forEach(row => {
-                const rowText = Array.from(row.cells)
-                    .map(cell => {
-                        const badge = cell.querySelector('.badge');
-                        return badge ? badge.textContent.trim() : cell.textContent.trim();
-                    })
-                    .join(' ')
-                    .toLowerCase();
-                
-                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
-            });
-            
-            updateDisplayCount();
-        });
-
-        // Data export
-        document.getElementById('exportBtn').addEventListener('click', function() {
-            const btn = this;
-            const spinner = btn.querySelector('.export-spinner');
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#reclamationsTable tbody tr');
-            
-            btn.disabled = true;
-            spinner.style.display = 'inline-block';
-            
-            let dataToExport = [];
-            
-            const headers = [
-                'ID', 
-                'Date', 
-                'Raison', 
-                'État', 
-                'Réservation'
-            ];
-            dataToExport.push(headers.join(','));
-            
-            rows.forEach(row => {
-                if (row.style.display !== 'none') {
-                    const rowData = Array.from(row.cells)
-                        .slice(0, -1) // Exclure la colonne Actions
-                        .map(cell => {
-                            const badge = cell.querySelector('.badge');
-                            let text = badge ? badge.textContent.trim() : cell.textContent.trim();
-                            
-                            if (text.includes('"') || text.includes(',')) {
-                                text = `"${text.replace(/"/g, '""')}"`;
-                            }
-                            
-                            return text;
-                        });
-                    
-                    dataToExport.push(rowData.join(','));
-                }
-            });
-            
-            const csvContent = dataToExport.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `reclamations_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            setTimeout(() => {
-                spinner.style.display = 'none';
-                btn.disabled = false;
-            }, 500);
-        });
-
-        // Update displayed count
-        function updateDisplayCount() {
-            const visibleRows = document.querySelectorAll('#reclamationsTable tbody tr:not([style*="display: none"])').length;
-            const totalRows = document.querySelectorAll('#reclamationsTable tbody tr').length;
-            const countElement = document.querySelector('.text-muted');
-            
-            if (countElement) {
-                countElement.innerHTML = `Affichage de <b>${visibleRows}</b> réclamation(s) sur <b>${totalRows}</b>`;
-            }
-        }
     </script>
 {% endblock %}

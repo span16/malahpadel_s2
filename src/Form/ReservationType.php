@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
+
 class ReservationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -63,7 +64,8 @@ class ReservationType extends AbstractType
                         'maxMessage' => 'La remarque ne peut pas dépasser {{ limit }} caractères'
                     ])
                 ]
-            ]);
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

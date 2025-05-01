@@ -73,13 +73,17 @@ return [
         '/recherche/new' => [[['_route' => 'app_recherche_new', '_controller' => 'App\\Controller\\RechercheController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/reclamation' => [[['_route' => 'app_reclamation_index', '_controller' => 'App\\Controller\\ReclamationController::index'], null, ['GET' => 0], null, false, false, null]],
         '/reclamation/new' => [[['_route' => 'app_reclamation_new', '_controller' => 'App\\Controller\\ReclamationController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/admin/reclamations/statistiques' => [[['_route' => 'admin_reclamation_stats', '_controller' => 'App\\Controller\\ReclamationController::stats'], null, null, null, false, false, null]],
         '/admin/reclamations' => [[['_route' => 'admin_reclamation_index', '_controller' => 'App\\Controller\\ReclamationController::adminIndex'], null, null, null, false, false, null]],
         '/admin/reclamation/new' => [[['_route' => 'admin_reclamation_new', '_controller' => 'App\\Controller\\ReclamationController::adminNew'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/admin/reclamation/visualisation' => [[['_route' => 'app_reclamation_visualisation', '_controller' => 'App\\Controller\\ReclamationController::visualisation'], null, ['GET' => 0], null, false, false, null]],
         '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
         '/verify/email' => [[['_route' => 'app_verify_email', '_controller' => 'App\\Controller\\RegistrationController::verifyUserEmail'], null, null, null, false, false, null]],
         '/reservation' => [[['_route' => 'app_reservation', '_controller' => 'App\\Controller\\ReservationController::index'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        '/admin/reservations' => [[['_route' => 'admin_reservation_index', '_controller' => 'App\\Controller\\ReservationController::adminIndex'], null, null, null, false, false, null]],
-        '/admin/reservation/new' => [[['_route' => 'admin_reservation_new', '_controller' => 'App\\Controller\\ReservationController::adminNew'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/admin/reservations' => [[['_route' => 'admin_reservation_index', '_controller' => 'App\\Controller\\ReservationController::adminIndex'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/admin/reservations/export' => [[['_route' => 'admin_reservation_export', '_controller' => 'App\\Controller\\ReservationController::export'], null, null, null, false, false, null]],
+        '/admin/reservations/event-names' => [[['_route' => 'admin_reservation_event_names', '_controller' => 'App\\Controller\\ReservationController::getEventNamesAjax'], null, ['GET' => 0], null, false, false, null]],
+        '/admin/reservations/stats' => [[['_route' => 'admin_reservation_stats', '_controller' => 'App\\Controller\\ReservationController::reservationStats'], null, null, null, false, false, null]],
         '/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
         '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
         '/forgot-password' => [[['_route' => 'app_forgot_password', '_controller' => 'App\\Controller\\SecurityController::forgotPassword'], null, null, null, false, false, null]],
@@ -122,156 +126,172 @@ return [
                             .'|edit(*:355)'
                             .'|delete(*:369)'
                         .')'
-                        .'|servation/([^/]++)/(?'
-                            .'|edit(*:404)'
-                            .'|delete(*:418)'
+                        .'|servation/(?'
+                            .'|([^/]++)(*:399)'
+                            .'|new(*:410)'
+                            .'|([^/]++)/(?'
+                                .'|e(?'
+                                    .'|dit(*:437)'
+                                    .'|xists(*:450)'
+                                .')'
+                                .'|delete(*:465)'
+                            .')'
                         .')'
                     .')'
                 .')'
                 .'|/_(?'
-                    .'|error/(\\d+)(?:\\.([^/]++))?(*:460)'
-                    .'|wdt/([^/]++)(*:480)'
+                    .'|error/(\\d+)(?:\\.([^/]++))?(*:508)'
+                    .'|wdt/([^/]++)(*:528)'
                     .'|profiler/(?'
-                        .'|font/([^/\\.]++)\\.woff2(*:522)'
+                        .'|font/([^/\\.]++)\\.woff2(*:570)'
                         .'|([^/]++)(?'
                             .'|/(?'
-                                .'|search/results(*:559)'
-                                .'|router(*:573)'
+                                .'|search/results(*:607)'
+                                .'|router(*:621)'
                                 .'|exception(?'
-                                    .'|(*:593)'
-                                    .'|\\.css(*:606)'
+                                    .'|(*:641)'
+                                    .'|\\.css(*:654)'
                                 .')'
                             .')'
-                            .'|(*:616)'
+                            .'|(*:664)'
                         .')'
                     .')'
                 .')'
                 .'|/back/(?'
                     .'|annonce/([^/]++)(?'
-                        .'|(*:655)'
-                        .'|/edit(*:668)'
-                        .'|(*:676)'
+                        .'|(*:703)'
+                        .'|/edit(*:716)'
+                        .'|(*:724)'
                     .')'
                     .'|invitation/([^/]++)(?'
-                        .'|(*:707)'
-                        .'|/edit(*:720)'
-                        .'|(*:728)'
+                        .'|(*:755)'
+                        .'|/edit(*:768)'
+                        .'|(*:776)'
                     .')'
                     .'|recherche/([^/]++)(?'
-                        .'|(*:758)'
-                        .'|/edit(*:771)'
-                        .'|(*:779)'
+                        .'|(*:806)'
+                        .'|/edit(*:819)'
+                        .'|(*:827)'
                     .')'
                 .')'
                 .'|/compagne/(?'
-                    .'|(\\d+)(*:807)'
+                    .'|(\\d+)(*:855)'
                     .'|([^/]++)(?'
-                        .'|/edit(*:831)'
-                        .'|(*:839)'
+                        .'|/edit(*:879)'
+                        .'|(*:887)'
                     .')'
                     .'|admin/(?'
-                        .'|edit/([^/]++)(*:870)'
-                        .'|delete/([^/]++)(*:893)'
+                        .'|edit/([^/]++)(*:918)'
+                        .'|delete/([^/]++)(*:941)'
                     .')'
-                    .'|(\\d+)(*:907)'
+                    .'|(\\d+)(*:955)'
                 .')'
                 .'|/demande/(?'
-                    .'|new/([^/]++)(*:940)'
+                    .'|new/([^/]++)(*:988)'
                     .'|([^/]++)/(?'
-                        .'|accepter(*:968)'
-                        .'|refuser(*:983)'
+                        .'|accepter(*:1016)'
+                        .'|refuser(*:1032)'
                     .')'
                 .')'
                 .'|/evenement/(?'
-                    .'|update/([^/]++)(*:1022)'
-                    .'|show/([^/]++)(*:1044)'
+                    .'|update/([^/]++)(*:1072)'
+                    .'|show/([^/]++)(*:1094)'
                 .')'
                 .'|/invitation/(?'
                     .'|([^/]++)(?'
-                        .'|(*:1080)'
-                        .'|/edit(*:1094)'
-                        .'|(*:1103)'
+                        .'|(*:1130)'
+                        .'|/edit(*:1144)'
+                        .'|(*:1153)'
                     .')'
-                    .'|mes\\-invitations(*:1129)'
-                    .'|accepter/([^/]++)(*:1155)'
-                    .'|refuser/([^/]++)(*:1180)'
+                    .'|mes\\-invitations(*:1179)'
+                    .'|accepter/([^/]++)(*:1205)'
+                    .'|refuser/([^/]++)(*:1230)'
                 .')'
                 .'|/p(?'
-                    .'|anier/(?'
-                        .'|remove(?'
-                            .'|\\-all/([^/]++)(*:1227)'
-                            .'|/(\\d+)(*:1242)'
+                    .'|a(?'
+                        .'|nier/(?'
+                            .'|remove(?'
+                                .'|\\-all/([^/]++)(*:1280)'
+                                .'|/(\\d+)(*:1295)'
+                            .')'
+                            .'|add/(\\d+)(*:1314)'
                         .')'
-                        .'|add/(\\d+)(*:1261)'
+                        .'|iement/(?'
+                            .'|([^/]++)(*:1342)'
+                            .'|success/([^/]++)(*:1367)'
+                            .'|cancel/([^/]++)(*:1391)'
+                        .')'
                     .')'
                     .'|ro(?'
                         .'|duit/(?'
                             .'|([^/]++)(?'
-                                .'|(*:1295)'
-                                .'|/edit(*:1309)'
-                                .'|(*:1318)'
+                                .'|(*:1426)'
+                                .'|/edit(*:1440)'
+                                .'|(*:1449)'
                             .')'
                             .'|admin/(?'
-                                .'|edit/([^/]++)(*:1350)'
-                                .'|delete/([^/]++)(*:1374)'
+                                .'|edit/([^/]++)(*:1481)'
+                                .'|delete/([^/]++)(*:1505)'
                             .')'
-                            .'|produit/([^/]++)/rating(*:1407)'
-                            .'|([^/]++)/rate/([^/]++)(*:1438)'
+                            .'|produit/([^/]++)/rating(*:1538)'
+                            .'|([^/]++)/rate/([^/]++)(*:1569)'
                         .')'
                         .'|fil/(?'
-                            .'|back/([^/]++)(*:1468)'
+                            .'|back/([^/]++)(*:1599)'
                             .'|([^/]++)(?'
-                                .'|/edit(*:1493)'
-                                .'|(*:1502)'
+                                .'|/edit(*:1624)'
+                                .'|(*:1633)'
                             .')'
-                            .'|back/([^/]++)/edit(*:1530)'
+                            .'|back/([^/]++)/edit(*:1661)'
                             .'|front(?'
-                                .'|(*:1547)'
+                                .'|(*:1678)'
                                 .'|/([^/]++)(?'
-                                    .'|(*:1568)'
-                                    .'|/edit(*:1582)'
+                                    .'|(*:1699)'
+                                    .'|/edit(*:1713)'
                                 .')'
                             .')'
-                            .'|([^/]++)(*:1601)'
+                            .'|([^/]++)(*:1732)'
                         .')'
                     .')'
                 .')'
                 .'|/re(?'
                     .'|c(?'
                         .'|herche/([^/]++)(?'
-                            .'|(*:1641)'
-                            .'|/edit(*:1655)'
-                            .'|(*:1664)'
+                            .'|(*:1772)'
+                            .'|/edit(*:1786)'
+                            .'|(*:1795)'
                         .')'
                         .'|lamation/([^/]++)(?'
-                            .'|/edit(*:1699)'
-                            .'|(*:1708)'
+                            .'|/edit(*:1830)'
+                            .'|(*:1839)'
                         .')'
                     .')'
                     .'|se(?'
                         .'|rvation/([^/]++)(?'
-                            .'|(*:1743)'
+                            .'|(*:1874)'
                             .'|/(?'
-                                .'|edit(*:1760)'
-                                .'|cancel(*:1775)'
+                                .'|edit(*:1891)'
+                                .'|cancel(*:1906)'
+                                .'|pdf(*:1918)'
+                                .'|barcode(*:1934)'
                             .')'
-                            .'|(*:1785)'
+                            .'|(*:1944)'
                         .')'
-                        .'|t\\-password/([^/]++)(*:1815)'
+                        .'|t\\-password/([^/]++)(*:1974)'
                     .')'
                 .')'
                 .'|/terrain/([^/]++)(?'
-                    .'|(*:1846)'
-                    .'|/edit(*:1860)'
-                    .'|(*:1869)'
+                    .'|(*:2005)'
+                    .'|/edit(*:2019)'
+                    .'|(*:2028)'
                 .')'
                 .'|/user/(?'
                     .'|([^/]++)(?'
-                        .'|(*:1899)'
-                        .'|/edit(*:1913)'
-                        .'|(*:1922)'
+                        .'|(*:2058)'
+                        .'|/edit(*:2072)'
+                        .'|(*:2081)'
                     .')'
-                    .'|user/([^/]++)/signaler(*:1954)'
+                    .'|user/([^/]++)/signaler(*:2113)'
                 .')'
             .')/?$}sDu',
     ],
@@ -292,80 +312,88 @@ return [
         310 => [[['_route' => 'app_annonce_match_delete', '_controller' => 'App\\Controller\\AnnonceMatchController::delete'], ['annonceId'], ['POST' => 0], null, false, true, null]],
         355 => [[['_route' => 'admin_reclamation_edit', '_controller' => 'App\\Controller\\ReclamationController::adminEdit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
         369 => [[['_route' => 'admin_reclamation_delete', '_controller' => 'App\\Controller\\ReclamationController::adminDelete'], ['id'], ['POST' => 0], null, false, false, null]],
-        404 => [[['_route' => 'admin_reservation_edit', '_controller' => 'App\\Controller\\ReservationController::adminEdit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        418 => [[['_route' => 'admin_reservation_delete', '_controller' => 'App\\Controller\\ReservationController::adminDelete'], ['id'], ['POST' => 0], null, false, false, null]],
-        460 => [[['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null]],
-        480 => [[['_route' => '_wdt', '_controller' => 'web_profiler.controller.profiler::toolbarAction'], ['token'], null, null, false, true, null]],
-        522 => [[['_route' => '_profiler_font', '_controller' => 'web_profiler.controller.profiler::fontAction'], ['fontName'], null, null, false, false, null]],
-        559 => [[['_route' => '_profiler_search_results', '_controller' => 'web_profiler.controller.profiler::searchResultsAction'], ['token'], null, null, false, false, null]],
-        573 => [[['_route' => '_profiler_router', '_controller' => 'web_profiler.controller.router::panelAction'], ['token'], null, null, false, false, null]],
-        593 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
-        606 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
-        616 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
-        655 => [[['_route' => 'back_annonce_show', '_controller' => 'App\\Controller\\BackO\\BackAnnonceController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        668 => [[['_route' => 'back_annonce_edit', '_controller' => 'App\\Controller\\BackO\\BackAnnonceController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        676 => [[['_route' => 'back_annonce_delete', '_controller' => 'App\\Controller\\BackO\\BackAnnonceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        707 => [[['_route' => 'back_invitation_show', '_controller' => 'App\\Controller\\BackO\\BackInvitationController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        720 => [[['_route' => 'back_invitation_edit', '_controller' => 'App\\Controller\\BackO\\BackInvitationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        728 => [[['_route' => 'back_invitation_delete', '_controller' => 'App\\Controller\\BackO\\BackInvitationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        758 => [[['_route' => 'back_recherche_show', '_controller' => 'App\\Controller\\BackO\\BackRechercheController::show'], ['userId'], ['GET' => 0], null, false, true, null]],
-        771 => [[['_route' => 'back_recherche_edit', '_controller' => 'App\\Controller\\BackO\\BackRechercheController::edit'], ['userId'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        779 => [[['_route' => 'back_recherche_delete', '_controller' => 'App\\Controller\\BackO\\BackRechercheController::delete'], ['userId'], ['POST' => 0], null, false, true, null]],
-        807 => [[['_route' => 'app_compagne_show', '_controller' => 'App\\Controller\\CompagneController::show'], ['idCompagne'], ['GET' => 0], null, false, true, null]],
-        831 => [[['_route' => 'app_compagne_edit', '_controller' => 'App\\Controller\\CompagneController::edit'], ['idCompagne'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        839 => [[['_route' => 'app_compagne_delete', '_controller' => 'App\\Controller\\CompagneController::delete'], ['idCompagne'], ['POST' => 0], null, false, true, null]],
-        870 => [[['_route' => 'admin_compagne_edit', '_controller' => 'App\\Controller\\CompagneController::editBackOffice'], ['idCompagne'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        893 => [[['_route' => 'admin_compagne_delete', '_controller' => 'App\\Controller\\CompagneController::deleteBackOffice'], ['idCompagne'], ['POST' => 0], null, false, true, null]],
-        907 => [[['_route' => 'compagne_show', '_controller' => 'App\\Controller\\CompagneController::show'], ['id'], null, null, false, true, null]],
-        940 => [[['_route' => 'app_demande_new', '_controller' => 'App\\Controller\\DemandeController::new'], ['annonceId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        968 => [[['_route' => 'app_demande_accepter', '_controller' => 'App\\Controller\\DemandeController::accepter'], ['id'], ['POST' => 0], null, false, false, null]],
-        983 => [[['_route' => 'app_demande_refuser', '_controller' => 'App\\Controller\\DemandeController::refuser'], ['id'], ['POST' => 0], null, false, false, null]],
-        1022 => [[['_route' => 'evenement_update', '_controller' => 'App\\Controller\\EvenementController::update'], ['id'], ['POST' => 0], null, false, true, null]],
-        1044 => [[['_route' => 'evenement_show', '_controller' => 'App\\Controller\\EvenementController::show'], ['id'], null, null, false, true, null]],
-        1080 => [[['_route' => 'app_invitation_show', '_controller' => 'App\\Controller\\InvitationController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        1094 => [[['_route' => 'app_invitation_edit', '_controller' => 'App\\Controller\\InvitationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1103 => [[['_route' => 'app_invitation_delete', '_controller' => 'App\\Controller\\InvitationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1129 => [[['_route' => 'app_invitation_mes_invitations', '_controller' => 'App\\Controller\\InvitationController::mesInvitations'], [], null, null, false, false, null]],
-        1155 => [[['_route' => 'app_invitation_accepter', '_controller' => 'App\\Controller\\InvitationController::accepter'], ['id'], ['POST' => 0], null, false, true, null]],
-        1180 => [[['_route' => 'app_invitation_refuser', '_controller' => 'App\\Controller\\InvitationController::refuser'], ['id'], ['POST' => 0], null, false, true, null]],
-        1227 => [[['_route' => 'app_panier_remove_all', '_controller' => 'App\\Controller\\PanierController::removeAll'], ['id'], null, null, false, true, null]],
-        1242 => [[['_route' => 'app_panier_remove', '_controller' => 'App\\Controller\\PanierController::remove'], ['id'], null, null, false, true, null]],
-        1261 => [[['_route' => 'app_panier_add', '_controller' => 'App\\Controller\\PanierController::add'], ['id'], null, null, false, true, null]],
-        1295 => [[['_route' => 'app_produit_show', '_controller' => 'App\\Controller\\ProduitController::show'], ['id_produit'], ['GET' => 0], null, false, true, null]],
-        1309 => [[['_route' => 'app_produit_edit', '_controller' => 'App\\Controller\\ProduitController::edit'], ['id_produit'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1318 => [[['_route' => 'app_produit_delete', '_controller' => 'App\\Controller\\ProduitController::delete'], ['id_produit'], ['POST' => 0], null, false, true, null]],
-        1350 => [[['_route' => 'admin_produit_edit', '_controller' => 'App\\Controller\\ProduitController::editBackOffice'], ['id_produit'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        1374 => [[['_route' => 'app_produit_delete2', '_controller' => 'App\\Controller\\ProduitController::delete2'], ['id_produit'], ['POST' => 0], null, false, true, null]],
-        1407 => [[['_route' => 'app_produit_rating', '_controller' => 'App\\Controller\\ProduitController::showRatingChart'], ['id'], null, null, false, false, null]],
-        1438 => [[['_route' => 'app_produit_rate', '_controller' => 'App\\Controller\\ProduitController::rateProduct'], ['id_produit', 'score'], ['GET' => 0], null, false, true, null]],
-        1468 => [[['_route' => 'app_profil_show_back', '_controller' => 'App\\Controller\\ProfilController::showBack'], ['id'], ['GET' => 0], null, false, true, null]],
-        1493 => [[['_route' => 'app_profil_edit', '_controller' => 'App\\Controller\\ProfilController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1502 => [
+        399 => [[['_route' => 'admin_reservation_show', '_controller' => 'App\\Controller\\ReservationController::adminShow'], ['id'], ['GET' => 0], null, false, true, null]],
+        410 => [[['_route' => 'admin_reservation_new', '_controller' => 'App\\Controller\\ReservationController::adminNew'], [], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        437 => [[['_route' => 'admin_reservation_edit', '_controller' => 'App\\Controller\\ReservationController::adminEdit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        450 => [[['_route' => 'admin_reservation_exists', '_controller' => 'App\\Controller\\ReservationController::checkReservationExists'], ['id'], ['GET' => 0], null, false, false, null]],
+        465 => [[['_route' => 'admin_reservation_delete', '_controller' => 'App\\Controller\\ReservationController::adminDelete'], ['id'], ['POST' => 0], null, false, false, null]],
+        508 => [[['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null]],
+        528 => [[['_route' => '_wdt', '_controller' => 'web_profiler.controller.profiler::toolbarAction'], ['token'], null, null, false, true, null]],
+        570 => [[['_route' => '_profiler_font', '_controller' => 'web_profiler.controller.profiler::fontAction'], ['fontName'], null, null, false, false, null]],
+        607 => [[['_route' => '_profiler_search_results', '_controller' => 'web_profiler.controller.profiler::searchResultsAction'], ['token'], null, null, false, false, null]],
+        621 => [[['_route' => '_profiler_router', '_controller' => 'web_profiler.controller.router::panelAction'], ['token'], null, null, false, false, null]],
+        641 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
+        654 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
+        664 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
+        703 => [[['_route' => 'back_annonce_show', '_controller' => 'App\\Controller\\BackO\\BackAnnonceController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        716 => [[['_route' => 'back_annonce_edit', '_controller' => 'App\\Controller\\BackO\\BackAnnonceController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        724 => [[['_route' => 'back_annonce_delete', '_controller' => 'App\\Controller\\BackO\\BackAnnonceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        755 => [[['_route' => 'back_invitation_show', '_controller' => 'App\\Controller\\BackO\\BackInvitationController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        768 => [[['_route' => 'back_invitation_edit', '_controller' => 'App\\Controller\\BackO\\BackInvitationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        776 => [[['_route' => 'back_invitation_delete', '_controller' => 'App\\Controller\\BackO\\BackInvitationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        806 => [[['_route' => 'back_recherche_show', '_controller' => 'App\\Controller\\BackO\\BackRechercheController::show'], ['userId'], ['GET' => 0], null, false, true, null]],
+        819 => [[['_route' => 'back_recherche_edit', '_controller' => 'App\\Controller\\BackO\\BackRechercheController::edit'], ['userId'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        827 => [[['_route' => 'back_recherche_delete', '_controller' => 'App\\Controller\\BackO\\BackRechercheController::delete'], ['userId'], ['POST' => 0], null, false, true, null]],
+        855 => [[['_route' => 'app_compagne_show', '_controller' => 'App\\Controller\\CompagneController::show'], ['idCompagne'], ['GET' => 0], null, false, true, null]],
+        879 => [[['_route' => 'app_compagne_edit', '_controller' => 'App\\Controller\\CompagneController::edit'], ['idCompagne'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        887 => [[['_route' => 'app_compagne_delete', '_controller' => 'App\\Controller\\CompagneController::delete'], ['idCompagne'], ['POST' => 0], null, false, true, null]],
+        918 => [[['_route' => 'admin_compagne_edit', '_controller' => 'App\\Controller\\CompagneController::editBackOffice'], ['idCompagne'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        941 => [[['_route' => 'admin_compagne_delete', '_controller' => 'App\\Controller\\CompagneController::deleteBackOffice'], ['idCompagne'], ['POST' => 0], null, false, true, null]],
+        955 => [[['_route' => 'compagne_show', '_controller' => 'App\\Controller\\CompagneController::show'], ['id'], null, null, false, true, null]],
+        988 => [[['_route' => 'app_demande_new', '_controller' => 'App\\Controller\\DemandeController::new'], ['annonceId'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1016 => [[['_route' => 'app_demande_accepter', '_controller' => 'App\\Controller\\DemandeController::accepter'], ['id'], ['POST' => 0], null, false, false, null]],
+        1032 => [[['_route' => 'app_demande_refuser', '_controller' => 'App\\Controller\\DemandeController::refuser'], ['id'], ['POST' => 0], null, false, false, null]],
+        1072 => [[['_route' => 'evenement_update', '_controller' => 'App\\Controller\\EvenementController::update'], ['id'], ['POST' => 0], null, false, true, null]],
+        1094 => [[['_route' => 'evenement_show', '_controller' => 'App\\Controller\\EvenementController::show'], ['id'], null, null, false, true, null]],
+        1130 => [[['_route' => 'app_invitation_show', '_controller' => 'App\\Controller\\InvitationController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        1144 => [[['_route' => 'app_invitation_edit', '_controller' => 'App\\Controller\\InvitationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1153 => [[['_route' => 'app_invitation_delete', '_controller' => 'App\\Controller\\InvitationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1179 => [[['_route' => 'app_invitation_mes_invitations', '_controller' => 'App\\Controller\\InvitationController::mesInvitations'], [], null, null, false, false, null]],
+        1205 => [[['_route' => 'app_invitation_accepter', '_controller' => 'App\\Controller\\InvitationController::accepter'], ['id'], ['POST' => 0], null, false, true, null]],
+        1230 => [[['_route' => 'app_invitation_refuser', '_controller' => 'App\\Controller\\InvitationController::refuser'], ['id'], ['POST' => 0], null, false, true, null]],
+        1280 => [[['_route' => 'app_panier_remove_all', '_controller' => 'App\\Controller\\PanierController::removeAll'], ['id'], null, null, false, true, null]],
+        1295 => [[['_route' => 'app_panier_remove', '_controller' => 'App\\Controller\\PanierController::remove'], ['id'], null, null, false, true, null]],
+        1314 => [[['_route' => 'app_panier_add', '_controller' => 'App\\Controller\\PanierController::add'], ['id'], null, null, false, true, null]],
+        1342 => [[['_route' => 'app_stripe_payment', '_controller' => 'App\\Controller\\StripeController::createCheckoutSession'], ['id'], ['GET' => 0], null, false, true, null]],
+        1367 => [[['_route' => 'app_stripe_success', '_controller' => 'App\\Controller\\StripeController::success'], ['id'], null, null, false, true, null]],
+        1391 => [[['_route' => 'app_stripe_cancel', '_controller' => 'App\\Controller\\StripeController::cancel'], ['id'], null, null, false, true, null]],
+        1426 => [[['_route' => 'app_produit_show', '_controller' => 'App\\Controller\\ProduitController::show'], ['id_produit'], ['GET' => 0], null, false, true, null]],
+        1440 => [[['_route' => 'app_produit_edit', '_controller' => 'App\\Controller\\ProduitController::edit'], ['id_produit'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1449 => [[['_route' => 'app_produit_delete', '_controller' => 'App\\Controller\\ProduitController::delete'], ['id_produit'], ['POST' => 0], null, false, true, null]],
+        1481 => [[['_route' => 'admin_produit_edit', '_controller' => 'App\\Controller\\ProduitController::editBackOffice'], ['id_produit'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        1505 => [[['_route' => 'app_produit_delete2', '_controller' => 'App\\Controller\\ProduitController::delete2'], ['id_produit'], ['POST' => 0], null, false, true, null]],
+        1538 => [[['_route' => 'app_produit_rating', '_controller' => 'App\\Controller\\ProduitController::showRatingChart'], ['id'], null, null, false, false, null]],
+        1569 => [[['_route' => 'app_produit_rate', '_controller' => 'App\\Controller\\ProduitController::rateProduct'], ['id_produit', 'score'], ['GET' => 0], null, false, true, null]],
+        1599 => [[['_route' => 'app_profil_show_back', '_controller' => 'App\\Controller\\ProfilController::showBack'], ['id'], ['GET' => 0], null, false, true, null]],
+        1624 => [[['_route' => 'app_profil_edit', '_controller' => 'App\\Controller\\ProfilController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1633 => [
             [['_route' => 'app_profil_delete', '_controller' => 'App\\Controller\\ProfilController::delete'], ['id'], ['POST' => 0], null, false, true, null],
             [['_route' => 'app_profil_delete_back', '_controller' => 'App\\Controller\\ProfilController::deleteB'], ['id'], ['POST' => 0], null, false, true, null],
         ],
-        1530 => [[['_route' => 'app_profil_edit_back', '_controller' => 'App\\Controller\\ProfilController::editBack'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1547 => [[['_route' => 'app_profil_my_front', '_controller' => 'App\\Controller\\ProfilController::showMyProfil'], [], ['GET' => 0], null, false, false, null]],
-        1568 => [[['_route' => 'app_profil_show_front', '_controller' => 'App\\Controller\\ProfilController::showFront'], ['id'], ['GET' => 0], null, false, true, null]],
-        1582 => [[['_route' => 'app_profil_edit_front', '_controller' => 'App\\Controller\\ProfilController::editFront'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1601 => [[['_route' => 'app_profil_show', '_controller' => 'App\\Controller\\ProfilController::show'], ['id'], null, null, false, true, null]],
-        1641 => [[['_route' => 'app_recherche_show', '_controller' => 'App\\Controller\\RechercheController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        1655 => [[['_route' => 'app_recherche_edit', '_controller' => 'App\\Controller\\RechercheController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1664 => [[['_route' => 'app_recherche_delete', '_controller' => 'App\\Controller\\RechercheController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1699 => [[['_route' => 'app_reclamation_edit', '_controller' => 'App\\Controller\\ReclamationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1708 => [[['_route' => 'app_reclamation_delete', '_controller' => 'App\\Controller\\ReclamationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1743 => [[['_route' => 'app_reservation_show', '_controller' => 'App\\Controller\\ReservationController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        1760 => [[['_route' => 'app_reservation_edit', '_controller' => 'App\\Controller\\ReservationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1775 => [[['_route' => 'app_reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], ['POST' => 0], null, false, false, null]],
-        1785 => [[['_route' => 'app_reservation_delete', '_controller' => 'App\\Controller\\ReservationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1815 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\SecurityController::resetPassword'], ['token'], null, null, false, true, null]],
-        1846 => [[['_route' => 'app_terrain_show', '_controller' => 'App\\Controller\\TerrainController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        1860 => [[['_route' => 'app_terrain_edit', '_controller' => 'App\\Controller\\TerrainController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1869 => [[['_route' => 'app_terrain_delete', '_controller' => 'App\\Controller\\TerrainController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1899 => [[['_route' => 'app_user_show', '_controller' => 'App\\Controller\\UserController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        1913 => [[['_route' => 'app_user_edit', '_controller' => 'App\\Controller\\UserController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1922 => [[['_route' => 'app_user_delete', '_controller' => 'App\\Controller\\UserController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        1954 => [
+        1661 => [[['_route' => 'app_profil_edit_back', '_controller' => 'App\\Controller\\ProfilController::editBack'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1678 => [[['_route' => 'app_profil_my_front', '_controller' => 'App\\Controller\\ProfilController::showMyProfil'], [], ['GET' => 0], null, false, false, null]],
+        1699 => [[['_route' => 'app_profil_show_front', '_controller' => 'App\\Controller\\ProfilController::showFront'], ['id'], ['GET' => 0], null, false, true, null]],
+        1713 => [[['_route' => 'app_profil_edit_front', '_controller' => 'App\\Controller\\ProfilController::editFront'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1732 => [[['_route' => 'app_profil_show', '_controller' => 'App\\Controller\\ProfilController::show'], ['id'], null, null, false, true, null]],
+        1772 => [[['_route' => 'app_recherche_show', '_controller' => 'App\\Controller\\RechercheController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        1786 => [[['_route' => 'app_recherche_edit', '_controller' => 'App\\Controller\\RechercheController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1795 => [[['_route' => 'app_recherche_delete', '_controller' => 'App\\Controller\\RechercheController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1830 => [[['_route' => 'app_reclamation_edit', '_controller' => 'App\\Controller\\ReclamationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1839 => [[['_route' => 'app_reclamation_delete', '_controller' => 'App\\Controller\\ReclamationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1874 => [[['_route' => 'app_reservation_show', '_controller' => 'App\\Controller\\ReservationController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        1891 => [[['_route' => 'app_reservation_edit', '_controller' => 'App\\Controller\\ReservationController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1906 => [[['_route' => 'app_reservation_cancel', '_controller' => 'App\\Controller\\ReservationController::cancel'], ['id'], ['POST' => 0], null, false, false, null]],
+        1918 => [[['_route' => 'app_reservation_pdf', '_controller' => 'App\\Controller\\ReservationController::generatePdf'], ['id'], null, null, false, false, null]],
+        1934 => [[['_route' => 'app_reservation_barcode', '_controller' => 'App\\Controller\\ReservationController::generateBarcode'], ['id'], ['GET' => 0], null, false, false, null]],
+        1944 => [[['_route' => 'app_reservation_delete', '_controller' => 'App\\Controller\\ReservationController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        1974 => [[['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\SecurityController::resetPassword'], ['token'], null, null, false, true, null]],
+        2005 => [[['_route' => 'app_terrain_show', '_controller' => 'App\\Controller\\TerrainController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        2019 => [[['_route' => 'app_terrain_edit', '_controller' => 'App\\Controller\\TerrainController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        2028 => [[['_route' => 'app_terrain_delete', '_controller' => 'App\\Controller\\TerrainController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        2058 => [[['_route' => 'app_user_show', '_controller' => 'App\\Controller\\UserController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        2072 => [[['_route' => 'app_user_edit', '_controller' => 'App\\Controller\\UserController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        2081 => [[['_route' => 'app_user_delete', '_controller' => 'App\\Controller\\UserController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        2113 => [
             [['_route' => 'app_user_signaler', '_controller' => 'App\\Controller\\UserController::signaler'], ['id'], null, null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],

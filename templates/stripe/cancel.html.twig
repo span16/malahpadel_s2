@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement annulé{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="alert alert-warning">
+        <h1 class="text-center"><i class="fas fa-exclamation-triangle"></i> Paiement annulé</h1>
+        <hr>
+        <p class="lead">Le paiement pour la réservation <strong>{{ reservation.nom }}</strong> n'a pas abouti.</p>
+        <div class="text-center mt-4">
+            <a href="{{ path('app_stripe_payment', {'id': reservation.id}) }}" class="btn btn-primary me-2">
+                <i class="fas fa-credit-card"></i> Réessayer le paiement
+            </a>
+            <a href="{{ path('app_reservation') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour aux réservations
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
