@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fc5c431bb3af14e7b677d2fc7ee7b6b0c8974c12',
+        'reference' => '56d76e024baacf6e419aa9bc8e5d069c9f66e007',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,11 +13,146 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fc5c431bb3af14e7b677d2fc7ee7b6b0c8974c12',
+            'reference' => '56d76e024baacf6e419aa9bc8e5d069c9f66e007',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'api-platform/core' => array(
+            'pretty_version' => 'v4.1.7',
+            'version' => '4.1.7.0',
+            'reference' => '83d005a2b355bbac2d90eb3a8fb3ca5152fb9284',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../api-platform/core',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'api-platform/doctrine-common' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/doctrine-odm' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/doctrine-orm' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/documentation' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/elasticsearch' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/graphql' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/http-cache' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/hydra' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/json-api' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/json-hal' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/json-schema' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/jsonld' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/laravel' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/metadata' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/openapi' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/parameter-validator' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/ramsey-uuid' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/serializer' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/state' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/symfony' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
+        ),
+        'api-platform/validator' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v4.1.7',
+            ),
         ),
         'composer/pcre' => array(
             'pretty_version' => '3.3.2',
@@ -163,6 +298,33 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'dompdf/dompdf' => array(
+            'pretty_version' => 'v3.1.0',
+            'version' => '3.1.0.0',
+            'reference' => 'a51bd7a063a65499446919286fb18b518177155a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dompdf/dompdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'dompdf/php-font-lib' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'reference' => '6137b7d4232b7f16c882c75e4ca3991dbcf6fe2d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dompdf/php-font-lib',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'dompdf/php-svg-lib' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => 'eb045e518185298eb6ff8d80d0d0c6b17aecd9af',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dompdf/php-svg-lib',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'egulias/email-validator' => array(
             'pretty_version' => '4.0.4',
             'version' => '4.0.4.0',
@@ -208,6 +370,24 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'knplabs/knp-components' => array(
+            'pretty_version' => 'v5.2.0',
+            'version' => '5.2.0.0',
+            'reference' => 'eabf39263fff305c0024820c3736e5b03e7edf50',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../knplabs/knp-components',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'knplabs/knp-paginator-bundle' => array(
+            'pretty_version' => 'v6.8.0',
+            'version' => '6.8.0.0',
+            'reference' => 'c3ba635cc61c8bc5de4656223d8664c4045e9fdc',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../knplabs/knp-paginator-bundle',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'maennchen/zipstream-php' => array(
             'pretty_version' => '3.1.2',
             'version' => '3.1.2.0',
@@ -242,7 +422,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../masterminds/html5',
             'aliases' => array(),
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
             'pretty_version' => '3.9.0',
@@ -569,6 +749,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'sabberworm/php-css-parser' => array(
+            'pretty_version' => 'v8.8.0',
+            'version' => '8.8.0.0',
+            'reference' => '3de493bdddfd1f051249af725c7e0d2c38fed740',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../sabberworm/php-css-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'sebastian/cli-parser' => array(
             'pretty_version' => '1.0.2',
             'version' => '1.0.2.0',
@@ -712,6 +901,33 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'setasign/fpdi' => array(
+            'pretty_version' => 'v2.6.3',
+            'version' => '2.6.3.0',
+            'reference' => '67c31f5e50c93c20579ca9e23035d8c540b51941',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../setasign/fpdi',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'setasign/fpdi-tcpdf' => array(
+            'pretty_version' => 'v2.3.0',
+            'version' => '2.3.0.0',
+            'reference' => 'f6711a95cba64db16e1a63e1b6195827a2150c93',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../setasign/fpdi-tcpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'stripe/stripe-php' => array(
+            'pretty_version' => 'v17.2.0',
+            'version' => '17.2.0.0',
+            'reference' => 'ff2364c75533b71116ea11994d6bd08989b7f67b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../stripe/stripe-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'symfony/asset' => array(
             'pretty_version' => 'v6.4.13',
@@ -1460,6 +1676,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.9.3',
+            'version' => '6.9.3.0',
+            'reference' => 'd0e8dd17f8a1df3c97b94b9af8356e88e811ed59',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'theseer/tokenizer' => array(
             'pretty_version' => '1.2.3',
             'version' => '1.2.3.0',
@@ -1502,6 +1727,15 @@
             'reference' => '11cb2199493b2f8a3b53e7f19068fc6aac760991',
             'type' => 'library',
             'install_path' => __DIR__ . '/../webmozart/assert',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'willdurand/negotiation' => array(
+            'pretty_version' => '3.1.0',
+            'version' => '3.1.0.0',
+            'reference' => '68e9ea0553ef6e2ee8db5c1d98829f111e623ec2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../willdurand/negotiation',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

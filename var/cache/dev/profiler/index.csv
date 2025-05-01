@@ -1,5 +1,1 @@
-8de4d3,127.0.0.1,GET,http://127.0.0.1:8000/produit,1746053133,,200,request
-d40c41,127.0.0.1,GET,http://127.0.0.1:8000/produit/5,1746053155,,200,request
-e908f0,127.0.0.1,GET,http://127.0.0.1:8000/produit/5/edit,1746053158,,200,request
-64d6bc,127.0.0.1,POST,http://127.0.0.1:8000/produit/5/edit,1746053165,,302,request
-15d7ac,127.0.0.1,GET,http://127.0.0.1:8000/produit,1746053166,,200,request
+1b545c,127.0.0.1,GET,http://127.0.0.1:8000/compagne/,1746113022,,200,request
